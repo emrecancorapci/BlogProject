@@ -27,6 +27,9 @@ public class Post : IEntity
     [ForeignKey(nameof(DeletedById))]
     public User? DeletedBy { get; set; }
 
+    public bool CommentsEnabled { get; set; }
+    public bool ReactionsEnabled { get; set; }
+
     public bool IsDeleted { get; set; }
     public bool IsApproved { get; set; }
 
@@ -40,5 +43,5 @@ public class Post : IEntity
     public ICollection<Comment>? Comments { get; set; }
     public ICollection<PostsEditors>? Editors { get; set; }
     public ICollection<PostsTags>? Tags { get; set; }
-    public ICollection<UsersLikes>? Likes { get; set; }
+    public ICollection<UsersPostReactions>? Reactions { get; set; }
 }

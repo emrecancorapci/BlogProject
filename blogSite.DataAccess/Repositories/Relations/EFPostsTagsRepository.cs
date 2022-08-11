@@ -16,7 +16,7 @@ public class EFPostsTagsRepository : IPostsTagsRepository
     public async Task<IList<PostsTags>> GetAllAsync()
      => await context.PostsTags.ToListAsync();
 
-    public async Task<IList<Post>> GetPostByTagIdAsync(int tagId)
+    public async Task<IList<Post>> GetPostsByTagIdAsync(int tagId)
     {
         var posts = new List<Post>();
         var postIds = context.PostsTags

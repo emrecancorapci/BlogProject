@@ -31,6 +31,7 @@ public class User : IEntity
     public ICollection<Comment> Comments { get; set; }
     public ICollection<Comment> DeletedComments { get; set; }
     public ICollection<PostsEditors> EditedPosts { get; set; }
-    public ICollection<UsersLikes> LikedPosts { get; set; }
+    public ICollection<UsersPostReactions> LikedPosts { get; set; }
+    public ICollection<UsersCommentReactions> LikedComments { get; set; }
 
 }

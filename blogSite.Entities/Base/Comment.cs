@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using BlogProject.Entities.Relations;
 
 namespace BlogProject.Entities.Base;
 
@@ -30,4 +31,5 @@ public class Comment : IEntity
     public int? ParentId { get; set; }
 
     public ICollection<Comment>? Children { get; set; }
+    public ICollection<UsersCommentReactions>? Reactions { get; set; }
 }

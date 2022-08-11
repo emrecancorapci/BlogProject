@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BlogProject.Business.Services.CommentService.Dtos;
+using BlogProject.Business.Services.PostService.Dtos;
 using BlogProject.Business.Services.UserService.Dtos;
 using BlogProject.Entities.Base;
 
@@ -10,5 +12,11 @@ public class MapProfile : Profile
     {
         CreateMap<CreateUserRequest, User>();
         CreateMap<User, UserValidationResponse>();
+
+        CreateMap<AddCommentRequest, Comment>();
+        CreateMap<UpdateCommentContentRequest, Comment>();
+
+        CreateMap<AddPostRequest, Post>();
+        CreateMap<UpdatePostContentRequest, Post>();
     }
 }

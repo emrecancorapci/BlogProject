@@ -9,16 +9,14 @@ public class EFPostRepository : IPostRepository
 {
     private readonly BlogProjectDbContext context;
 
-    public EFPostRepository(BlogProjectDbContext context)
-    {
+    public EFPostRepository(BlogProjectDbContext context) => 
         this.context = context;
-    }
 
-    public async Task<IList<Post>> GetAllAsync()
-        => await context.Posts.ToListAsync();
+    public async Task<IList<Post>> GetAllAsync() =>
+        await context.Posts.ToListAsync();
 
-    public async Task<Post?> GetAsync(int id)
-        => await context.Posts.FindAsync(id);
+    public async Task<Post?> GetAsync(int id) =>
+        await context.Posts.FindAsync(id);
 
     public async Task<int> Add(Post entity)
     {
@@ -34,13 +32,19 @@ public class EFPostRepository : IPostRepository
         return await context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<int> DeleteAsync(int id)
     {
+        int affected = 0;
         var entity = await context.Posts
             .FirstOrDefaultAsync(x => x.Id == id);
 
-        context.Posts.Remove(entity);
-        await context.SaveChangesAsync();
+        if (entity != null)
+        {
+            context.Posts.Remove(entity);
+            affected = await context.SaveChangesAsync();
+        }
+
+        return affected;
     }
 
     public async Task<bool> IsExist(int id)

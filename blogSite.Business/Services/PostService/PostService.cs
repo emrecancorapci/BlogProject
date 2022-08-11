@@ -11,19 +11,19 @@ public class PostService : IPostService
     private readonly IPostRepository postRepository;
     private readonly IPostsEditorsRepository postsEditorsRepository;
     private readonly IPostsTagsRepository postsTagsRepository;
-    private readonly IUsersLikesRepository usersLikesRepository;
+    private readonly IUsersPostReactionsRepository _usersPostReactionsRepository;
     private readonly IMapper mapper;
     
     public PostService(IPostRepository postRepository,
         IPostsEditorsRepository postsEditorsRepository,
         IPostsTagsRepository postsTagsRepository,
-        IUsersLikesRepository usersLikesRepository,
+        IUsersPostReactionsRepository usersPostReactionsRepository,
         IMapper mapper)
     {
         this.postRepository = postRepository;
         this.postsEditorsRepository = postsEditorsRepository;
         this.postsTagsRepository = postsTagsRepository;
-        this.usersLikesRepository = usersLikesRepository;
+        this._usersPostReactionsRepository = usersPostReactionsRepository;
         this.mapper = mapper;
     }
     
@@ -58,54 +58,73 @@ public class PostService : IPostService
     public async Task<bool> IsExist(int postId) =>
         await postRepository.IsExist(postId);
 
+
     public async Task<Post?> GetPostById(int id) =>
         await postRepository.GetAsync(id);
 
-    public async Task<IList<Post>> GetPostsAsync() =>
-        await postRepository.GetAllAsync();
+    public async Task<IList<Post>> GetPostsAsync()
+    {
+        var posts = await postRepository.GetAllAsync();
+        return posts
+            .OrderBy(x => x.Created)
+            .ToList();
+    }
+
+    public async Task<IList<Post>> GetPostsByTagId(int tagId)
+    {
+        var posts = await postsTagsRepository.GetPostsByTagIdAsync(tagId);
+        return posts
+            .OrderBy(x => x.Created)
+            .ToList();
+    }
 
     public async Task<IList<Post>> GetPostsByUserId(int userId)
     {
         var posts = await postRepository.GetAllAsync();
-        return posts.Where(x => x.AuthorId == userId).ToList();
-    }
-    
-    public async Task<IList<Post>> GetPostsByTagId(int tagId)
-    {
-        return await postsTagsRepository.GetPostsByTagIdAsync(tagId);
+        return posts
+            .Where(x => x.AuthorId == userId)
+            .OrderBy(x => x.Created)
+            .ToList();
     }
 
     public async Task<IList<Post>> GetPostsByCategoryId(int categoryId)
     {
         var posts = await postRepository.GetAllAsync();
-        return posts.Where(x => x.CategoryId == categoryId).ToList();
+        return posts
+            .Where(x => x.CategoryId == categoryId)
+            .OrderBy(x => x.Created)
+            .ToList();
+    }
+
+    public async Task<IList<Post>> GetPostsByEditorIdAsync(int editorId)
+    {
+        var posts = await postsEditorsRepository.GetPostsByEditorIdAsync(editorId);
+        return posts
+            .OrderBy(x => x.Created)
+            .ToList();
     }
 
     public async Task<IList<Post>> GetPostsBySearch(string search)
     {
         var posts = await postRepository.GetAllAsync();
-        return posts.Where(x => x.Title.Contains(search) || x.Content.Contains(search)).ToList();
+        return posts
+            .Where(x => x.Title.Contains(search) || x.Content.Contains(search))
+            .OrderBy(x => x.Created)
+            .ToList();
     }
 
-    public async Task<bool> AddPostEditor(int postId, int editorId)
+    public Task<int> ReactionPost(ReactionPostRequest request)
     {
-        return await postsEditorsRepository.AddAsync(editorId, postId);
-    }
-
-    public async Task<bool> DeletePostEditor(int postId, int editorId)
-    {
-        return await postsEditorsRepository.DeleteAsync(editorId, postId);
-    }
-
-    public async Task<int> DeletePostEditorAll(int editorId)
-    {
-        return await postsEditorsRepository.DeleteEditorAllAsync(editorId);
+        throw new NotImplementedException();
     }
 
 
-    public async Task<IList<Post>> GetPostsByEditorIdAsync(int editorId)
-    {
-        return (await postsEditorsRepository.GetPostsByEditorIdAsync(editorId))
-            .OrderBy(x => x.Created).ToList();
-    }
+    public async Task<bool> AddPostEditor(int postId, int editorId) => 
+        await postsEditorsRepository.AddAsync(editorId, postId);
+
+    public async Task<bool> DeletePostEditor(int postId, int editorId) => 
+        await postsEditorsRepository.DeleteAsync(editorId, postId);
+
+    public async Task<int> DeletePostEditorAll(int editorId) => 
+        await postsEditorsRepository.DeleteEditorAllAsync(editorId);
 }

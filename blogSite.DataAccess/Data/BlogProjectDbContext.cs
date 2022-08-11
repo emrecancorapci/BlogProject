@@ -15,7 +15,8 @@ public class BlogProjectDbContext : DbContext
     public DbSet<Comment> Comments { get; set; }
     public DbSet<PostsTags> PostsTags { get; set; }
     public DbSet<PostsEditors> PostsEditors { get; set; }
-    public DbSet<UsersLikes> UsersLikes { get; set; }
+    public DbSet<UsersPostReactions> UsersPostReactions { get; set; }
+    public DbSet<UsersCommentReactions> UsersCommentReactions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -100,14 +101,24 @@ public class BlogProjectDbContext : DbContext
             .WithMany(u => u.EditedPosts)
             .HasForeignKey(pe => pe.EditorId);
         
-        builder.Entity<UsersLikes>().HasKey(ul => new { ul.UserId, ul.PostId });
-        builder.Entity<UsersLikes>()
+        builder.Entity<UsersPostReactions>().HasKey(ul => new { ul.UserId, ul.PostId });
+        builder.Entity<UsersPostReactions>()
             .HasOne(ul => ul.User)
             .WithMany(u => u.LikedPosts)
             .HasForeignKey(ul => ul.UserId);
-        builder.Entity<UsersLikes>()
+        builder.Entity<UsersPostReactions>()
             .HasOne(ul => ul.Post)
-            .WithMany(p => p.Likes)
+            .WithMany(p => p.Reactions)
             .HasForeignKey(ul => ul.PostId);
+
+        builder.Entity<UsersCommentReactions>().HasKey(ul => new { ul.UserId, ul.CommentId });
+        builder.Entity<UsersCommentReactions>()
+            .HasOne(ul => ul.User)
+            .WithMany(u => u.LikedComments)
+            .HasForeignKey(ul => ul.UserId);
+        builder.Entity<UsersCommentReactions>()
+            .HasOne(ul => ul.Comment)
+            .WithMany(p => p.Reactions)
+            .HasForeignKey(ul => ul.CommentId);
     }
 }
