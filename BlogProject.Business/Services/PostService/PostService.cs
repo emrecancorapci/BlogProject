@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BlogProject.Business.Services.PostService.Dtos;
 using BlogProject.DataAccess.Repositories.Base.Interfaces;
+using BlogProject.DataAccess.Repositories.Extensions;
 using BlogProject.DataAccess.Repositories.Relations.Interfaces;
 using BlogProject.Entities.Base;
 
@@ -27,12 +28,17 @@ public class PostService : IPostService
         this.mapper = mapper;
     }
     
+    /// <summary>
+    /// Creates new blog post and adds it to the database.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns>Id of the Created Blog Post</returns>
     public async Task<int> AddPost(AddPostRequest request)
     {
         var post = mapper.Map<Post>(request);
 
-        post.Created = DateTime.Now;
-        post.Modified = DateTime.Now;
+        post.Created = DateTime.Now.SetKindUtc();
+        post.Modified = DateTime.Now.SetKindUtc();
 
         var postId = await postRepository.Add(post);
         return postId;
@@ -40,7 +46,7 @@ public class PostService : IPostService
 
     public async Task<int> UpdatePost(Post post)
     {
-        post.Modified = DateTime.Now;
+        post.Modified = DateTime.Now.SetKindUtc();
         return await postRepository.Update(post);
     }
 
@@ -48,7 +54,7 @@ public class PostService : IPostService
     {
         var post = mapper.Map<Post>(request);
 
-        post.Modified = DateTime.Now;
+        post.Modified = DateTime.Now.SetKindUtc();
         return await postRepository.Update(post);
     }
 

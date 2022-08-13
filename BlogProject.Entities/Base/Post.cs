@@ -15,9 +15,8 @@ public class Post : IEntity
     [Required]
     [MinLength(32)]
     public string Content { get; set; }
-    public string PostSummary { get; set; }
-    public string EditionSummary { get; set; }
-    public string ThumbnailUrl { get; set; }
+    public string? PostSummary { get; set; }
+    public string? ThumbnailUrl { get; set; }
     public int ViewCount { get; set; }
 
     [ForeignKey(nameof(CategoryId))]

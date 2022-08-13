@@ -20,6 +20,8 @@ public class BlogProjectDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        builder.HasDefaultSchema("BlogProject");
+        
         // User
         builder.Entity<User>().HasKey(u => u.Id);
         
