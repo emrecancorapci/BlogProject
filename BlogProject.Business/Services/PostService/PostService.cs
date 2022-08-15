@@ -58,65 +58,87 @@ public class PostService : IPostService
         return await postRepository.Update(post);
     }
 
-    public async Task DeletePost(int id) =>
+    public async Task<int> DeletePost(int id) =>
         await postRepository.DeleteAsync(id);
 
     public async Task<bool> IsExist(int postId) =>
         await postRepository.IsExist(postId);
 
 
-    public async Task<Post?> GetPostById(int id) =>
-        await postRepository.GetAsync(id);
-
-    public async Task<IList<Post>> GetPostsAsync()
+    public async Task<GetPostResponse?> GetPostById(int id)
     {
-        var posts = await postRepository.GetAllAsync();
-        return posts
-            .OrderBy(x => x.Created)
-            .ToList();
+        var post = await postRepository.GetAsync(id);
+        var response = mapper.Map<GetPostResponse>(post);
+        return response;
     }
 
-    public async Task<IList<Post>> GetPostsByTagId(int tagId)
+    public async Task<IList<GetPostResponse>> GetPostsAsync()
+    {
+        var posts = await postRepository.GetAllAsync();
+        var responses = posts
+            .Select(post => mapper.Map<GetPostResponse>(post))
+            .OrderBy(x => x.Created)
+            .ToList();
+        
+        return responses;
+    }
+
+    public async Task<IList<GetPostResponse>> GetPostsByTagId(int tagId)
     {
         var posts = await postsTagsRepository.GetPostsByTagIdAsync(tagId);
-        return posts
+        var responses = posts
+            .Select(post => mapper.Map<GetPostResponse>(post))
             .OrderBy(x => x.Created)
             .ToList();
+        
+        return responses;
     }
 
-    public async Task<IList<Post>> GetPostsByUserId(int userId)
+    public async Task<IList<GetPostResponse>> GetPostsByUserId(int userId)
     {
         var posts = await postRepository.GetAllAsync();
-        return posts
-            .Where(x => x.AuthorId == userId)
+        var responses = posts
+            .Where(post => post.AuthorId == userId)
+            .Select(post => mapper.Map<GetPostResponse>(post))
             .OrderBy(x => x.Created)
             .ToList();
+        
+        return responses;
     }
 
-    public async Task<IList<Post>> GetPostsByCategoryId(int categoryId)
+    public async Task<IList<GetPostResponse>> GetPostsByCategoryId(int categoryId)
     {
         var posts = await postRepository.GetAllAsync();
-        return posts
-            .Where(x => x.CategoryId == categoryId)
-            .OrderBy(x => x.Created)
+        var responses = posts
+            .Where(post => post.CategoryId == categoryId)
+            .Select(post => mapper.Map<GetPostResponse>(post))
+            .OrderBy(response => response.Created)
             .ToList();
+        
+        return responses;
     }
 
-    public async Task<IList<Post>> GetPostsByEditorIdAsync(int editorId)
+    public async Task<IList<GetPostResponse>> GetPostsByEditorId(int editorId)
     {
         var posts = await postsEditorsRepository.GetPostsByEditorIdAsync(editorId);
-        return posts
-            .OrderBy(x => x.Created)
+        var responses = posts
+            .Select(post => mapper.Map<GetPostResponse>(post))
+            .OrderBy(response => response.Created)
             .ToList();
+        
+        return responses;
     }
 
-    public async Task<IList<Post>> GetPostsBySearch(string search)
+    public async Task<IList<GetPostResponse>> GetPostsBySearch(string search)
     {
         var posts = await postRepository.GetAllAsync();
-        return posts
-            .Where(x => x.Title.Contains(search) || x.Content.Contains(search))
-            .OrderBy(x => x.Created)
+        var responses = posts
+            .Where(post => post.Title.Contains(search) || post.Content.Contains(search))
+            .Select(post => mapper.Map<GetPostResponse>(post))
+            .OrderBy(response => response.Created)
             .ToList();
+        
+        return responses;
     }
 
     public Task<int> ReactionPost(ReactionPostRequest request)

@@ -16,7 +16,12 @@ public class MapProfile : Profile
         CreateMap<AddCommentRequest, Comment>();
         CreateMap<UpdateCommentContentRequest, Comment>();
 
+        // Post
         CreateMap<AddPostRequest, Post>();
         CreateMap<UpdatePostContentRequest, Post>();
-    }
+        CreateMap<UpdatePostRequest, Post>();
+
+        CreateMap<Post, GetPostResponse>();
+
+        }
 }
