@@ -10,11 +10,17 @@ public class MapProfile : Profile
 {
     public MapProfile()
     {
-        CreateMap<CreateUserRequest, User>();
-        CreateMap<User, UserValidationResponse>();
+        // User
+        CreateMap<AddUserRequest, User>();
 
+        CreateMap<User, UserValidationResponse>();
+        CreateMap<User, GetUserResponse>();
+
+        // Comment
         CreateMap<AddCommentRequest, Comment>();
         CreateMap<UpdateCommentContentRequest, Comment>();
+
+        CreateMap<Comment, GetCommentResponse>();
 
         // Post
         CreateMap<AddPostRequest, Post>();

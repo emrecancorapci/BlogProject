@@ -10,4 +10,6 @@ public class UsersCommentReactions : IRelationEntity<User,Comment>
     public User User { get; set; }
 
     public int ReactionId { get; set; }
+    public DateTime ReactionDate { get; set; }
+    
 }

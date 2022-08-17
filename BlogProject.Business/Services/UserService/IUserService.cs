@@ -5,12 +5,12 @@ namespace BlogProject.Business.Services.UserService;
 
 public interface IUserService
 {
-    Task<int> AddUser(CreateUserRequest request);
-    Task<int> UpdateUser(User task);
-    Task DeleteUser(int id);
-    Task<User?> GetUserById(int id);
-    Task<ICollection<User>> GetUsersAsync();
-    Task<bool> IsExist(int id);
+    Task<int> AddAsync(AddUserRequest request);
+    Task<int> UpdateAsync(User task);
+    Task<int> DeleteAsync(int id);
+    Task<GetUserResponse?> GetAsync(int id);
+    Task<IList<GetUserResponse>> GetAllAsync();
+    Task<bool> IsExistAsync(int id);
     Task<UserValidationResponse?> ValidateUserAsync(string userName, string password);
     Task<int> GetUserIdByUsername(string userName);
     Task<bool> IsEmailExistAsync(string email);

@@ -4,16 +4,17 @@ using BlogProject.DataAccess.Repositories.Base.Interfaces;
 using BlogProject.DataAccess.Repositories.Extensions;
 using BlogProject.DataAccess.Repositories.Relations.Interfaces;
 using BlogProject.Entities.Base;
+using BlogProject.Entities.Relations;
 
 namespace BlogProject.Business.Services.PostService;
 
 public class PostService : IPostService
 {
-    private readonly IPostRepository postRepository;
-    private readonly IPostsEditorsRepository postsEditorsRepository;
-    private readonly IPostsTagsRepository postsTagsRepository;
+    private readonly IPostRepository _postRepository;
+    private readonly IPostsEditorsRepository _postsEditorsRepository;
+    private readonly IPostsTagsRepository _postsTagsRepository;
     private readonly IUsersPostReactionsRepository _usersPostReactionsRepository;
-    private readonly IMapper mapper;
+    private readonly IMapper _mapper;
     
     public PostService(IPostRepository postRepository,
         IPostsEditorsRepository postsEditorsRepository,
@@ -21,11 +22,11 @@ public class PostService : IPostService
         IUsersPostReactionsRepository usersPostReactionsRepository,
         IMapper mapper)
     {
-        this.postRepository = postRepository;
-        this.postsEditorsRepository = postsEditorsRepository;
-        this.postsTagsRepository = postsTagsRepository;
-        this._usersPostReactionsRepository = usersPostReactionsRepository;
-        this.mapper = mapper;
+        _postRepository = postRepository;
+        _postsEditorsRepository = postsEditorsRepository;
+        _postsTagsRepository = postsTagsRepository;
+        _usersPostReactionsRepository = usersPostReactionsRepository;
+        _mapper = mapper;
     }
     
     /// <summary>
@@ -33,126 +34,141 @@ public class PostService : IPostService
     /// </summary>
     /// <param name="request"></param>
     /// <returns>Id of the Created Blog Post</returns>
-    public async Task<int> AddPost(AddPostRequest request)
+    public async Task<int> AddAsync(AddPostRequest request)
     {
-        var post = mapper.Map<Post>(request);
+        var post = _mapper.Map<Post>(request);
 
         post.Created = DateTime.Now.SetKindUtc();
         post.Modified = DateTime.Now.SetKindUtc();
 
-        var postId = await postRepository.Add(post);
+        var postId = await _postRepository.Add(post);
         return postId;
     }
 
-    public async Task<int> UpdatePost(Post post)
+    public async Task<int> UpdateAsync(Post post)
     {
         post.Modified = DateTime.Now.SetKindUtc();
-        return await postRepository.Update(post);
+        return await _postRepository.Update(post);
     }
 
-    public async Task<int> UpdatePostContent(UpdatePostContentRequest request)
+    public async Task<int> UpdateContentAsync(UpdatePostContentRequest request)
     {
-        var post = mapper.Map<Post>(request);
+        var post = _mapper.Map<Post>(request);
 
         post.Modified = DateTime.Now.SetKindUtc();
-        return await postRepository.Update(post);
+        await _postsEditorsRepository.AddAsync(
+            new PostsEditors
+            {
+                EditorId = request.EditorId,
+                PostId = request.PostId,
+                ModifiedDate = DateTime.Now.SetKindUtc(),
+                Summary = request.EditionSummary
+            });
+        
+        return await _postRepository.Update(post);
     }
 
-    public async Task<int> DeletePost(int id) =>
-        await postRepository.DeleteAsync(id);
-
-    public async Task<bool> IsExist(int postId) =>
-        await postRepository.IsExist(postId);
-
-
-    public async Task<GetPostResponse?> GetPostById(int id)
+    public async Task<int> DeleteAsync(int id)
     {
-        var post = await postRepository.GetAsync(id);
-        var response = mapper.Map<GetPostResponse>(post);
+        int affectedRows = 
+            await _postRepository.DeleteAsync(id) +
+            await _postsEditorsRepository.DeleteRelationsByPostId(id);
+
+        return affectedRows;
+    }
+
+    public async Task<bool> IsExistAsync(int postId) =>
+        await _postRepository.IsExist(postId);
+
+
+    public async Task<GetPostResponse?> GetAsync(int id)
+    {
+        var post = await _postRepository.GetAsync(id);
+        var response = _mapper.Map<GetPostResponse>(post);
+
         return response;
     }
 
-    public async Task<IList<GetPostResponse>> GetPostsAsync()
+    public async Task<IList<GetPostResponse>> GetAllAsync()
     {
-        var posts = await postRepository.GetAllAsync();
+        var posts = await _postRepository.GetAllAsync();
         var responses = posts
-            .Select(post => mapper.Map<GetPostResponse>(post))
-            .OrderBy(x => x.Created)
+            .Select(post => _mapper.Map<GetPostResponse>(post))
+            .OrderByDescending(x => x.Created)
             .ToList();
         
         return responses;
     }
 
-    public async Task<IList<GetPostResponse>> GetPostsByTagId(int tagId)
+    public async Task<IList<GetPostResponse>> GetAllByTagIdAsync(int tagId)
     {
-        var posts = await postsTagsRepository.GetPostsByTagIdAsync(tagId);
+        var posts = await _postsTagsRepository.GetPostsByTagIdAsync(tagId);
         var responses = posts
-            .Select(post => mapper.Map<GetPostResponse>(post))
-            .OrderBy(x => x.Created)
+            .Select(post => _mapper.Map<GetPostResponse>(post))
+            .OrderByDescending(x => x.Created)
             .ToList();
         
         return responses;
     }
 
-    public async Task<IList<GetPostResponse>> GetPostsByUserId(int userId)
+    public async Task<IList<GetPostResponse>> GetAllByUserIdAsync(int userId)
     {
-        var posts = await postRepository.GetAllAsync();
+        var posts = await _postRepository.GetAllAsync();
         var responses = posts
             .Where(post => post.AuthorId == userId)
-            .Select(post => mapper.Map<GetPostResponse>(post))
-            .OrderBy(x => x.Created)
+            .Select(post => _mapper.Map<GetPostResponse>(post))
+            .OrderByDescending(x => x.Created)
             .ToList();
         
         return responses;
     }
 
-    public async Task<IList<GetPostResponse>> GetPostsByCategoryId(int categoryId)
+    public async Task<IList<GetPostResponse>> GetAllByCategoryIdAsync(int categoryId)
     {
-        var posts = await postRepository.GetAllAsync();
+        var posts = await _postRepository.GetAllAsync();
         var responses = posts
             .Where(post => post.CategoryId == categoryId)
-            .Select(post => mapper.Map<GetPostResponse>(post))
-            .OrderBy(response => response.Created)
+            .Select(post => _mapper.Map<GetPostResponse>(post))
+            .OrderByDescending(response => response.Created)
             .ToList();
         
         return responses;
     }
 
-    public async Task<IList<GetPostResponse>> GetPostsByEditorId(int editorId)
+    public async Task<IList<GetPostResponse>> GetAllByEditorIdAsync(int editorId)
     {
-        var posts = await postsEditorsRepository.GetPostsByEditorIdAsync(editorId);
+        var posts = await _postsEditorsRepository.GetPostsByEditorIdAsync(editorId);
         var responses = posts
-            .Select(post => mapper.Map<GetPostResponse>(post))
-            .OrderBy(response => response.Created)
+            .Select(post => _mapper.Map<GetPostResponse>(post))
+            .OrderByDescending(response => response.Created)
             .ToList();
         
         return responses;
     }
 
-    public async Task<IList<GetPostResponse>> GetPostsBySearch(string search)
+    public async Task<IList<GetPostResponse>> GetAllBySearchAsync(string search)
     {
-        var posts = await postRepository.GetAllAsync();
+        var posts = await _postRepository.GetAllAsync();
         var responses = posts
             .Where(post => post.Title.Contains(search) || post.Content.Contains(search))
-            .Select(post => mapper.Map<GetPostResponse>(post))
-            .OrderBy(response => response.Created)
+            .Select(post => _mapper.Map<GetPostResponse>(post))
+            .OrderByDescending(response => response.Created)
             .ToList();
         
         return responses;
     }
 
-    public Task<int> ReactionPost(ReactionPostRequest request)
+    public async Task<int> ReactAsync(ReactionPostRequest request)
     {
-        throw new NotImplementedException();
+        var reaction = _mapper.Map<UsersPostReactions>(request);
+
+        return await _usersPostReactionsRepository.AddAsync(reaction);
     }
 
 
-    public async Task<bool> AddPostEditor(int postId, int editorId) => 
-        await postsEditorsRepository.AddAsync(editorId, postId);
+    public async Task<bool> DeleteEditorRelation(int postId, int editorId) => 
+        await _postsEditorsRepository.DeleteAsync(editorId, postId);
 
-    public async Task<bool> DeletePostEditor(int postId, int editorId) => 
-        await postsEditorsRepository.DeleteAsync(editorId, postId);
-
-    public async Task<int> DeletePostEditorAll(int editorId) => 
-        await postsEditorsRepository.DeleteEditorAllAsync(editorId);
+    public async Task<int> DeleteRelationByEditorIdAsync(int editorId) => 
+        await _postsEditorsRepository.DeleteRelationsByEditorIdAsync(editorId);
 }

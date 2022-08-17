@@ -15,6 +15,6 @@ public interface IPostsEditorsRepository
     public Task<bool> DeleteAsync(PostsEditors entity);
     public Task<bool> DeleteAsync(int userId, int postId);
 
-    public Task<int> DeleteEditorAllAsync(int userId);
-    public Task<int> DeletePostAllAsync(int postId);
+    public Task<int> DeleteRelationsByEditorIdAsync(int userId);
+    public Task<int> DeleteRelationsByPostId(int postId);
 }

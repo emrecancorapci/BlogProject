@@ -2,137 +2,123 @@
 using BlogProject.Business.Services.PostService;
 using BlogProject.Business.Services.PostService.Dtos;
 using BlogProject.Business.Services.UserService;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BlogProject.API.Controllers
+namespace BlogProject.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class PostController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class PostController : ControllerBase
+    private readonly IPostService _postService;
+    private readonly IUserService _userService;
+    private readonly ICommentService _commentService;
+
+    public PostController(
+        IPostService postService,
+        IUserService userService,
+        ICommentService commentService)
     {
-        private readonly IPostService _postService;
-        private readonly IUserService _userService;
-        private readonly ICommentService _commentService;
+        _postService = postService;
+        _userService = userService;
+        _commentService = commentService;
+    }
 
-        public PostController(
-            IPostService postService,
-            IUserService userService,
-            ICommentService commentService)
-        {
-            _postService = postService;
-            _userService = userService;
-            _commentService = commentService;
-        }
-
-        // GET
-
-        [HttpGet("Get", Name = "Get")]
-        public async Task<IActionResult> Get(int id)
-        {
-            if (id == 0) return BadRequest();
-            if (!await _postService.IsExist(id)) return NotFound();
-            
-            var post = await _postService.GetPostById(id);
-
-            return Ok(post);
-        }
-
+    // GET
+    [HttpGet("Get")]
+    public async Task<IActionResult> Get(int id)
+    {
+        if (id == 0) return BadRequest();
+        if (!await _postService.IsExistAsync(id)) return NotFound();
         
-        [HttpGet("GetAll", Name = "GetAll")]
-        public async Task<IActionResult> GetAll()
-        {
-            var post = await _postService.GetPostsAsync();
+        var response = await _postService.GetAsync(id);
 
-            return Ok(post);
-        }
+        return Ok(response);
+    }
+    [HttpGet("GetAll")]
+    public async Task<IActionResult> GetAll()
+    {
+        var responseList = await _postService.GetAllAsync();
 
-        [HttpGet("GetAllByUser", Name = "GetAllByUser")]
-        public async Task<IActionResult> GetAllByUser(int userId)
-        {
-            if (userId == 0) return BadRequest();
-            
-            var post = await _postService.GetPostsByUserId(userId);
-
-            return Ok(post);
-        }
-
-        [HttpGet("GetAllByTag", Name = "GetAllByTag")]
-        public async Task<IActionResult> GetAllByTag(int tagId)
-        {
-            if (tagId == 0) return BadRequest();
-            
-            var post = await _postService.GetPostsByTagId(tagId);
-
-            return Ok(post);
-        }
-
-        [HttpGet("GetAllByCategory", Name = "GetAllByCategory")]
-        public async Task<IActionResult> GetAllByCategory(int categoryId)
-        {
-            if (categoryId == 0) return BadRequest();
-            
-            var post = await _postService.GetPostsByCategoryId(categoryId);
-
-            return Ok(post);
-        }
-
-        [HttpGet("GetAllByEditor", Name = "GetAllByEditor")]
-        public async Task<IActionResult> GetAllByEditor(int editorId)
-        {
-            if (editorId == 0) return BadRequest();
-            
-            var post = await _postService.GetPostsByEditorId(editorId);
-
-            return Ok(post);
-        }
-
-        [HttpGet("IsExist", Name = "IsPostExist")]
-        public async Task<IActionResult> IsExist(int postId)
-        {
-            if (postId == 0) return BadRequest();
-            
-            var post = await _postService.IsExist(postId);
-
-            return Ok(post);
-        }
-
-        // POST
-
-        [HttpPost("Add",Name = "Add")]
-        public async Task<IActionResult> Add(AddPostRequest request)
-        {
-            var post = await _postService.AddPost(request);
-
-            return Ok(post);
-        }
-
-        // PATCH
+        return Ok(responseList);
+    }
+    [HttpGet("GetAllByUser")]
+    public async Task<IActionResult> GetAllByUser(int userId)
+    {
+        if (userId == 0) return BadRequest();
         
-        [HttpPatch("UpdateContent", Name = "UpdateContent")]
-        public async Task<IActionResult> UpdateContent(UpdatePostContentRequest request)
-        {
-            var post = await _postService.UpdatePostContent(request);
+        var responseList = await _postService.GetAllByUserIdAsync(userId);
 
-            return Ok(post);
-        }
+        return Ok(responseList);
+    }
+    [HttpGet("GetAllByTag")]
+    public async Task<IActionResult> GetAllByTag(int tagId)
+    {
+        if (tagId == 0) return BadRequest();
+        
+        var responseList = await _postService.GetAllByTagIdAsync(tagId);
 
-        [HttpPatch("Reaction", Name = "Reaction")]
-        public async Task<IActionResult> Reaction(ReactionPostRequest request)
-        {
-            var post = await _postService.ReactionPost(request);
+        return Ok(responseList);
+    }
+    [HttpGet("GetAllByCategory")]
+    public async Task<IActionResult> GetAllByCategory(int categoryId)
+    {
+        if (categoryId == 0) return BadRequest();
+        
+        var responseList = await _postService.GetAllByCategoryIdAsync(categoryId);
 
-            return Ok(post);
-        }
+        return Ok(responseList);
+    }
+    [HttpGet("GetAllByEditor")]
+    public async Task<IActionResult> GetAllByEditor(int editorId)
+    {
+        if (editorId == 0) return BadRequest();
+        
+        var responseList = await _postService.GetAllByEditorIdAsync(editorId);
 
-        // DELETE
+        return Ok(responseList);
+    }
+    [HttpGet("IsExist")]
+    public async Task<IActionResult> IsExist(int postId)
+    {
+        if (postId == 0) return BadRequest();
+        
+        var response = await _postService.IsExistAsync(postId);
 
-        [HttpDelete("Delete", Name = "Delete")]
-        public async Task<IActionResult> Delete(int postId)
-        {
-            var post = await _postService.DeletePost(postId);
+        return Ok(response);
+    }
 
-            return Ok(post);
-        }
+    // POST
+    [HttpPost("Add")]
+    public async Task<IActionResult> Add(AddPostRequest request)
+    {
+        var affectedRows = await _postService.AddAsync(request);
+
+        return Ok(affectedRows);
+    }
+
+    // PATCH
+    [HttpPatch("UpdateContent")]
+    public async Task<IActionResult> UpdateContent(UpdatePostContentRequest request)
+    {
+        var affectedRows = await _postService.UpdateContentAsync(request);
+
+        return Ok(affectedRows);
+    }
+    [HttpPatch("React")]
+    public async Task<IActionResult> React(ReactionPostRequest request)
+    {
+        var affectedRows = await _postService.ReactAsync(request);
+
+        return Ok(affectedRows);
+    }
+
+    // DELETE
+    [HttpDelete("Delete")]
+    public async Task<IActionResult> Delete(int postId)
+    {
+        var affectedRows = await _postService.DeleteAsync(postId);
+
+        return Ok(affectedRows);
     }
 }

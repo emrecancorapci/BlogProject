@@ -5,7 +5,7 @@ namespace BlogProject.Entities.Relations;
 
 public class PostsEditors : IRelationEntity<Post,User>
 {
-    public string Summary { get; set; }
+    public string? Summary { get; set; }
     public DateTime ModifiedDate { get; set; }
     
     [ForeignKey(nameof(PostId))]

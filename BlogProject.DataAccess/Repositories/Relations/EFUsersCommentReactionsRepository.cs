@@ -12,10 +12,10 @@ public class EFUsersCommentReactionsRepository : IUsersCommentReactionsRepositor
     public EFUsersCommentReactionsRepository(BlogProjectDbContext context) =>
         this.context = context;
 
-    public async Task<IList<UsersCommentReactions>> GetAllAsync() =>
+    public async Task<IList<UsersCommentReactions>> GetAll() =>
         await context.UsersCommentReactions.ToListAsync();
 
-    public async Task<IList<Comment>> GetReactedCommentsByUserIdAsync(int userId)
+    public async Task<IList<Comment>> GetReactedCommentsByUserId(int userId)
     {
         var comments = new List<Comment>();
         var commentIds = context.UsersCommentReactions
@@ -28,7 +28,7 @@ public class EFUsersCommentReactionsRepository : IUsersCommentReactionsRepositor
         return comments;
     }
 
-    public async Task<IList<User>> GetReactedUsersByCommentIdAsync(int commentId)
+    public async Task<IList<User>> GetReactedUsersByCommentId(int commentId)
     {
         var users = new List<User>();
         var userIds = context.UsersCommentReactions
@@ -75,7 +75,7 @@ public class EFUsersCommentReactionsRepository : IUsersCommentReactionsRepositor
         return affectedRows;
     }
 
-    public async Task<int> DeleteAllCommentReactsByUserIdAsync(int userId)
+    public async Task<int> DeleteCommentsByUserId(int userId)
     {
         var usersCommentReactionsList = await context.UsersCommentReactions
             .Where(usersCommentReactions => usersCommentReactions.UserId == userId)
@@ -89,7 +89,7 @@ public class EFUsersCommentReactionsRepository : IUsersCommentReactionsRepositor
     }
 
 
-    public async Task<int> DeleteAllCommentReactsByCommentIdAsync(int commentId)
+    public async Task<int> DeleteReactsByCommentIdAsync(int commentId)
     {
         var usersLikesList = await context.UsersCommentReactions
             .Where(usersLikes => usersLikes.CommentId == commentId)

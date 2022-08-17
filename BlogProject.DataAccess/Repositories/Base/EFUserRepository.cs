@@ -34,16 +34,15 @@ public class EFUserRepository : IUserRepository
 
     public async Task<int> DeleteAsync(int id)
     {
-        int affected = 0;
         var user = await context.Users
             .FirstOrDefaultAsync(user => user.Id == id);
-        if(user != null)
-        {
-            context.Users.Remove(user);
-            affected = await context.SaveChangesAsync();
-        }
 
-        return affected;
+        if (user == null) return 0;
+        
+        context.Users.Remove(user);
+        await context.SaveChangesAsync();
+
+        return await context.SaveChangesAsync();
     }
 
     public async Task<bool> IsExist(int id)

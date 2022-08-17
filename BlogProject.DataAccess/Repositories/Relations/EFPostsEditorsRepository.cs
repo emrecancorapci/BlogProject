@@ -74,7 +74,7 @@ public class EFPostsEditorsRepository : IPostsEditorsRepository
         return postsEditors != null;
     }
 
-    public async Task<int> DeleteEditorAllAsync(int userId)
+    public async Task<int> DeleteRelationsByEditorIdAsync(int userId)
     {
         int count = 0;
         
@@ -90,7 +90,7 @@ public class EFPostsEditorsRepository : IPostsEditorsRepository
         return count;
     }
     
-    public async Task<int> DeletePostAllAsync(int postId)
+    public async Task<int> DeleteRelationsByPostId(int postId)
     {
         int count = 0;
         

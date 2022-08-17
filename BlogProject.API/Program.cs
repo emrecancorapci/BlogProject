@@ -55,3 +55,9 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// TODO : Add soft delete
+// TODO : Add authentication and authorization with jwt tokens
+// TODO : Add password hashing
+// TODO : Add a key for multiple post edits
+// TODO LAST : Migrate again for changes in entities

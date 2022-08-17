@@ -5,21 +5,24 @@ namespace BlogProject.Business.Services.CommentService;
 
 public interface ICommentService
 {
-    Task<int> AddCommentAsync(AddCommentRequest request);
-    Task<int> UpdateCommentAsync(Comment comment);
-    Task<int> UpdateCommentContentAsync(UpdateCommentContentRequest request);
+    Task<int> AddAsync(AddCommentRequest request);
+    Task<int> UpdateAsync(Comment comment);
+    Task<int> UpdateContentAsync(UpdateCommentContentRequest request);
 
-    Task<int> DeleteCommentAsync(int commentId);
-    Task<int> DeleteCommentAllAsync(int postId);
-    Task<int> DeleteCommentAllByUserAsync(int userId);
+    Task<int> DeleteAsync(int commentId);
+    Task<int> DeleteAllByPostIdAsync(int postId);
+    Task<int> DeleteAllByUserIdAsync(int userId);
     
-    Task<int> GetCommentsAsync();
-    Task<int> GetCommentByIdAsync(int commentId);
-    Task<int> GetCommentCountAsync(int postId);
-    Task<int> GetCommentCountByUserAsync(int userId);
+    Task<GetCommentResponse> GetAsync(int commentId);
+    Task<List<GetCommentResponse>> GetAllAsync();
+    Task<List<GetCommentResponse>> GetAllByUserIdAsync(int userId);
+    Task<List<GetCommentResponse>> GetAllByPostIdAsync(int postId);
+    Task<List<GetCommentResponse>> GetChildrenAsync(int commentId);
+    Task<int> GetCountByPostIdAsync(int postId);
+    Task<int> GetCountByUserIdAsync(int userId);
 
-    Task<int> ReactionComment(ReactionCommentRequest request);
+    Task<int> ReactAsync(ReactionCommentRequest request);
 
-    Task<int> IsExist(int commentId);
+    Task<bool> IsExistAsync(int commentId);
     
 }

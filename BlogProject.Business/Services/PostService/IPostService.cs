@@ -5,25 +5,24 @@ namespace BlogProject.Business.Services.PostService;
 
 public interface IPostService
 {
-    Task<int> AddPost(AddPostRequest request);
-    Task<int> UpdatePost(Post post);
-    Task<int> UpdatePostContent(UpdatePostContentRequest request);
-    Task<int> DeletePost(int id);
-    Task<bool> IsExist(int postId);
+    Task<int> AddAsync(AddPostRequest request);
+    Task<int> UpdateAsync(Post post);
+    Task<int> UpdateContentAsync(UpdatePostContentRequest request);
+    Task<int> DeleteAsync(int id);
+    Task<bool> IsExistAsync(int postId);
     
-    Task<GetPostResponse?> GetPostById(int id);
-    Task<IList<GetPostResponse>> GetPostsAsync();
-    Task<IList<GetPostResponse>> GetPostsByEditorId(int editorId);
-    Task<IList<GetPostResponse>> GetPostsByUserId(int userId);
-    Task<IList<GetPostResponse>> GetPostsByTagId(int tagId);
-    Task<IList<GetPostResponse>> GetPostsByCategoryId(int categoryId);
-    Task<IList<GetPostResponse>> GetPostsBySearch(string search);
+    Task<GetPostResponse?> GetAsync(int id);
+    Task<IList<GetPostResponse>> GetAllAsync();
+    Task<IList<GetPostResponse>> GetAllByEditorIdAsync(int editorId);
+    Task<IList<GetPostResponse>> GetAllByUserIdAsync(int userId);
+    Task<IList<GetPostResponse>> GetAllByTagIdAsync(int tagId);
+    Task<IList<GetPostResponse>> GetAllByCategoryIdAsync(int categoryId);
+    Task<IList<GetPostResponse>> GetAllBySearchAsync(string search);
 
-    Task<int> ReactionPost(ReactionPostRequest request);
-
-    Task<bool> AddPostEditor(int postId, int editorId);
-    Task<bool> DeletePostEditor(int postId, int editorId);
-    Task<int> DeletePostEditorAll(int editorId);
+    Task<int> ReactAsync(ReactionPostRequest request);
+    
+    Task<bool> DeleteEditorRelation(int postId, int editorId);
+    Task<int> DeleteRelationByEditorIdAsync(int editorId);
 
 
 }

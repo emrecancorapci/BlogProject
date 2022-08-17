@@ -17,7 +17,7 @@ public class UserService : IUserService
         this.mapper = mapper;
     }
 
-    public async Task<int> AddUser(CreateUserRequest request)
+    public async Task<int> AddAsync(AddUserRequest request)
     {
         var user = mapper.Map<User>(request);
 
@@ -30,23 +30,38 @@ public class UserService : IUserService
         return userId;
     }
 
-    public async Task<int> UpdateUser(User user)
+    public async Task<int> UpdateAsync(User user)
     {
         user.Modified = DateTime.Now;
         
         return await userRepository.Update(user);
     }
 
-    public async Task DeleteUser(int id) =>
+    public async Task<int> DeleteAsync(int id) => 
         await userRepository.DeleteAsync(id);
 
-    public async Task<User?> GetUserById(int id) =>
-        await userRepository.GetAsync(id);
+    public async Task<GetUserResponse?> GetAsync(int id)
+    {
+        var entity = await userRepository.GetAsync(id);
+        if (entity == null) return null;
 
-    public async Task<ICollection<User>> GetUsersAsync() =>
-        await userRepository.GetAllAsync();
+        var response = mapper.Map<GetUserResponse>(entity);
 
-    public async Task<bool> IsExist(int id) =>
+        return response;
+    }
+
+    public async Task<IList<GetUserResponse>> GetAllAsync()
+    {
+        var entityList = await userRepository.GetAllAsync();
+        var responseList = entityList
+            .OrderByDescending(user => user.Created)
+            .Select(user => mapper.Map<GetUserResponse>(user))
+            .ToList();
+
+        return responseList;
+    }
+
+    public async Task<bool> IsExistAsync(int id) =>
         await userRepository.IsExist(id);
 
     public async Task<UserValidationResponse?> ValidateUserAsync(string userName, string password)

@@ -2,7 +2,7 @@
 
 public class ReactionPostRequest
 {
-    public int userId { get; set; }
-    public int postId { get; set; }
-    public int reactionId { get; set; }
+    public int PostId { get; set; }
+    public int UserId { get; set; }
+    public int ReactionId { get; set; }
 }
