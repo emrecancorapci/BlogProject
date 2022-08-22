@@ -18,7 +18,7 @@ public class EFPostRepository : IPostRepository
     public async Task<Post?> GetAsync(int id) =>
         await context.Posts.FindAsync(id);
 
-    public async Task<int> Add(Post entity)
+    public async Task<int> AddAsync(Post entity)
     {
         await context.Posts.AddAsync(entity);
         await context.SaveChangesAsync();
@@ -26,35 +26,27 @@ public class EFPostRepository : IPostRepository
         return entity.Id;
     }
 
-    public async Task<int> Update(Post entity)
+    public async Task<int> UpdateAsync(Post entity)
     {
         context.Posts.Update(entity);
-        return await context.SaveChangesAsync();
+
+        var affectedRows = await context.SaveChangesAsync();
+        return affectedRows;
     }
 
     public async Task<int> DeleteAsync(int id)
     {
-        int affected = 0;
         var entity = await context.Posts
             .FirstOrDefaultAsync(x => x.Id == id);
 
-        if (entity != null)
-        {
-            context.Posts.Remove(entity);
-            affected = await context.SaveChangesAsync();
-        }
+        if (entity == null) return 0;
 
-        return affected;
+        context.Posts.Remove(entity);
+
+        int affectedRows = await context.SaveChangesAsync();
+        return affectedRows;
     }
 
     public async Task<bool> IsExist(int id)
         => await context.Posts.AnyAsync(entity => entity.Id == id);
-
-    public async Task<Tag> GetAllTagsAsync(int id)
-        => await context.Tags
-            .FirstOrDefaultAsync(entity => entity.Id == id);
-
-    public async Task<Category> GetAllCategoriesAsync(int id)
-        => await context.Categories
-            .FirstOrDefaultAsync(entity => entity.Id == id);
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using BlogProject.Entities.Relations;
 
 namespace BlogProject.Entities.Base;
@@ -15,10 +16,10 @@ public class User : IEntity
     public string Email { get; set; }
     public string Role { get; set; }
 
-    public string Name { get; set; }
-    public string LastName { get; set; }
-    public string About { get; set; }
-    public string ProfilePictureUrl { get; set; }
+    public string? Name { get; set; }
+    public string? LastName { get; set; }
+    public string? About { get; set; }
+    public string? ProfilePictureUrl { get; set; }
     public DateTime? BirthDate { get; set; }
     
     public bool IsDeleted { get; set; }

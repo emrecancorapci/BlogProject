@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BlogProject.Business.Services.UserService.Dtos;
 using BlogProject.DataAccess.Repositories.Base.Interfaces;
+using BlogProject.DataAccess.Repositories.Extensions;
 using BlogProject.Entities.Base;
 
 namespace BlogProject.Business.Services.UserService;
@@ -23,18 +24,18 @@ public class UserService : IUserService
 
         user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
         user.Role = "user";
-        user.Created = DateTime.Now;
-        user.Modified = DateTime.Now;
+        user.Created = DateTime.Now.SetKindUtc();
+        user.Modified = DateTime.Now.SetKindUtc();
 
-        var userId = await userRepository.Add(user);
+        var userId = await userRepository.AddAsync(user);
         return userId;
     }
 
     public async Task<int> UpdateAsync(User user)
     {
-        user.Modified = DateTime.Now;
+        user.Modified = DateTime.Now.SetKindUtc();
         
-        return await userRepository.Update(user);
+        return await userRepository.UpdateAsync(user);
     }
 
     public async Task<int> DeleteAsync(int id) => 

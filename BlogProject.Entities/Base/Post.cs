@@ -17,14 +17,11 @@ public class Post : IEntity
     public string Content { get; set; }
     public string? PostSummary { get; set; }
     public string? ThumbnailUrl { get; set; }
-    public int ViewCount { get; set; }
+    public int? ViewCount { get; set; }
 
-    [ForeignKey(nameof(CategoryId))]
-    public Category Category { get; set; }
-    [ForeignKey(nameof(AuthorId))]
-    public User Author { get; set; }
-    [ForeignKey(nameof(DeletedById))]
-    public User? DeletedBy { get; set; }
+    public int CategoryId { get; set; }
+    public int AuthorId { get; set; }
+    public int? DeletedById { get; set; }
 
     public bool CommentsEnabled { get; set; }
     public bool ReactionsEnabled { get; set; }
@@ -35,9 +32,12 @@ public class Post : IEntity
     public DateTime Created { get; set; }
     public DateTime? Modified { get; set; }
 
-    public int CategoryId { get; set; }
-    public int AuthorId { get; set; }
-    public int? DeletedById { get; set; }
+    [ForeignKey(nameof(CategoryId))]
+    public Category Category { get; set; }
+    [ForeignKey(nameof(AuthorId))]
+    public User Author { get; set; }
+    [ForeignKey(nameof(DeletedById))]
+    public User? DeletedBy { get; set; }
 
     public ICollection<Comment>? Comments { get; set; }
     public ICollection<PostsEditors>? Editors { get; set; }

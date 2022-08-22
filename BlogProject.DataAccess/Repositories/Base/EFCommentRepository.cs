@@ -7,51 +7,51 @@ namespace BlogProject.DataAccess.Repositories.Base;
 
 public class EFCommentRepository : ICommentRepository
 {
-    private readonly BlogProjectDbContext context;
+    private readonly BlogProjectDbContext _context;
 
     public EFCommentRepository(BlogProjectDbContext context) =>
-        this.context = context;
+        _context = context;
 
     public async Task<IList<Comment>> GetAllAsync() => 
-        await context.Comments.ToListAsync();
+        await _context.Comments.ToListAsync();
 
     public async Task<Comment?> GetAsync(int id) => 
-        await context.Comments.FindAsync(id);
+        await _context.Comments.FindAsync(id);
 
-    public async Task<int> Add(Comment entity)
+    public async Task<int> AddAsync(Comment entity)
     {
         entity.Created = DateTime.Now;
         entity.Updated = DateTime.Now;
 
-        await context.Comments.AddAsync(entity);
-        await context.SaveChangesAsync();
+        await _context.Comments.AddAsync(entity);
+        await _context.SaveChangesAsync();
 
         return entity.Id;
     }
 
-    public async Task<int> Update(Comment entity)
+    public async Task<int> UpdateAsync(Comment entity)
     {
         entity.Updated = DateTime.Now;
 
-        context.Comments.Update(entity);
+        _context.Comments.Update(entity);
         
-        var affectedRows = await context.SaveChangesAsync();
+        var affectedRows = await _context.SaveChangesAsync();
         return affectedRows;
     }
 
     public async Task<int> DeleteAsync(int id)
     {
-        var entity = await context.Comments
+        var entity = await _context.Comments
             .FirstOrDefaultAsync(x => x.Id == id);
 
         if(entity == null) return 0;
 
-        context.Comments.Remove(entity);
+        _context.Comments.Remove(entity);
         
-        var affectedRows = await context.SaveChangesAsync();
+        var affectedRows = await _context.SaveChangesAsync();
         return affectedRows;
     }
 
     public async Task<bool> IsExist(int id) 
-        => await context.Comments.AnyAsync(entity => entity.Id == id);
+        => await _context.Comments.AnyAsync(entity => entity.Id == id);
 }

@@ -7,50 +7,52 @@ namespace BlogProject.DataAccess.Repositories.Base;
 
 public class EFUserRepository : IUserRepository
 {
-    private readonly BlogProjectDbContext context;
+    private readonly BlogProjectDbContext _context;
 
     public EFUserRepository(BlogProjectDbContext context) =>
-        this.context = context;
+        _context = context;
 
     public async Task<IList<User>> GetAllAsync() =>
-        await context.Users.ToListAsync();
+        await _context.Users.ToListAsync();
 
     public async Task<User?> GetAsync(int id) =>
-        await context.Users.FindAsync(id);
+        await _context.Users.FindAsync(id);
 
-    public async Task<int> Add(User user)
+    public async Task<int> AddAsync(User user)
     {
-        await context.Users.AddAsync(user);
-        await context.SaveChangesAsync();
+        await _context.Users.AddAsync(user);
+        await _context.SaveChangesAsync();
 
         return user.Id;
     }
 
-    public async Task<int> Update(User user)
+    public async Task<int> UpdateAsync(User user)
     {
-        context.Users.Update(user);
-        return await context.SaveChangesAsync();
+        _context.Users.Update(user);
+
+        var affectedRows = await _context.SaveChangesAsync();
+        return affectedRows;
     }
 
     public async Task<int> DeleteAsync(int id)
     {
-        var user = await context.Users
+        var user = await _context.Users
             .FirstOrDefaultAsync(user => user.Id == id);
 
         if (user == null) return 0;
         
-        context.Users.Remove(user);
-        await context.SaveChangesAsync();
+        _context.Users.Remove(user);
 
-        return await context.SaveChangesAsync();
+        var affectedRows = await _context.SaveChangesAsync();
+        return affectedRows;
     }
 
     public async Task<bool> IsExist(int id)
-        => await context.Users.AnyAsync(user => user.Id == id);
+        => await _context.Users.AnyAsync(user => user.Id == id);
 
     public async Task<User?> ValidateUser(string username)
-        => await context.Users.FirstOrDefaultAsync(user => user.Username == username);
+        => await _context.Users.FirstOrDefaultAsync(user => user.Username == username);
 
     public async Task<bool> IsEmailExist(string email) 
-        => await context.Users.AnyAsync(user => user.Email == email);
+        => await _context.Users.AnyAsync(user => user.Email == email);
 }

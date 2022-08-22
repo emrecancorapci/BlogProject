@@ -15,25 +15,29 @@ public class PostService : IPostService
     private readonly IPostsTagsRepository _postsTagsRepository;
     private readonly IUsersPostReactionsRepository _usersPostReactionsRepository;
     private readonly IMapper _mapper;
-    
+
+    // Temporary
+    private readonly ITagRepository _tagsRepository;
+    private readonly ICategoryRepository _categoryRepository;
+
     public PostService(IPostRepository postRepository,
         IPostsEditorsRepository postsEditorsRepository,
         IPostsTagsRepository postsTagsRepository,
         IUsersPostReactionsRepository usersPostReactionsRepository,
-        IMapper mapper)
+        IMapper mapper,
+        ITagRepository tagsRepository,
+        ICategoryRepository categoryRepository)
     {
         _postRepository = postRepository;
         _postsEditorsRepository = postsEditorsRepository;
         _postsTagsRepository = postsTagsRepository;
         _usersPostReactionsRepository = usersPostReactionsRepository;
         _mapper = mapper;
+        _tagsRepository = tagsRepository;
+        _categoryRepository = categoryRepository;
     }
-    
-    /// <summary>
-    /// Creates new blog post and adds it to the database.
-    /// </summary>
-    /// <param name="request"></param>
-    /// <returns>Id of the Created Blog Post</returns>
+
+    // ADD
     public async Task<int> AddAsync(AddPostRequest request)
     {
         var post = _mapper.Map<Post>(request);
@@ -41,14 +45,39 @@ public class PostService : IPostService
         post.Created = DateTime.Now.SetKindUtc();
         post.Modified = DateTime.Now.SetKindUtc();
 
-        var postId = await _postRepository.Add(post);
+        var postId = await _postRepository.AddAsync(post);
         return postId;
     }
 
+    // Temporary 
+
+    public async Task<int> AddTagAsync(string name, string? desc)
+    {
+        var tagId = await _tagsRepository.AddAsync(new Tag
+            {
+                Description = desc,
+                Name = name
+            });
+
+        return tagId;
+    }
+
+    public async Task<int> AddCategoryAsync(string name, string? desc)
+    {
+        var categoryId = await _categoryRepository.AddAsync(new Category
+        {
+            Description = desc,
+            Name = name
+        });
+
+        return categoryId;
+    }
+
+    // UPDATE
     public async Task<int> UpdateAsync(Post post)
     {
         post.Modified = DateTime.Now.SetKindUtc();
-        return await _postRepository.Update(post);
+        return await _postRepository.UpdateAsync(post);
     }
 
     public async Task<int> UpdateContentAsync(UpdatePostContentRequest request)
@@ -65,9 +94,17 @@ public class PostService : IPostService
                 Summary = request.EditionSummary
             });
         
-        return await _postRepository.Update(post);
+        return await _postRepository.UpdateAsync(post);
     }
 
+    public async Task<int> ReactAsync(ReactionPostRequest request)
+    {
+        var reaction = _mapper.Map<UsersPostReactions>(request);
+
+        return await _usersPostReactionsRepository.AddAsync(reaction);
+    }
+
+    // DELETE
     public async Task<int> DeleteAsync(int id)
     {
         int affectedRows = 
@@ -77,6 +114,13 @@ public class PostService : IPostService
         return affectedRows;
     }
 
+    public async Task<bool> DeleteEditorRelation(int postId, int editorId) => 
+        await _postsEditorsRepository.DeleteAsync(editorId, postId);
+
+    public async Task<int> DeleteRelationByEditorIdAsync(int editorId) => 
+        await _postsEditorsRepository.DeleteRelationsByEditorIdAsync(editorId);
+
+    // GET
     public async Task<bool> IsExistAsync(int postId) =>
         await _postRepository.IsExist(postId);
 
@@ -157,18 +201,4 @@ public class PostService : IPostService
         
         return responses;
     }
-
-    public async Task<int> ReactAsync(ReactionPostRequest request)
-    {
-        var reaction = _mapper.Map<UsersPostReactions>(request);
-
-        return await _usersPostReactionsRepository.AddAsync(reaction);
-    }
-
-
-    public async Task<bool> DeleteEditorRelation(int postId, int editorId) => 
-        await _postsEditorsRepository.DeleteAsync(editorId, postId);
-
-    public async Task<int> DeleteRelationByEditorIdAsync(int editorId) => 
-        await _postsEditorsRepository.DeleteRelationsByEditorIdAsync(editorId);
 }

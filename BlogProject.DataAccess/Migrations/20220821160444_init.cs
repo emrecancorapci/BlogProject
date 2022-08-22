@@ -54,10 +54,10 @@ namespace BlogProject.DataAccess.Migrations
                     Password = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     Role = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    LastName = table.Column<string>(type: "text", nullable: false),
-                    About = table.Column<string>(type: "text", nullable: false),
-                    ProfilePictureUrl = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    LastName = table.Column<string>(type: "text", nullable: true),
+                    About = table.Column<string>(type: "text", nullable: true),
+                    ProfilePictureUrl = table.Column<string>(type: "text", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -79,16 +79,16 @@ namespace BlogProject.DataAccess.Migrations
                     Content = table.Column<string>(type: "text", nullable: false),
                     PostSummary = table.Column<string>(type: "text", nullable: true),
                     ThumbnailUrl = table.Column<string>(type: "text", nullable: true),
-                    ViewCount = table.Column<int>(type: "integer", nullable: false),
+                    ViewCount = table.Column<int>(type: "integer", nullable: true),
+                    CategoryId = table.Column<int>(type: "integer", nullable: false),
+                    AuthorId = table.Column<int>(type: "integer", nullable: false),
+                    DeletedById = table.Column<int>(type: "integer", nullable: true),
                     CommentsEnabled = table.Column<bool>(type: "boolean", nullable: false),
                     ReactionsEnabled = table.Column<bool>(type: "boolean", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     IsApproved = table.Column<bool>(type: "boolean", nullable: false),
                     Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    CategoryId = table.Column<int>(type: "integer", nullable: false),
-                    AuthorId = table.Column<int>(type: "integer", nullable: false),
-                    DeletedById = table.Column<int>(type: "integer", nullable: true)
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -123,14 +123,13 @@ namespace BlogProject.DataAccess.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Content = table.Column<string>(type: "text", nullable: false),
-                    LikesCount = table.Column<int>(type: "integer", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Updated = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     PostId = table.Column<int>(type: "integer", nullable: false),
                     AuthorId = table.Column<int>(type: "integer", nullable: false),
                     DeletedById = table.Column<int>(type: "integer", nullable: true),
-                    ParentId = table.Column<int>(type: "integer", nullable: true)
+                    ParentId = table.Column<int>(type: "integer", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Updated = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -170,7 +169,7 @@ namespace BlogProject.DataAccess.Migrations
                 {
                     PostId = table.Column<int>(type: "integer", nullable: false),
                     EditorId = table.Column<int>(type: "integer", nullable: false),
-                    Summary = table.Column<string>(type: "text", nullable: false),
+                    Summary = table.Column<string>(type: "text", nullable: true),
                     ModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -254,7 +253,8 @@ namespace BlogProject.DataAccess.Migrations
                 {
                     CommentId = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<int>(type: "integer", nullable: false),
-                    ReactionId = table.Column<int>(type: "integer", nullable: false)
+                    ReactionId = table.Column<int>(type: "integer", nullable: false),
+                    ReactionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {

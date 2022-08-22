@@ -7,8 +7,8 @@ public interface IRepository<T> where T : class, IEntity, new()
 {
     Task<IList<T>> GetAllAsync();
     Task<T?> GetAsync(int id);
-    Task<int> Add(T entity);
-    Task<int> Update(T entity);
+    Task<int> AddAsync(T entity);
+    Task<int> UpdateAsync(T entity);
     Task<int> DeleteAsync(int id);
     Task<bool> IsExist(int id);
 }

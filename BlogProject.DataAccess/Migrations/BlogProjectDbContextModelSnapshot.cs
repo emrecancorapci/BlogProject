@@ -67,9 +67,6 @@ namespace BlogProject.DataAccess.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("LikesCount")
-                        .HasColumnType("integer");
-
                     b.Property<int?>("ParentId")
                         .HasColumnType("integer");
 
@@ -141,7 +138,7 @@ namespace BlogProject.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("ViewCount")
+                    b.Property<int?>("ViewCount")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -184,7 +181,6 @@ namespace BlogProject.DataAccess.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("About")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("BirthDate")
@@ -201,14 +197,12 @@ namespace BlogProject.DataAccess.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("Modified")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Password")
@@ -216,7 +210,6 @@ namespace BlogProject.DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ProfilePictureUrl")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Role")
@@ -244,7 +237,6 @@ namespace BlogProject.DataAccess.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Summary")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("PostId", "EditorId");
@@ -276,6 +268,9 @@ namespace BlogProject.DataAccess.Migrations
 
                     b.Property<int>("CommentId")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("ReactionDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("ReactionId")
                         .HasColumnType("integer");

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BlogProject.Business.Services.CommentService.Dtos;
 using BlogProject.DataAccess.Repositories.Base.Interfaces;
+using BlogProject.DataAccess.Repositories.Extensions;
 using BlogProject.DataAccess.Repositories.Relations.Interfaces;
 using BlogProject.Entities.Base;
 using BlogProject.Entities.Relations;
@@ -29,10 +30,10 @@ public class CommentService : ICommentService
     {
         var comment = _mapper.Map<Comment>(request);
 
-        comment.Created = DateTime.Now;
-        comment.Updated = DateTime.Now;
+        comment.Created = DateTime.Now.SetKindUtc();
+        comment.Updated = DateTime.Now.SetKindUtc();
 
-        var commentId = await _commentRepo.Add(comment);
+        var commentId = await _commentRepo.AddAsync(comment);
         return commentId;
     }
 
@@ -41,7 +42,7 @@ public class CommentService : ICommentService
     {
         comment.Updated = DateTime.Now;
 
-        var affectedRows = await _commentRepo.Update(comment);
+        var affectedRows = await _commentRepo.UpdateAsync(comment);
         return affectedRows;
     }
 
@@ -51,7 +52,7 @@ public class CommentService : ICommentService
 
         comment.Updated = DateTime.Now;
         
-        var affectedRows = await _commentRepo.Update(comment);
+        var affectedRows = await _commentRepo.UpdateAsync(comment);
         return affectedRows;
     }
 

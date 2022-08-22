@@ -24,5 +24,8 @@ public interface IPostService
     Task<bool> DeleteEditorRelation(int postId, int editorId);
     Task<int> DeleteRelationByEditorIdAsync(int editorId);
 
+    // Temporary
+    Task<int> AddTagAsync(string name, string? desc);
+    Task<int> AddCategoryAsync(string name, string? desc);
 
 }

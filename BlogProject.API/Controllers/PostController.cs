@@ -2,10 +2,12 @@
 using BlogProject.Business.Services.PostService;
 using BlogProject.Business.Services.PostService.Dtos;
 using BlogProject.Business.Services.UserService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogProject.API.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class PostController : ControllerBase
@@ -96,13 +98,28 @@ public class PostController : ControllerBase
 
         return Ok(affectedRows);
     }
+    [HttpPost("AddTag")]
+    public async Task<IActionResult> AddTag(string name, string desc)
+    {
+        var affectedRows = await _postService.AddTagAsync(name,desc);
+
+        return Ok(affectedRows);
+    }
+    [HttpPost("AddCategory")]
+    public async Task<IActionResult> AddCategory(string name, string desc)
+    {
+        var affectedRows = await _postService.AddCategoryAsync(name,desc);
+
+        return Ok(affectedRows);
+    }
+    
 
     // PATCH
     [HttpPatch("UpdateContent")]
     public async Task<IActionResult> UpdateContent(UpdatePostContentRequest request)
     {
         var affectedRows = await _postService.UpdateContentAsync(request);
-
+        // TODO : Wants categoryId. Find a way to change only modified variables.
         return Ok(affectedRows);
     }
     [HttpPatch("React")]

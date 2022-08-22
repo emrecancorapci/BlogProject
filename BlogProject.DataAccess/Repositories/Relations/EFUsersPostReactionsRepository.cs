@@ -88,7 +88,6 @@ public class EFUsersPostReactionsRepository : IUsersPostReactionsRepository
         var affectedRows = await context.SaveChangesAsync();
         return affectedRows;
     }
-    
 
     public async Task<int> DeleteAllPostReactsByPostIdAsync(int postId)
     {
