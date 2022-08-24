@@ -11,10 +11,16 @@ public class UpdatePostContentRequest
     [MinLength(3)]
     public string Title { get; set; }
     [Required]
-    [MinLength(100)]
+    [MinLength(32)]
     public string Content { get; set; }
     
+    public string? ThumbnailUrl { get; set; }
     public string? PostSummary { get; set; }
+
+    public int CategoryId { get; set; }
+
+    public bool CommentsEnabled { get; set; }
+    public bool ReactionsEnabled { get; set; }
 
     [Required]
     public int EditorId { get; set; }

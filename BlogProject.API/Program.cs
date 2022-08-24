@@ -3,6 +3,7 @@ using BlogProject.Business.MapperProfile;
 using BlogProject.Business.Services.AuthenticationService;
 using BlogProject.Business.Services.CommentService;
 using BlogProject.Business.Services.PostService;
+using BlogProject.Business.Services.TagService;
 using BlogProject.Business.Services.UserService;
 using BlogProject.DataAccess.Data;
 using BlogProject.DataAccess.Repositories.Base;
@@ -17,9 +18,8 @@ using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var tokenKey = Encoding.UTF8.GetBytes(builder.Configuration
-    .GetSection("JsonWebTokenKeys:IssuerSigningKey")
-    .Value);
+var isDevelopment = builder.Environment.IsDevelopment();
+
 // Add services to the container.
 builder.Services.AddControllers();
 
@@ -42,8 +42,15 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddAutoMapper(typeof(MapProfile));
 
 // Db Context
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<BlogProjectDbContext>(optionsBuilder => optionsBuilder.UseNpgsql(connectionString));
+builder.Services.AddDbContext<BlogProjectDbContext>(
+    optionsBuilder =>
+    {
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+        optionsBuilder.UseNpgsql(connectionString);
+
+        optionsBuilder.EnableDetailedErrors(isDevelopment);
+        optionsBuilder.EnableSensitiveDataLogging(isDevelopment);
+    });
 
 // Repositories
 builder.Services.AddScoped<IPostRepository, EFPostRepository>();
@@ -61,10 +68,12 @@ builder.Services.AddScoped<IUsersPostReactionsRepository, EFUsersPostReactionsRe
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<ITagService, TagService>();
+builder.Services.AddScoped<ITagService, TagService>();
 
 builder.Services.AddScoped<IJwtAuthenticationManager, JwtAuthenticationManager>();
 
-
+// Authentication
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -72,6 +81,10 @@ builder.Services.AddAuthentication(options =>
     })
     .AddJwtBearer(options =>
     {
+        var tokenKey = Encoding.UTF8.GetBytes(builder.Configuration
+            .GetSection("JsonWebTokenKeys:IssuerSigningKey")
+            .Value);
+
         options.RequireHttpsMetadata = false;
         options.SaveToken = true;
         options.TokenValidationParameters = new TokenValidationParameters
@@ -86,7 +99,7 @@ builder.Services.AddAuthentication(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (isDevelopment)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -103,4 +116,5 @@ app.Run();
 
 // TODO : Add soft delete
 // TODO : Add a key for multiple post edits
+// TODO : Implement tag and category service
 // TODO LAST : Migrate again for changes in entities

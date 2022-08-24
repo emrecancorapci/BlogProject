@@ -16,25 +16,18 @@ public class PostService : IPostService
     private readonly IUsersPostReactionsRepository _usersPostReactionsRepository;
     private readonly IMapper _mapper;
 
-    // Temporary
-    private readonly ITagRepository _tagsRepository;
-    private readonly ICategoryRepository _categoryRepository;
-
     public PostService(IPostRepository postRepository,
         IPostsEditorsRepository postsEditorsRepository,
         IPostsTagsRepository postsTagsRepository,
         IUsersPostReactionsRepository usersPostReactionsRepository,
-        IMapper mapper,
-        ITagRepository tagsRepository,
-        ICategoryRepository categoryRepository)
+        IMapper mapper)
     {
         _postRepository = postRepository;
+
         _postsEditorsRepository = postsEditorsRepository;
         _postsTagsRepository = postsTagsRepository;
         _usersPostReactionsRepository = usersPostReactionsRepository;
         _mapper = mapper;
-        _tagsRepository = tagsRepository;
-        _categoryRepository = categoryRepository;
     }
 
     // ADD
@@ -49,34 +42,13 @@ public class PostService : IPostService
         return postId;
     }
 
-    // Temporary 
-
-    public async Task<int> AddTagAsync(string name, string? desc)
-    {
-        var tagId = await _tagsRepository.AddAsync(new Tag
-            {
-                Description = desc,
-                Name = name
-            });
-
-        return tagId;
-    }
-
-    public async Task<int> AddCategoryAsync(string name, string? desc)
-    {
-        var categoryId = await _categoryRepository.AddAsync(new Category
-        {
-            Description = desc,
-            Name = name
-        });
-
-        return categoryId;
-    }
-
     // UPDATE
-    public async Task<int> UpdateAsync(Post post)
+    public async Task<int> UpdateAsync(UpdatePostRequest request)
     {
+        var post = _mapper.Map<Post>(request);
+
         post.Modified = DateTime.Now.SetKindUtc();
+
         return await _postRepository.UpdateAsync(post);
     }
 

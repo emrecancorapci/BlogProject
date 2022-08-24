@@ -1,7 +1,5 @@
-﻿using BlogProject.Business.Services.CommentService;
-using BlogProject.Business.Services.PostService;
+﻿using BlogProject.Business.Services.PostService;
 using BlogProject.Business.Services.PostService.Dtos;
-using BlogProject.Business.Services.UserService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,18 +11,9 @@ namespace BlogProject.API.Controllers;
 public class PostController : ControllerBase
 {
     private readonly IPostService _postService;
-    private readonly IUserService _userService;
-    private readonly ICommentService _commentService;
 
-    public PostController(
-        IPostService postService,
-        IUserService userService,
-        ICommentService commentService)
-    {
+    public PostController(IPostService postService) =>
         _postService = postService;
-        _userService = userService;
-        _commentService = commentService;
-    }
 
     // GET
     [HttpGet("Get")]
@@ -98,21 +87,15 @@ public class PostController : ControllerBase
 
         return Ok(affectedRows);
     }
-    [HttpPost("AddTag")]
-    public async Task<IActionResult> AddTag(string name, string desc)
-    {
-        var affectedRows = await _postService.AddTagAsync(name,desc);
 
+    // PUT
+    [HttpPatch("Update")]
+    public async Task<IActionResult> Update(UpdatePostRequest request)
+    {
+        var affectedRows = await _postService.UpdateAsync(request);
         return Ok(affectedRows);
     }
-    [HttpPost("AddCategory")]
-    public async Task<IActionResult> AddCategory(string name, string desc)
-    {
-        var affectedRows = await _postService.AddCategoryAsync(name,desc);
 
-        return Ok(affectedRows);
-    }
-    
 
     // PATCH
     [HttpPatch("UpdateContent")]

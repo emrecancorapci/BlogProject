@@ -8,7 +8,7 @@ public class AddPostRequest
     [MinLength(3)]
     public string Title { get; set; }
     [Required]
-    [MinLength(100)]
+    [MinLength(32)]
     public string Content { get; set; }
     
     public string? ThumbnailUrl { get; set; }

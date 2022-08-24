@@ -6,7 +6,7 @@ namespace BlogProject.Business.Services.PostService;
 public interface IPostService
 {
     Task<int> AddAsync(AddPostRequest request);
-    Task<int> UpdateAsync(Post post);
+    Task<int> UpdateAsync(UpdatePostRequest post);
     Task<int> UpdateContentAsync(UpdatePostContentRequest request);
     Task<int> DeleteAsync(int id);
     Task<bool> IsExistAsync(int postId);
@@ -23,9 +23,4 @@ public interface IPostService
     
     Task<bool> DeleteEditorRelation(int postId, int editorId);
     Task<int> DeleteRelationByEditorIdAsync(int editorId);
-
-    // Temporary
-    Task<int> AddTagAsync(string name, string? desc);
-    Task<int> AddCategoryAsync(string name, string? desc);
-
 }
