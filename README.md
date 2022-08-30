@@ -1,4 +1,4 @@
-# BlogProject
+# Yet Another Blog Project
 Simple blog project
 
 ## Frameworks, libraries and other technologies
