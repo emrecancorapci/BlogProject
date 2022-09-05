@@ -50,7 +50,7 @@ public class EFUserRepository : IUserRepository
     public async Task<bool> IsExist(int id)
         => await _context.Users.AnyAsync(user => user.Id == id);
 
-    public async Task<User?> ValidateUser(string username)
+    public async Task<User?> ValidateUserAsync(string username)
         => await _context.Users.FirstOrDefaultAsync(user => user.Username == username);
 
     public async Task<bool> IsEmailExist(string email) 

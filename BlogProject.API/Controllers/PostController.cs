@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BlogProject.API.Controllers;
 
 [Authorize]
-[Route("api/[controller]")]
+[Route("api/[controller]s")]
 [ApiController]
 public class PostController : ControllerBase
 {
@@ -16,29 +16,21 @@ public class PostController : ControllerBase
         _postService = postService;
 
     // GET
-    [HttpGet("Get")]
-    public async Task<IActionResult> Get(int id)
+    [AllowAnonymous]
+    [HttpGet("{id:int:min(1)}")]
+    public async Task<IActionResult> Get([FromRoute] int id)
     {
-        if (id == 0) return BadRequest();
         if (!await _postService.IsExistAsync(id)) return NotFound();
         
         var response = await _postService.GetAsync(id);
 
         return Ok(response);
     }
-    [HttpGet("GetAll")]
+    [AllowAnonymous]
+    [HttpGet("")]
     public async Task<IActionResult> GetAll()
     {
         var responseList = await _postService.GetAllAsync();
-
-        return Ok(responseList);
-    }
-    [HttpGet("GetAllByUser")]
-    public async Task<IActionResult> GetAllByUser(int userId)
-    {
-        if (userId == 0) return BadRequest();
-        
-        var responseList = await _postService.GetAllByUserIdAsync(userId);
 
         return Ok(responseList);
     }
@@ -60,27 +52,19 @@ public class PostController : ControllerBase
 
         return Ok(responseList);
     }
-    [HttpGet("GetAllByEditor")]
-    public async Task<IActionResult> GetAllByEditor(int editorId)
+    [HttpGet("IsExist/{id:int}")]
+    public async Task<IActionResult> IsExist(int id)
     {
-        if (editorId == 0) return BadRequest();
+        if (id == 0) return BadRequest();
         
-        var responseList = await _postService.GetAllByEditorIdAsync(editorId);
-
-        return Ok(responseList);
-    }
-    [HttpGet("IsExist")]
-    public async Task<IActionResult> IsExist(int postId)
-    {
-        if (postId == 0) return BadRequest();
-        
-        var response = await _postService.IsExistAsync(postId);
+        var response = await _postService.IsExistAsync(id);
 
         return Ok(response);
     }
 
     // POST
-    [HttpPost("Add")]
+    [AllowAnonymous]
+    [HttpPost("")]
     public async Task<IActionResult> Add(AddPostRequest request)
     {
         var affectedRows = await _postService.AddAsync(request);
@@ -89,16 +73,15 @@ public class PostController : ControllerBase
     }
 
     // PUT
-    [HttpPatch("Update")]
+    [HttpPut("")]
     public async Task<IActionResult> Update(UpdatePostRequest request)
     {
         var affectedRows = await _postService.UpdateAsync(request);
         return Ok(affectedRows);
     }
 
-
     // PATCH
-    [HttpPatch("UpdateContent")]
+    [HttpPatch("")]
     public async Task<IActionResult> UpdateContent(UpdatePostContentRequest request)
     {
         var affectedRows = await _postService.UpdateContentAsync(request);
@@ -114,10 +97,10 @@ public class PostController : ControllerBase
     }
 
     // DELETE
-    [HttpDelete("Delete")]
-    public async Task<IActionResult> Delete(int postId)
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
     {
-        var affectedRows = await _postService.DeleteAsync(postId);
+        var affectedRows = await _postService.DeleteAsync(id);
 
         return Ok(affectedRows);
     }

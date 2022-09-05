@@ -23,7 +23,35 @@ var isDevelopment = builder.Environment.IsDevelopment();
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddCors();
+
+// Authentication
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        
+        var key = builder.Configuration["JsonWebTokenKeys:IssuerSigningKey"];
+        var encodedKey = Encoding.UTF8.GetBytes(key);
+        var signingKey = new SymmetricSecurityKey(encodedKey);
+
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = signingKey,
+            ValidateIssuer = false,
+            ValidateAudience = false,
+        };
+    });
+
+builder.Services.AddScoped<IJwtAuthenticationManager, JwtAuthenticationManager>();
+
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -71,31 +99,6 @@ builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddScoped<ITagService, TagService>();
 
-builder.Services.AddScoped<IJwtAuthenticationManager, JwtAuthenticationManager>();
-
-// Authentication
-builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddJwtBearer(options =>
-    {
-        var tokenKey = Encoding.UTF8.GetBytes(builder.Configuration
-            .GetSection("JsonWebTokenKeys:IssuerSigningKey")
-            .Value);
-
-        options.RequireHttpsMetadata = false;
-        options.SaveToken = true;
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            IssuerSigningKey = new SymmetricSecurityKey(tokenKey),
-            ValidateIssuerSigningKey = true,
-            ValidateIssuer = false,
-            ValidateAudience = false,
-        };
-    });
-    
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -104,6 +107,8 @@ if (isDevelopment)
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(policyBuilder => policyBuilder.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"));
 
 app.UseHttpsRedirection();
 
@@ -115,6 +120,6 @@ app.MapControllers();
 app.Run();
 
 // TODO : Add soft delete
-// TODO : Add a key for multiple post edits
-// TODO : Implement tag and category service
-// TODO LAST : Migrate again for changes in entities
+// TODO : Configure API routing endpoints
+// TODO : Add a key for multiple post edits ( and migrate again )
+// TODO : Implement tag and category services and controllers

@@ -20,9 +20,6 @@ public class EFCommentRepository : ICommentRepository
 
     public async Task<int> AddAsync(Comment entity)
     {
-        entity.Created = DateTime.Now;
-        entity.Updated = DateTime.Now;
-
         await _context.Comments.AddAsync(entity);
         await _context.SaveChangesAsync();
 
@@ -31,8 +28,6 @@ public class EFCommentRepository : ICommentRepository
 
     public async Task<int> UpdateAsync(Comment entity)
     {
-        entity.Updated = DateTime.Now;
-
         _context.Comments.Update(entity);
         
         var affectedRows = await _context.SaveChangesAsync();
