@@ -19,8 +19,6 @@ function AddPost() {
       return false;
     }
 
-    // Use function that got from Contacts
-    // to save the form data
     axios
       .post("https://localhost:7169/api/Posts", form)
       .then(function (response) {
