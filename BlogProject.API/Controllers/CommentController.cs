@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlogProject.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/[controller]s")]
 [ApiController]
 public class CommentController : ControllerBase
 {
@@ -14,7 +14,7 @@ public class CommentController : ControllerBase
         _commentService = commentService;
 
     // GET
-    [HttpGet("Get")]
+    [HttpGet("{id:int:min(1)}")]
     public async Task<IActionResult> Get(int id)
     {
         if (id == 0) return BadRequest();
@@ -40,12 +40,10 @@ public class CommentController : ControllerBase
 
         return Ok(responseList);
     }
-    [HttpGet("GetAllByPost")]
-    public async Task<IActionResult> GetAllByPost(int userId)
+    [HttpGet("~/api/Posts/{id:int:min(1)}/Comments")]
+    public async Task<IActionResult> GetAllByPost(int id)
     {
-        if (userId == 0) return BadRequest();
-        
-        var responseList = await _commentService.GetAllByPostIdAsync(userId);
+        var responseList = await _commentService.GetAllByPostIdAsync(id);
 
         return Ok(responseList);
     }
@@ -69,7 +67,7 @@ public class CommentController : ControllerBase
     }
 
     // POST
-    [HttpPost("Add")]
+    [HttpPost("")]
     public async Task<IActionResult> Add(AddCommentRequest request)
     {
         var affectedRows = await _commentService.AddAsync(request);
@@ -80,7 +78,7 @@ public class CommentController : ControllerBase
     // TODO : Update method must implemented
 
     // PATCH
-    [HttpPatch("UpdateContent")]
+    [HttpPatch("")]
     public async Task<IActionResult> UpdateContent(UpdateCommentContentRequest request)
     {
         var affectedRows = await _commentService.UpdateContentAsync(request);
@@ -96,10 +94,10 @@ public class CommentController : ControllerBase
     }
 
     // DELETE
-    [HttpDelete("Delete")]
-    public async Task<IActionResult> Delete(int postId)
+    [HttpDelete("{id:int:min(1)}")]
+    public async Task<IActionResult> Delete(int id)
     {
-        var affectedRows = await _commentService.DeleteAsync(postId);
+        var affectedRows = await _commentService.DeleteAsync(id);
 
         return Ok(affectedRows);
     }

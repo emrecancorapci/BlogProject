@@ -1,4 +1,5 @@
 ﻿using BlogProject.Business.Services.AuthenticationService;
+using BlogProject.Business.Services.PostService;
 using BlogProject.Business.Services.UserService;
 using BlogProject.Business.Services.UserService.Dtos;
 using Microsoft.AspNetCore.Authorization;
@@ -6,18 +7,23 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlogProject.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/[controller]s")]
 [ApiController]
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly IPostService _postService;
     private readonly IJwtAuthenticationManager _jwtAuthenticationManager;
 
-    public UserController(IUserService userService, IJwtAuthenticationManager jwtAuthenticationManager) =>
-        (_userService, _jwtAuthenticationManager) = (userService, jwtAuthenticationManager);
+    public UserController(
+        IUserService userService,
+        IPostService postService,
+        IJwtAuthenticationManager jwtAuthenticationManager) =>
+        (_userService, _postService, _jwtAuthenticationManager) =
+        (userService, postService, jwtAuthenticationManager);
 
     // GET
-    [HttpGet("Get")]
+    [HttpGet("{id:int:min(1)}")]
     public async Task<IActionResult> Get(int id)
     {
         if (id == 0) return BadRequest();
@@ -32,7 +38,7 @@ public class UserController : ControllerBase
     {
         var response = await _userService.ValidateUserAsync(username, password);
 
-        if (response == null) return BadRequest();
+        if (response == null) return NotFound();
 
         var tokenResponse = await _jwtAuthenticationManager.GetJwtTokenAsync(response.UserName);
 
@@ -43,13 +49,30 @@ public class UserController : ControllerBase
         return Ok(response);
     }
     [Authorize]
-    [HttpGet("GetAll")]
+    [HttpGet("")]
     public async Task<IActionResult> GetAll()
     {
         var responseList = await _userService.GetAllAsync();
 
         return Ok(responseList);
     }
+    [HttpGet("{id:int:min(1)}/Posts")]
+    public async Task<IActionResult> GetPosts([FromRoute]int id)
+    {
+        if (id == 0) return BadRequest();
+        
+        var responseList = await _postService.GetAllByUserIdAsync(id);
+
+        return Ok(responseList);
+    }
+    [HttpGet("{id:int:min(1)}/EditedPosts")]
+    public async Task<IActionResult> GetEditedPosts([FromRoute]int id)
+    {
+        var responseList = await _postService.GetAllByEditorIdAsync(id);
+
+        return Ok(responseList);
+    }
+
     [HttpGet("IsExist")]
     public async Task<IActionResult> IsExist(int userId)
     {
