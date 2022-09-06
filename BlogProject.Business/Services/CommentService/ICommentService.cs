@@ -13,7 +13,7 @@ public interface ICommentService
     Task<int> DeleteAllByPostIdAsync(int postId);
     Task<int> DeleteAllByUserIdAsync(int userId);
     
-    Task<GetCommentResponse> GetAsync(int commentId);
+    Task<GetCommentResponse?> GetAsync(int commentId);
     Task<List<GetCommentResponse>> GetAllAsync();
     Task<List<GetCommentResponse>> GetAllByUserIdAsync(int userId);
     Task<List<GetCommentResponse>> GetAllByPostIdAsync(int postId);

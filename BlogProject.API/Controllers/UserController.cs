@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlogProject.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/[controller]s")]
 [ApiController]
 public class UserController : ControllerBase
 {
@@ -17,7 +17,7 @@ public class UserController : ControllerBase
         (_userService, _jwtAuthenticationManager) = (userService, jwtAuthenticationManager);
 
     // GET
-    [HttpGet("Get")]
+    [HttpGet("{id:int:min(1)}")]
     public async Task<IActionResult> Get(int id)
     {
         if (id == 0) return BadRequest();
@@ -43,7 +43,7 @@ public class UserController : ControllerBase
         return Ok(response);
     }
     [Authorize]
-    [HttpGet("GetAll")]
+    [HttpGet("")]
     public async Task<IActionResult> GetAll()
     {
         var responseList = await _userService.GetAllAsync();
@@ -83,7 +83,7 @@ public class UserController : ControllerBase
     }
 
     // POST
-    [HttpPost("Add")]
+    [HttpPost("")]
     public async Task<IActionResult> Add(AddUserRequest request)
     {
         var affectedRows = await _userService.AddAsync(request);
@@ -93,7 +93,7 @@ public class UserController : ControllerBase
 
     // PATCH
     [Authorize]
-    [HttpPut("Update")]
+    [HttpPatch("")]
     public async Task<IActionResult> Update(UpdateUserRequest request)
     {
         var affectedRows = await _userService.UpdateAsync(request);
@@ -103,7 +103,7 @@ public class UserController : ControllerBase
 
     // DELETE
     [Authorize]
-    [HttpDelete("Delete")]
+    [HttpDelete("")]
     public async Task<IActionResult> Delete(int userId)
     {
         var affectedRows = await _userService.DeleteAsync(userId);

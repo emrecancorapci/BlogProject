@@ -17,13 +17,9 @@ public class CommentService : ICommentService
     public CommentService(
         ICommentRepository commentRepo,
         IUsersCommentReactionsRepository usersCommentReactionsRepo,
-        IMapper mapper)
-    {
-        _commentRepo = commentRepo;
-        _usersCommentReactionsRepo = usersCommentReactionsRepo;
-        _mapper = mapper;
-
-    }
+        IMapper mapper) =>
+        (_commentRepo, _usersCommentReactionsRepo, _mapper)
+        = (commentRepo, usersCommentReactionsRepo, mapper);
 
     // ADD
     public async Task<int> AddAsync(AddCommentRequest request)
@@ -40,7 +36,7 @@ public class CommentService : ICommentService
     // UPDATE
     public async Task<int> UpdateAsync(Comment comment)
     {
-        comment.Updated = DateTime.Now;
+        comment.Updated = DateTime.Now.SetKindUtc();
 
         var affectedRows = await _commentRepo.UpdateAsync(comment);
         return affectedRows;
@@ -50,18 +46,19 @@ public class CommentService : ICommentService
     {
         var comment = _mapper.Map<Comment>(request);
 
-        comment.Updated = DateTime.Now;
+        comment.Updated = DateTime.Now.SetKindUtc();
         
         var affectedRows = await _commentRepo.UpdateAsync(comment);
         return affectedRows;
     }
 
     // GET
-    public async Task<GetCommentResponse> GetAsync(int commentId)
+    public async Task<GetCommentResponse?> GetAsync(int commentId)
     {
         var comment = await _commentRepo.GetAsync(commentId);
-        var response = _mapper.Map<GetCommentResponse>(comment);
+        if (comment == null) return null;
 
+        var response = _mapper.Map<GetCommentResponse>(comment);
         return response;
     }
     

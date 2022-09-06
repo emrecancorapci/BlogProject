@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BlogProject.API.Controllers;
 
 [Authorize]
-[Route("api/[controller]")]
+[Route("api/[controller]s")]
 [ApiController]
 public class TagController : ControllerBase
 {
@@ -18,7 +18,7 @@ public class TagController : ControllerBase
         _tagService = tagService;
     }
 
-    [HttpGet("Get")]
+    [HttpGet("")]
     public async Task<IActionResult> Get(int id)
     {
         if (id == 0) return BadRequest();
@@ -29,7 +29,7 @@ public class TagController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPost("Add")]
+    [HttpPost("")]
     public async Task<IActionResult> Add(TagData request)
     {
         var affectedRows = await _tagService.AddAsync(request);
