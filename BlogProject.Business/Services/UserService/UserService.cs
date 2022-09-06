@@ -68,13 +68,13 @@ public class UserService : IUserService
     public async Task<bool> IsExistAsync(int id) =>
         await _userRepository.IsExist(id);
 
-    public async Task<UserValidationResponse?> ValidateUserAsync(string username, string password)
+    public async Task<UserValidationResponse?> ValidateUserAsync(UserValidationRequest request)
     {
-        var user = await _userRepository.ValidateUserAsync(username);
+        var user = await _userRepository.ValidateUserAsync(request.Username);
 
         if(user == null) return null;
 
-        bool isVerified = BCrypt.Net.BCrypt.Verify(password, user.Password);
+        bool isVerified = BCrypt.Net.BCrypt.Verify(request.Password, user.Password);
 
         if (!isVerified) return null;
 

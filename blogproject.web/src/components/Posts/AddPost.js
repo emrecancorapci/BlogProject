@@ -13,20 +13,17 @@ function AddPost() {
     // Prevent page refresh when form send
     event.preventDefault();
 
+    const api = "https://localhost:7169/api/Posts";
+
     // Empty field check
     if (form.title === "" || form.content === "") {
       console.log("Fill all the fields.");
       return false;
     }
 
-    axios
-      .post("https://localhost:7169/api/Posts", form)
-      .then(function (response) {
-        return response;
-      })
-      .catch(function (error) {
-        return error;
-      });
+    axios.post(api, form)
+      .then((response) => { return response;})
+      .catch((error) => {return error;});
 
     console.log("Submit");
   };
@@ -87,8 +84,8 @@ function AddPost() {
           />
         </div>
 
-        <input type="text" name="categoryId" value={1} hidden />
-        <input type="text" name="authorId" value={2} hidden />
+        <input type="number" name="categoryId" value={1} hidden />
+        <input type="number" name="authorId" value={2} hidden />
 
         <div class="btn">
           <button>Add</button>

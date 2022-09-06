@@ -3,6 +3,7 @@ using BlogProject.Business.Services.PostService;
 using BlogProject.Business.Services.PostService.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BlogProject.API.Controllers;
 
@@ -31,16 +32,16 @@ public class PostController : ControllerBase
     {
         var responseList = await _postService.GetAllAsync();
 
-        if (search != null)
+        if (!search.IsNullOrEmpty())
         {
             // TODO Doesn't work (yet)
             responseList.SearchPosts(search);
         }
-        if (dateStart != null || dateEnd != null)
+        if (!dateStart.IsNullOrEmpty() || !dateEnd.IsNullOrEmpty())
         {
             responseList.DateBetween(dateStart, dateEnd);
         }
-        if(orderBy != null)
+        if(!orderBy.IsNullOrEmpty())
         {
             responseList = responseList.OrderPostBy(orderBy);
         }

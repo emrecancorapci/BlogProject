@@ -4,6 +4,7 @@ using BlogProject.Business.Services.UserService;
 using BlogProject.Business.Services.UserService.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BlogProject.API.Controllers;
 
@@ -16,7 +17,6 @@ public class UserController : ControllerBase
 
     public UserController(
         IUserService userService,
-        IPostService postService,
         IJwtAuthenticationManager jwtAuthenticationManager) =>
         (_userService, _jwtAuthenticationManager) =
         (userService, jwtAuthenticationManager);
@@ -31,10 +31,11 @@ public class UserController : ControllerBase
 
         return Ok(response);
     }
-    [HttpGet("Login")]
-    public async Task<IActionResult> Login(string username, string password)
+
+    [HttpPost("Login")]
+    public async Task<IActionResult> Login(UserValidationRequest request)
     {
-        var response = await _userService.ValidateUserAsync(username, password);
+        var response = await _userService.ValidateUserAsync(request);
 
         if (response == null) return NotFound();
 
@@ -56,36 +57,30 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("IsExist")]
-    public async Task<IActionResult> IsExist(int userId)
+    public async Task<IActionResult> IsExist(int? id, string? email)
     {
-        if (userId == 0) return BadRequest();
-    
-        var response = await _userService.IsExistAsync(userId);
+        var response = false;
+        
+        if (id != null)
+        {
+            response = await _userService.IsExistAsync((int)id);
+        }
+        if (!email.IsNullOrEmpty())
+        {
+            response = await _userService.IsEmailExistAsync(email);
+        }
 
         return Ok(response);
     }
-    [HttpGet("Validate")]
-    public async Task<IActionResult> Validate(string username, string password)
-    {
-        var response = await _userService.ValidateUserAsync(username, password);
 
-        return Ok(response);
-    }
+    // NO NEED
+    //[HttpGet("GetUserIdByUsername")]
+    //public async Task<IActionResult> GetUserIdByUsername(string username)
+    //{
+    //    var response = await _userService.GetUserIdByUsername(username);
 
-    [HttpGet("GetUserIdByUsername")]
-    public async Task<IActionResult> GetUserIdByUsername(string username)
-    {
-        var response = await _userService.GetUserIdByUsername(username);
-
-        return Ok(response);
-    }
-    [HttpGet("IsEmailExist")]
-    public async Task<IActionResult> IsEmailExist(string email)
-    {
-        var response = await _userService.IsEmailExistAsync(email);
-
-        return Ok(response);
-    }
+    //    return Ok(response);
+    //}
 
     // POST
     [HttpPost("")]

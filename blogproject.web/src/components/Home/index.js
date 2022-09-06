@@ -2,8 +2,6 @@ import React from 'react'
 import { Link } from "react-router-dom";
 
 function Home() {
-  const id = 5;
-
   return (
     <>
       <main>

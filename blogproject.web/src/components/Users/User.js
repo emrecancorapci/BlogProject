@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import axios from 'axios';
 
 function User() {
@@ -27,12 +27,12 @@ function User() {
             .then((response) => setUser(response.data))
             .catch(event => console.log(event))
             .finally(() => setIsLoading(false)); // Set loading false
-    }, []);
+    }, [searchParams]);
 
     return (<>
         {isLoading && <div>Loading...</div>}
         {<>
-            <div><img src={user.profilePictureUrl} /></div>
+            <div><img alt={user.username}src={user.profilePictureUrl} /></div>
             <h1>{user.username}</h1>
             <h2>{user.name} {user.lastName}</h2>
             <p>{user.about}</p>
