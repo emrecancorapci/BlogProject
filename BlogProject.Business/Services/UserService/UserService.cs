@@ -70,21 +70,24 @@ public class UserService : IUserService
 
     public async Task<UserValidationResponse?> ValidateUserAsync(string username, string password)
     {
-        var user = await _userRepository.ValidateUser(username);
+        var user = await _userRepository.ValidateUserAsync(username);
+
+        if(user == null) return null;
+
         bool isVerified = BCrypt.Net.BCrypt.Verify(password, user.Password);
 
-        if (user == null || !isVerified) return null;
+        if (!isVerified) return null;
 
         var response = _mapper.Map<UserValidationResponse>(user);
         return response;
     }
 
     public async Task<bool> IsUserNameExistAsync(string userName) =>
-        (await _userRepository.ValidateUser(userName)) != null;
+        (await _userRepository.ValidateUserAsync(userName)) != null;
 
     public async Task<bool> IsEmailExistAsync(string email) => 
         await _userRepository.IsEmailExist(email);
     
     public async Task<int> GetUserIdByUsername(string userName) =>
-        (await _userRepository.ValidateUser(userName)).Id;
+        (await _userRepository.ValidateUserAsync(userName)).Id;
 }

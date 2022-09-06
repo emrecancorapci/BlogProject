@@ -26,7 +26,7 @@ public class JwtAuthenticationManager : IJwtAuthenticationManager
 
     public async Task<string?> GetJwtTokenAsync(string username)
     {
-        var user = await _userRepository.ValidateUser(username);
+        var user = await _userRepository.ValidateUserAsync(username);
         if(user == null) return null;
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtTokenSecret));
