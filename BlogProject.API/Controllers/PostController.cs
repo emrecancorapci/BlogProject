@@ -16,20 +16,21 @@ public class PostController : ControllerBase
         _postService = postService;
 
     // GET
-    [HttpGet("Get")]
+    [HttpGet("{id:int:min(1)}")]
     public async Task<IActionResult> Get(int id)
     {
-        
-        
         var response = await _postService.GetAsync(id);
 
-        if(response == null) return NotFound();
+        if (response == null) return NotFound();
+
+        return Ok(response);
+    }
 
     [HttpGet("")]
     public async Task<IActionResult> GetAll(string? orderBy, string? dateStart, string? dateEnd, string? search, int? skip, int? take)
-    public async Task<IActionResult> GetAll()
-    public async Task<IActionResult> GetAll()
     {
+        var responseList = await _postService.GetAllAsync();
+
         if (search != null)
         {
             // TODO Doesn't work (yet)
@@ -55,8 +56,6 @@ public class PostController : ControllerBase
         return Ok(responseList);
     }
     [HttpGet("~/api/Tags/{tagId:int:min(1)}/Posts")]
-    [HttpGet("GetAllByTag")]
-    [HttpGet("GetAllByTag")]
     public async Task<IActionResult> GetAllByTag(int tagId)
     {
         var responseList = await _postService.GetAllByTagIdAsync(tagId);
@@ -68,54 +67,48 @@ public class PostController : ControllerBase
     {
         var responseList = await _postService.GetAllByCategoryIdAsync(categoryId);
 
+        return Ok(responseList);
+    }
+    [HttpGet("~/api/Users/{id:int:min(1)}/Posts")]
+    public async Task<IActionResult> GetPosts([FromRoute]int id)
+    {
+        var responseList = await _postService.GetAllByUserIdAsync(id);
+
+        return Ok(responseList);
+    }
+    [HttpGet("~/api/Users/{id:int:min(1)}/EditedPosts")]
+    public async Task<IActionResult> GetEditedPosts([FromRoute]int id)
+    {
+        var responseList = await _postService.GetAllByEditorIdAsync(id);
+
+        return Ok(responseList);
+    }
     [HttpGet("{id:int:min(1)}/IsExist")]
     public async Task<IActionResult> IsExist(int id)
     {
         var response = await _postService.IsExistAsync(id);
-        var responseList = await _postService.GetAllByEditorIdAsync(editorId);
-
-        return Ok(responseList);
-    }
-    [HttpGet("IsExist")]
-    [HttpPost("")]
-    {
-        if (postId == 0) return BadRequest();
-        
-        var response = await _postService.IsExistAsync(postId);
-        var responseList = await _postService.GetAllByEditorIdAsync(editorId);
-
-        return Ok(responseList);
-    // PATCH
-    [HttpPatch("")]
-    [HttpPost("Add")]
-    {
-        if (postId == 0) return BadRequest();
-        
-        var response = await _postService.IsExistAsync(postId);
 
         return Ok(response);
+    }
+
+    // POST
+    [HttpPost("")]
+    public async Task<IActionResult> Add(AddPostRequest request)
+    {
+        var affectedRows = await _postService.AddAsync(request);
+
         return Ok(affectedRows);
     }
 
     // PATCH
-    [HttpPatch("UpdateContent")]
-    public async Task<IActionResult> UpdateContent(UpdatePostContentRequest request)
+    [HttpPatch("")]
+    public async Task<IActionResult> Update(UpdatePostRequest request)
     {
-        var affectedRows = await _postService.UpdateContentAsync(request);
         // TODO : Wants categoryId. Find a way to change only modified variables.
-    [HttpDelete(""), Authorize]
-    public async Task<IActionResult> Delete(int postId)
+
+        var affectedRows = await _postService.UpdateAsync(request);
+        return Ok(affectedRows);
     }
-
-
-    // PATCH
-    [HttpPatch("UpdateContent")]
-    public async Task<IActionResult> UpdateContent(UpdatePostContentRequest request)
-    {
-        var affectedRows = await _postService.UpdateContentAsync(request);
-        // TODO : Wants categoryId. Find a way to change only modified variables.
-    [HttpDelete("Delete")]
-    public async Task<IActionResult> Delete(int postId)
     [HttpPatch("React")]
     public async Task<IActionResult> React(ReactionPostRequest request)
     {
@@ -125,8 +118,9 @@ public class PostController : ControllerBase
     }
 
     // DELETE
-    [HttpDelete("Delete")]
-    public async Task<IActionResult> Delete(int postId)
+    [Authorize]
+    [HttpDelete("{id:int:min(1)}")]
+    public async Task<IActionResult> Delete(int id)
     {
         var affectedRows = await _postService.DeleteAsync(id);
 

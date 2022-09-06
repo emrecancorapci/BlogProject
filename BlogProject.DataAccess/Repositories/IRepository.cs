@@ -1,5 +1,4 @@
 ﻿using BlogProject.Entities;
-using BlogProject.Entities.Base;
 
 namespace BlogProject.DataAccess.Repositories;
 

@@ -1,7 +1,6 @@
 ﻿using BlogProject.Business.Services.TagService;
 using BlogProject.Business.Services.TagService.Dtos;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogProject.API.Controllers;

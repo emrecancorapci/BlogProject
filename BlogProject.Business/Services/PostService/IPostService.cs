@@ -1,5 +1,4 @@
 ﻿using BlogProject.Business.Services.PostService.Dtos;
-using BlogProject.Entities.Base;
 
 namespace BlogProject.Business.Services.PostService;
 

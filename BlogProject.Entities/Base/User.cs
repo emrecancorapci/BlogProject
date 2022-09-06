@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using BlogProject.Entities.Relations;
 
 namespace BlogProject.Entities.Base;

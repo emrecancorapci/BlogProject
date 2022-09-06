@@ -12,24 +12,22 @@ namespace BlogProject.API.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
-    private readonly IPostService _postService;
     private readonly IJwtAuthenticationManager _jwtAuthenticationManager;
 
     public UserController(
         IUserService userService,
         IPostService postService,
         IJwtAuthenticationManager jwtAuthenticationManager) =>
-        (_userService, _postService, _jwtAuthenticationManager) =
-        (userService, postService, jwtAuthenticationManager);
+        (_userService, _jwtAuthenticationManager) =
+        (userService, jwtAuthenticationManager);
 
     // GET
     [HttpGet("{id:int:min(1)}")]
     public async Task<IActionResult> Get(int id)
     {
-        if (id == 0) return BadRequest();
-        if (!await _userService.IsExistAsync(id)) return NotFound();
-    
         var response = await _userService.GetAsync(id);
+
+        if (response == null) return NotFound();
 
         return Ok(response);
     }
@@ -53,22 +51,6 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var responseList = await _userService.GetAllAsync();
-
-        return Ok(responseList);
-    }
-    [HttpGet("{id:int:min(1)}/Posts")]
-    public async Task<IActionResult> GetPosts([FromRoute]int id)
-    {
-        if (id == 0) return BadRequest();
-        
-        var responseList = await _postService.GetAllByUserIdAsync(id);
-
-        return Ok(responseList);
-    }
-    [HttpGet("{id:int:min(1)}/EditedPosts")]
-    public async Task<IActionResult> GetEditedPosts([FromRoute]int id)
-    {
-        var responseList = await _postService.GetAllByEditorIdAsync(id);
 
         return Ok(responseList);
     }
@@ -126,10 +108,10 @@ public class UserController : ControllerBase
 
     // DELETE
     [Authorize]
-    [HttpDelete("")]
-    public async Task<IActionResult> Delete(int userId)
+    [HttpDelete("{id:int:min(1)}")]
+    public async Task<IActionResult> Delete(int id)
     {
-        var affectedRows = await _userService.DeleteAsync(userId);
+        var affectedRows = await _userService.DeleteAsync(id);
 
         return Ok(affectedRows);
     }

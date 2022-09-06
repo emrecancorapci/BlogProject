@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace BlogProject.Business.Services.UserService.Dtos;
+﻿namespace BlogProject.Business.Services.UserService.Dtos;
 
 public class UpdateUserRequest
 {
