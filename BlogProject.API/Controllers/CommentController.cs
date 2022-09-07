@@ -1,5 +1,6 @@
 ﻿using BlogProject.Business.Services.CommentService;
 using BlogProject.Business.Services.CommentService.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogProject.API.Controllers;
@@ -86,6 +87,7 @@ public class CommentController : ControllerBase
     }
 
     // DELETE
+    [Authorize]
     [HttpDelete("{id:int:min(1)}")]
     public async Task<IActionResult> Delete(int id)
     {

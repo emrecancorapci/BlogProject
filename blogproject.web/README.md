@@ -69,7 +69,14 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
-### Dependencies 
+### Package Installations
 
-- react-router-dom@6
-- axios
+- npm install create-react-app
+- npm install react-router-dom@6
+- npm install axios
+- npm install react-router-bootstrap
+- npm install react-bootstrap bootstrap
+- npm i --save @fortawesome/fontawesome-svg-core
+- npm i --save @fortawesome/free-solid-svg-icons
+- npm i --save @fortawesome/free-regular-svg-icons
+- npm i --save @fortawesome/react-fontawesome@latest

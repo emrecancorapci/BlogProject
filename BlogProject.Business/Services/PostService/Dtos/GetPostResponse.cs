@@ -12,6 +12,9 @@ public class GetPostResponse
 
     public DateTime Created { get; set; }
 
+    public bool CommentsEnabled { get; set; }
+    public bool ReactionsEnabled { get; set; }
+
     public int CategoryId { get; set; }
     public int AuthorId { get; set; }
 }

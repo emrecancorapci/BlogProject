@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 
+import Spinner from 'react-bootstrap/Spinner';
+
 function Posts() {
     const [posts, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -31,8 +33,6 @@ function Posts() {
     });
 
     return (<>
-        <h1>Posts</h1>
-        <h2><Link to={`/Posts/Add`}>Add Post</Link></h2>
         <div>
             <input
                 placeholder='Filter posts'
@@ -41,14 +41,16 @@ function Posts() {
         </div>
         <br />
         <div>
-            {isLoading && <div>Loading...</div>}
-            {
-                filtered.map((post, index) =>
-                    <div key={index}>
-                        <Link to={`/post?id=${post.id}`}>{post.title}</Link>
-                        <p>{post.postSummary}</p>
-                    </div>)
-            }
+            {isLoading &&
+                (<Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>)}
+
+            {filtered.map((post, index) =>
+                <div key={index}>
+                    <Link to={`/Posts/${post.id}`}>{post.title}</Link>
+                    <p>{post.postSummary}</p>
+                </div>)}
         </div>
     </>)
 }

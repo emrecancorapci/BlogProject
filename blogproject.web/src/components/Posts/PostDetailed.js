@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Comments from "../Comments/Comments";
+
+import Card from 'react-bootstrap/Card';
+import Spinner from 'react-bootstrap/Spinner';
 
 function PostDetailed() {
   const [isLoading, setIsLoading] = useState(true);
@@ -9,13 +12,13 @@ function PostDetailed() {
   const [post, setPost] = useState([]);
   const [user, setUser] = useState([]);
 
-  const [searchParams] = useSearchParams();
-  const id = searchParams.get("id") || "";
+  let { id } = useParams();
 
   useEffect(() => {
     axios(`https://localhost:7169/api/Posts/${id}`)
       .then((response) => setPost(response.data))
       .catch((event) => console.log(event));
+
   }, [id]);
 
   useEffect(() => {
@@ -27,19 +30,28 @@ function PostDetailed() {
 
   return (
     <>
-      {isLoading && <div>Loading...</div>}
+      {isLoading &&
+        (<Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>)}
       {
         <>
-          <h2>{post.title}</h2>
-          <h3>Author: {user.username}</h3>
+          <h1><strong>{post.title}</strong></h1>
+          <h5 className="text-muted">{user.username}</h5>
+          <Card>
+            <Card.Body>
+              <Card.Text>{post.content}</Card.Text>
+              {/* <Card.Link href="#">Card Link</Card.Link>
+              <Card.Link href="#">Another Link</Card.Link> */}
+            </Card.Body>
+          </Card>
           <div>
-            <p>{post.content}</p>
             <p>
-              <Link to={`/post?id=${parseInt(id) - 1}`}>Previous Post</Link> |{" "}
-              <Link to={`/posts`}>Posts</Link> |{" "}
+              <Link to={`/Posts/${parseInt(id) - 1}`}>Previous Post</Link>
             </p>
           </div>
-          <Comments postId={id} />
+          {post.commentsEnabled && <></>}
+          {<Comments postId={id} />}
         </>
       }
     </>
