@@ -8,7 +8,8 @@ Simple blog project
 - Swagger
 - AutoMapper
 - BCrypt
-- React.js (Too soon)
+- React.js
+- Bootstrap
 
 ## Features
 - 5 Layered architecture ( API, Business, Data Access, Entities, Web )
