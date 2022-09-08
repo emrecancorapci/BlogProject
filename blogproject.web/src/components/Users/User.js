@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from 'axios';
 
 function User() {
   const [isLoading, setIsLoading] = useState(true);
+  
   // const emptyUser = {
   //   id: 2,
   //   username: "Admin",
@@ -15,15 +16,16 @@ function User() {
   //   profilePictureUrl: "https://visualpharm.com/assets/314/Admin-595b40b65ba036ed117d36fe.svg",
   //   birthDate: "2022-09-02T12:10:19.414Z"
   // }
+
   const [user, setUser] = useState([]);
-  const [searchParams] = useSearchParams();
+  const { id } = useParams();
+
   useEffect(() => {
-    const id = searchParams.get('id') || '';
     axios(`https://localhost:7169/api/Users/${id}`)
       .then((response) => setUser(response.data))
       .catch(event => console.log(event))
       .finally(() => setIsLoading(false)); // Set loading false
-  }, [searchParams]);
+  }, [id]);
   return (<>
     {isLoading && <div>Loading...</div>}
     {<>

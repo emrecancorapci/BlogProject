@@ -16,7 +16,7 @@ import Spinner from 'react-bootstrap/Spinner';
 
 function Comments({ postId }) {
   const [isLoading, setIsLoading] = useState(true);
-  const [id, setId] = useState(postId);
+  const [id] = useState(postId);
 
   const [comments, setComments] = useState([]);
 
@@ -46,7 +46,7 @@ function Comments({ postId }) {
         </Stack>
       </Container>}
       <h3>Add Comment</h3>
-      <AddComment postId={id} setId={setId} />
+      <AddComment postId={id} />
     </>
   );
 }

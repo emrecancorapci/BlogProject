@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
 import axios from 'axios';
 
 import Spinner from 'react-bootstrap/Spinner';
+import PostCard from './PostCard';
+import Stack from 'react-bootstrap/Stack';
 
 function Posts() {
     const [posts, setPosts] = useState([]);
@@ -42,15 +43,15 @@ function Posts() {
         <br />
         <div>
             {isLoading &&
-                (<Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner>)}
+                (<Spinner animation="border" role="status" />)}
 
-            {filtered.map((post, index) =>
-                <div key={index}>
-                    <Link to={`/Posts/${post.id}`}>{post.title}</Link>
-                    <p>{post.postSummary}</p>
-                </div>)}
+            {<Stack gap={3}>
+                {filtered.map((post, index) =>
+                    <div key={index}>
+                        <PostCard post={post} />
+                    </div>
+                )}
+            </Stack>}
         </div>
     </>)
 }

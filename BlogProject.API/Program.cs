@@ -77,7 +77,7 @@ builder.Services.AddDbContext<BlogProjectDbContext>(
         optionsBuilder.UseNpgsql(connectionString);
 
         optionsBuilder.EnableDetailedErrors(isDevelopment);
-        optionsBuilder.EnableSensitiveDataLogging(isDevelopment);
+        optionsBuilder.EnableSensitiveDataLogging(false);
     });
 
 // Repositories

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios';
 
-function AddComment({ postId, setId }) {
+function AddComment({ postId, parentId }) {
   const emptyComment = {
     content: "",
     postId: postId,
@@ -14,19 +14,18 @@ function AddComment({ postId, setId }) {
     setForm({ ...form, [event.target.name]: event.target.value });
   }
   const onSubmitForm = (event) => {
-    // Prevent page refresh when form send
     event.preventDefault();
-    // Empty field check
+
     if (form.content === "") {
       console.log("Fill all the fields.");
       return false;
     }
-    // Use function that got from Contacts
-    // to save the form data
-    axios.post('https://localhost:7169/api/Comments', form)
+
+    const api = 'https://localhost:7169/api/Comments';
+
+    axios.post(api, form)
       .then(function (response) { return response; })
       .catch(function (error) { return error; });
-    setId(postId);
     console.log("Submit");
   }
   return (<>
@@ -48,8 +47,15 @@ function AddComment({ postId, setId }) {
           name="authorId"
           value={form.authorId}
           hidden />
+        {/* {parentId != null && <></>}
+        {<input
+          type="text"
+          name="parentId"
+          value={form.parentId}
+          hidden />
+        } */}
       </div>
-      <div class="btn">
+      <div className="btn">
         <button>Add</button>
       </div>
     </form>
