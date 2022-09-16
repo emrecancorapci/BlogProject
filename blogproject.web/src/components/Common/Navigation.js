@@ -1,11 +1,13 @@
-import { LinkContainer } from 'react-router-bootstrap';
+import {LinkContainer} from 'react-router-bootstrap';
+import React from 'react';
 
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 // import NavDropdown from 'react-bootstrap/NavDropdown';
 
-function Navigation({ title }) {
+
+function Navigation({title}) {
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
@@ -39,7 +41,7 @@ function Navigation({ title }) {
         </Navbar.Collapse>
       </Container>
     </Navbar>
-  )
+  );
 }
 
-export default Navigation
+export default Navigation;

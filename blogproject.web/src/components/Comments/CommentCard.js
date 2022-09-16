@@ -1,48 +1,43 @@
 import axios from 'axios';
+import React from 'react';
+import {Card, Row, Col} from 'react-bootstrap';
 
-import GetUserName from "../Users/GetUserName";
-
-// Bootstrap
-import Card from 'react-bootstrap/Card';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import GetUserName from '../Users/GetUserName';
 
 // TODO Implement comment delete
 
-function CommentCard({ comment }) {
-
+function CommentCard({comment}) {
   const onClickDelete = (id) => {
-    
-    const data = JSON.parse(sessionStorage.getItem("login"));
+    const data = JSON.parse(sessionStorage.getItem('login'));
 
-    if(data == null)
-    {
-      console.log("Please Login!")
-      return
+    if (data == null) {
+      console.log('Please Login!');
+      return;
     }
-    const api = `https://localhost:7169/api/Comments/${id}`
-    const headers = {headers: {"Authorization": `Bearer ${data.token}`}};
+
+    const api = `https://localhost:7169/api/Comments/${id}`;
+    const headers = {headers: {'Authorization': `Bearer ${data.token}`}};
 
     axios.delete(api, headers)
-      .then(response => console.log(response))
-      .then(request => console.log(request))
-      .catch((event) => console.log(event));
+        .then((request) => console.log(request))
+        .catch((event) => console.log(event));
+  };
 
-  }
-  
   return (
     <Card>
       <Card.Header>
-    	<Row>
+        <Row>
           <Col>
-            <strong className="me-auto"><GetUserName id={comment.authorId} /></strong>
+            <strong className="me-auto">
+              <GetUserName id={comment.authorId} />
+            </strong>
           </Col>
 
           <Col md="auto">
             <small className="text-muted">
               {comment.created.substr(0, 10)} - {comment.created.substr(11, 8)}
             </small>
-          </Col>  
+          </Col>
 
         </Row>
       </Card.Header>
@@ -57,7 +52,7 @@ function CommentCard({ comment }) {
       </Card.Body>
       <Card.Footer className="text-muted text-center"></Card.Footer>
     </Card>
-  )
+  );
 }
 
-export default CommentCard
+export default CommentCard;

@@ -1,34 +1,34 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 
 function Login() {
   const [form, setForm] = useState([]);
   const [token, setToken] = useState([]);
 
   useEffect(() => {
-    sessionStorage.setItem("login", JSON.stringify(token));
-    console.log(token)
-  }, [token])
+    sessionStorage.setItem('login', JSON.stringify(token));
+    console.log(token);
+  }, [token]);
 
   const onChangeInput = (event) => {
-    setForm({ ...form, [event.target.name]: event.target.value });
+    setForm({...form, [event.target.name]: event.target.value});
   };
 
   const onSubmitForm = (event) => {
     event.preventDefault();
 
-    const api = "https://localhost:7169/api/Users/Login";
+    const api = 'https://localhost:7169/api/Users/Login';
 
-    if (form.username === "" || form.password === "") {
-      console.log("Fill all the fields.");
+    if (form.username === '' || form.password === '') {
+      console.log('Fill all the fields.');
       return false;
     }
 
     axios.post(api, form)
-      .then((response) => setToken(response.data))
-      .catch((event) => console.log(event))
+        .then((response) => setToken(response.data))
+        .catch((event) => console.log(event));
 
-    console.log("Submit");
+    console.log('Submit');
   };
 
   return (

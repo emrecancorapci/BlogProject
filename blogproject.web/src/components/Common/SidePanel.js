@@ -1,4 +1,5 @@
-import ListGroup from 'react-bootstrap/ListGroup';
+import {ListGroup} from 'react-bootstrap';
+import React from 'react';
 
 function SidePanel() {
   return (
@@ -9,7 +10,7 @@ function SidePanel() {
       <ListGroup.Item>Listgroup texts here</ListGroup.Item>
       <ListGroup.Item>Listgroup texts here</ListGroup.Item>
     </ListGroup>
-  )
+  );
 }
 
-export default SidePanel
+export default SidePanel;

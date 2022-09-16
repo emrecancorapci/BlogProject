@@ -1,10 +1,10 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { LinkContainer } from 'react-router-bootstrap';
+import React, {useEffect, useState} from 'react';
+import {LinkContainer} from 'react-router-bootstrap';
+import axios from 'axios';
+import {Col, Row, Popover, OverlayTrigger, Button} from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
-import { Col, Row, Popover, OverlayTrigger, Button } from "react-bootstrap";
-
-function GetUserName({ id }) {
+function GetUserName({id}) {
   const [user, setUser] = useState([]);
 
   const popover = (
@@ -14,8 +14,8 @@ function GetUserName({ id }) {
           <Col sm={2}>
             <img
               style={{
-                height: "22px",
-                width: "22px",
+                height: '22px',
+                width: '22px',
               }}
               src={user.profilePictureUrl}
               className="rounded me-2 popover-img"
@@ -36,9 +36,9 @@ function GetUserName({ id }) {
           {user.about}
         </Row>
         <Row sm="auto">
-        <Col></Col>
+          <Col></Col>
           <Col sm="auto">
-            <LinkContainer to={`/Users/${id}`} style={{ cursor: 'pointer' }}>
+            <LinkContainer to={`/Users/${id}`} style={{cursor: 'pointer'}}>
               <Button variant="primary" size="sm">
                 Show Profile
               </Button>
@@ -52,8 +52,8 @@ function GetUserName({ id }) {
 
   useEffect(() => {
     axios(`https://localhost:7169/api/Users/${id}`)
-      .then((response) => setUser(response.data))
-      .catch((event) => console.log(event));
+        .then((response) => setUser(response.data))
+        .catch((event) => console.log(event));
   }, [id]);
 
   return (
@@ -69,7 +69,7 @@ function GetUserName({ id }) {
       </Col>
       <Col></Col>
     </Row>
-  )
+  );
 }
 
 export default GetUserName;

@@ -1,33 +1,38 @@
-import { useState } from 'react'
+import {useState} from 'react';
+import React from 'react';
 import axios from 'axios';
 
-function AddComment({ postId, parentId }) {
+function AddComment({postId, parentId}) {
   const emptyComment = {
-    content: "",
+    content: '',
     postId: postId,
     authorId: 2,
-    parentId: null
-  }
+    parentId: null,
+  };
 
-  const [form, setForm] = useState(emptyComment)
+  const [form, setForm] = useState(emptyComment);
   const onChangeInput = (event) => {
-    setForm({ ...form, [event.target.name]: event.target.value });
-  }
+    setForm({...form, [event.target.name]: event.target.value});
+  };
   const onSubmitForm = (event) => {
     event.preventDefault();
 
-    if (form.content === "") {
-      console.log("Fill all the fields.");
+    if (form.content === '') {
+      console.log('Fill all the fields.');
       return false;
     }
 
     const api = 'https://localhost:7169/api/Comments';
 
     axios.post(api, form)
-      .then(function (response) { return response; })
-      .catch(function (error) { return error; });
-    console.log("Submit");
-  }
+        .then(function(response) {
+          return response;
+        })
+        .catch(function(error) {
+          return error;
+        });
+    console.log('Submit');
+  };
   return (<>
     <form onSubmit={onSubmitForm}>
       <div>
@@ -60,7 +65,7 @@ function AddComment({ postId, parentId }) {
       </div>
     </form>
   </>
-  )
+  );
 }
 
-export default AddComment
+export default AddComment;

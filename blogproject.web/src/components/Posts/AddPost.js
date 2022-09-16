@@ -1,31 +1,35 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import React, {useState} from 'react';
+import {Link} from 'react-router-dom';
+import axios from 'axios';
 
 function AddPost() {
   const [form, setForm] = useState([]);
 
   const onChangeInput = (event) => {
-    setForm({ ...form, [event.target.name]: event.target.value });
+    setForm({...form, [event.target.name]: event.target.value});
   };
 
   const onSubmitForm = (event) => {
     // Prevent page refresh when form send
     event.preventDefault();
 
-    const api = "https://localhost:7169/api/Posts";
+    const api = 'https://localhost:7169/api/Posts';
 
     // Empty field check
-    if (form.title === "" || form.content === "") {
-      console.log("Fill all the fields.");
+    if (form.title === '' || form.content === '') {
+      console.log('Fill all the fields.');
       return false;
     }
 
     axios.post(api, form)
-      .then((response) => { return response;})
-      .catch((error) => {return error;});
+        .then((response) => {
+          return response;
+        })
+        .catch((error) => {
+          return error;
+        });
 
-    console.log("Submit");
+    console.log('Submit');
   };
 
   return (
@@ -87,7 +91,7 @@ function AddPost() {
         <input type="number" name="categoryId" value={1} hidden />
         <input type="number" name="authorId" value={2} hidden />
 
-        <div class="btn">
+        <div className="btn">
           <button>Add</button>
         </div>
       </form>

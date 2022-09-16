@@ -1,20 +1,10 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import AddComment from "./AddComment";
-import CommentCard from "./CommentCard";
+import React, {useEffect, useState} from 'react';
+import {Container, Row, Col, Stack, Spinner} from 'react-bootstrap';
+import axios from 'axios';
+import AddComment from './AddComment';
+import CommentCard from './CommentCard';
 
-
-// Bootstrap
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Stack from 'react-bootstrap/Stack';
-
-import Spinner from 'react-bootstrap/Spinner';
-
-
-
-function Comments({ postId }) {
+function Comments({postId}) {
   const [isLoading, setIsLoading] = useState(true);
   const [id] = useState(postId);
 
@@ -23,9 +13,9 @@ function Comments({ postId }) {
   // FETCHING
   useEffect(() => {
     axios(`https://localhost:7169/api/Posts/${id}/Comments`)
-      .then((response) => setComments(response.data))
-      .catch((event) => console.log(event)) // Error logging
-      .finally(() => setIsLoading(false)); // Set loading false
+        .then((response) => setComments(response.data))
+        .catch((event) => console.log(event)) // Error logging
+        .finally(() => setIsLoading(false)); // Set loading false
   }, [id]);
 
   return (

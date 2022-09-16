@@ -1,16 +1,17 @@
-import { LinkContainer } from 'react-router-bootstrap';
+import React from 'react';
+import {LinkContainer} from 'react-router-bootstrap';
+import {Card} from 'react-bootstrap';
 
 import GetUserName from '../Users/GetUserName';
 
-import Card from 'react-bootstrap/Card';
 
-function PostCard({ post }) {
+function PostCard({post}) {
   return (<>
     <Card>
       <Card.Body>
-        <LinkContainer to={`/Posts/${post.id}`} style={{ cursor: 'pointer' }}>
+        <LinkContainer to={`/Posts/${post.id}`} style={{cursor: 'pointer'}}>
           <Card.Title>
-          <h3><strong>{post.title}</strong></h3>
+            <h3><strong>{post.title}</strong></h3>
           </Card.Title>
         </LinkContainer>
 
@@ -25,7 +26,7 @@ function PostCard({ post }) {
     <Card.Link href="#">Another Link</Card.Link> */}
       </Card.Body>
     </Card>
-  </>)
+  </>);
 }
 
-export default PostCard
+export default PostCard;
