@@ -2,7 +2,7 @@ import React from 'react';
 import {LinkContainer} from 'react-router-bootstrap';
 import {Card} from 'react-bootstrap';
 
-import GetUserName from '../Users/GetUserName';
+import GetUserName from '../User/UserHover';
 
 
 function PostCard({post}) {

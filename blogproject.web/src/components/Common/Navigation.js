@@ -1,9 +1,6 @@
-import {LinkContainer} from 'react-router-bootstrap';
 import React from 'react';
-
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
+import {LinkContainer} from 'react-router-bootstrap';
+import {Container, Nav, Navbar} from 'react-bootstrap';
 // import NavDropdown from 'react-bootstrap/NavDropdown';
 
 
@@ -19,9 +16,6 @@ function Navigation({title}) {
           <Nav className="me-auto">
             <LinkContainer to={`/`}>
               <Nav.Link>Home</Nav.Link>
-            </LinkContainer>
-            <LinkContainer to={`/Posts/Add`}>
-              <Nav.Link>New Post</Nav.Link>
             </LinkContainer>
             <LinkContainer to={`/login`}>
               <Nav.Link>Login</Nav.Link>

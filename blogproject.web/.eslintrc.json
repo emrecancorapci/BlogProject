@@ -18,6 +18,8 @@
     ],
     "rules": {
         "valid-jsdoc": "off",
-        "require-jsdoc" : "off"
+        "require-jsdoc" : "off",
+        "react/prop-types" : "off",
+        "linebreak-style" : "off"
     }
 }

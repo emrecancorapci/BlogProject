@@ -2,17 +2,23 @@ import React, {Routes, Route} from 'react-router-dom';
 import {Container, Stack, Row, Col, Card} from 'react-bootstrap';
 import './App.css';
 
-import Posts from './components/Posts';
-import PostDetailed from './components/Posts/PostDetailed';
-import AddPost from './components/Posts/AddPost';
-import User from './components/Users/User';
-import Login from './components/Users/Login';
-import Navigation from './components/Common/Navigation';
-import SidePanel from './components/Common/SidePanel';
-import NotFound from './components/Common/NotFound';
+import NotFound from './Pages/Common/NotFound';
+
+import Posts from './Pages/Posts';
+import SinglePost from './Pages/Posts/SinglePost';
+import AddPost from './Pages/Posts/AddPost';
+import User from './Pages/Users/User';
+import Login from './Pages/Login';
+
+import Navigation from './Components/Common/Navigation';
+import SidePanel from './Components/Common/SidePanel';
+
 
 function App() {
   const title = 'Yet Another Blog Project!';
+
+  // Add tabs to home page
+  // Posts / My Posts / New Post
 
   return (<>
     <Stack gap={3}>
@@ -25,7 +31,7 @@ function App() {
             <Card body>
               <Routes>
                 <Route path="/" element={<Posts />} />
-                <Route path="Posts/:id" element={<PostDetailed />} />
+                <Route path="Posts/:id" element={<SinglePost />} />
                 <Route path="Posts/Add" element={<AddPost />} />
                 <Route path="Users/:id" element={<User />} />
                 <Route path="Login" element={<Login />} />

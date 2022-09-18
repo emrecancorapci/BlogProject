@@ -1,23 +1,25 @@
 import React, {useState} from 'react';
-import {Link} from 'react-router-dom';
 import axios from 'axios';
+// import {Alert} from 'react-bootstrap';
+
 
 function AddPost() {
   const [form, setForm] = useState([]);
+  // const [errorText, setErrorText] = useState('');
+  // const [error, setError] = useState(false);
 
   const onChangeInput = (event) => {
     setForm({...form, [event.target.name]: event.target.value});
   };
 
   const onSubmitForm = (event) => {
-    // Prevent page refresh when form send
     event.preventDefault();
 
-    const api = 'https://localhost:7169/api/Posts';
+    const api='https://localhost:7169/api/Posts';
 
-    // Empty field check
     if (form.title === '' || form.content === '') {
-      console.log('Fill all the fields.');
+      setError(true);
+      setErrorText('Fill all the fields.');
       return false;
     }
 
@@ -91,11 +93,15 @@ function AddPost() {
         <input type="number" name="categoryId" value={1} hidden />
         <input type="number" name="authorId" value={2} hidden />
 
+        {/* {!error && <></>}
+        {<Alert key={variant} variant={variant}>
+          {errorText}
+        </Alert>} */}
+
         <div className="btn">
           <button>Add</button>
         </div>
       </form>
-      <Link to={`/Posts`}>Back to Post</Link>
     </>
   );
 }

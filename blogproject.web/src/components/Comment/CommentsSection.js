@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Container, Row, Col, Stack, Spinner} from 'react-bootstrap';
 import axios from 'axios';
-import AddComment from './AddComment';
+import {Container, Row, Col, Stack, Spinner} from 'react-bootstrap';
 import CommentCard from './CommentCard';
 
-function Comments({postId}) {
+function CommentsSection({postId}) {
   const [isLoading, setIsLoading] = useState(true);
   const [id] = useState(postId);
 
@@ -20,11 +19,8 @@ function Comments({postId}) {
 
   return (
     <>
-      <h2><strong>Comments</strong></h2>
       {isLoading &&
-        (<Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>)}
+        (<Spinner animation="border" role="status" />)}
 
       {<Container fluid>
         <Stack gap={3}>{
@@ -35,10 +31,8 @@ function Comments({postId}) {
             </Row>))}
         </Stack>
       </Container>}
-      <h3>Add Comment</h3>
-      <AddComment postId={id} />
     </>
   );
 }
 
-export default Comments;
+export default CommentsSection;

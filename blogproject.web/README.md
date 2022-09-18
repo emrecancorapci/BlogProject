@@ -71,12 +71,13 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ### Package Installations
 
-- npm install create-react-app
-- npm install react-router-dom@6
-- npm install axios
-- npm install react-router-bootstrap
-- npm install react-bootstrap bootstrap
-- npm i --save @fortawesome/fontawesome-svg-core
-- npm i --save @fortawesome/free-solid-svg-icons
-- npm i --save @fortawesome/free-regular-svg-icons
-- npm i --save @fortawesome/react-fontawesome@latest
+- npm i create-react-app
+- npm i react-router-dom@6
+- npm i axios
+- npm i formik
+- npm i react-bootstrap bootstrap
+- npm i react-router-bootstrap
+- npm i @fortawesome/fontawesome-svg-core
+- npm i @fortawesome/free-solid-svg-icons
+- npm i @fortawesome/free-regular-svg-icons
+- npm i @fortawesome/react-fontawesome@latest

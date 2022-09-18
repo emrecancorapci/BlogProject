@@ -1,39 +1,38 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
-import {Spinner, Card} from 'react-bootstrap';
 import axios from 'axios';
-import PropTypes from 'prop-types';
+import {useParams} from 'react-router-dom';
+import {Row, Col, Spinner, Card} from 'react-bootstrap';
 
-import Comments from '../Comments/Comments';
-import GetUserName from '../Users/GetUserName';
+import CommentsSection from '../../Components/Comment/CommentsSection';
+import UserHover from '../../Components/User/UserHover';
+import AddComment from '../../Components/Comment/AddComment';
 
-function PostDetailed() {
+function SinglePost() {
   const [isLoading, setIsLoading] = useState(true);
-
   const [post, setPost] = useState([]);
-  const [, setUser] = useState([]);
-
   const {id} = useParams();
 
   useEffect(() => {
     axios(`https://localhost:7169/api/Posts/${id}`)
         .then((response) => setPost(response.data))
-        .catch((event) => console.log(event));
+        .catch((event) => console.log(event))
+        .finally(() => setIsLoading(false));
   }, [id]);
 
-  useEffect(() => {
-    axios(`https://localhost:7169/api/Users/${post.authorId}`)
-        .then((response) => setUser(response.data))
-        .catch((event) => console.log(event))
-        .finally(() => setIsLoading(false)); // Set loading false
-  }, [post]);
 
   return (<>
     {isLoading &&
         (<Spinner animation="border" role="status" />)}
     {<>
-      <h1><strong>{post.title}</strong></h1>
-      <h5 className="text-muted"><GetUserName id={post.authorId} /></h5>
+      <Row>
+        <h1><strong>{post.title}</strong></h1>
+      </Row>
+      <Row>
+        <Col lg="auto">
+          <h5 className="text-muted"><UserHover id={post.authorId} /></h5>
+        </Col>
+        <Col></Col>
+      </Row>
       <Card>
         <Card.Body>
           <Card.Text>{post.content}</Card.Text>
@@ -47,9 +46,14 @@ function PostDetailed() {
             </p>
           </div> */}
       {post.commentsEnabled && <></>}
-      {<Comments postId={id} />}
+      {<>
+        <h2><strong>Comments</strong></h2>
+        <CommentsSection postId={id} />
+        <h3><strong>Add Comment</strong></h3>
+        <AddComment postId={id} />
+      </>}
     </>}
   </>);
 }
 
-export default PostDetailed;
+export default SinglePost;
