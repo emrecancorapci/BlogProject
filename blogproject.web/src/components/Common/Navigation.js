@@ -1,10 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {LinkContainer} from 'react-router-bootstrap';
-import {Container, Nav, Navbar} from 'react-bootstrap';
+import {Container, Nav, Navbar, Button} from 'react-bootstrap';
+
 // import NavDropdown from 'react-bootstrap/NavDropdown';
 
+function Navigation({title, auth, setAuth}) {
+  const onClickLogout = () => {
+    sessionStorage.removeItem('user');
+    setAuth(false);
+  };
 
-function Navigation({title}) {
+  useEffect(() => {
+    setAuth(auth);
+  }, [auth]);
+
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
@@ -17,9 +26,19 @@ function Navigation({title}) {
             <LinkContainer to={`/`}>
               <Nav.Link>Home</Nav.Link>
             </LinkContainer>
+            {!auth &&
             <LinkContainer to={`/login`}>
               <Nav.Link>Login</Nav.Link>
-            </LinkContainer>
+            </LinkContainer>}
+            {auth &&
+            <Navbar.Collapse className="justify-content-end">
+              <Button
+                variant='light'
+                onClick={() => onClickLogout()}>
+                Logout
+              </Button>
+            </Navbar.Collapse>
+            }
             {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">

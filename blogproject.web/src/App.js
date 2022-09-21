@@ -1,5 +1,7 @@
-import React, {Routes, Route} from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {Routes, Route} from 'react-router-dom';
 import {Container, Stack, Row, Col, Card} from 'react-bootstrap';
+import {getUser} from './Functions/User';
 import './App.css';
 
 import NotFound from './Pages/Common/NotFound';
@@ -17,13 +19,23 @@ import SidePanel from './Components/Common/SidePanel';
 function App() {
   const title = 'Yet Another Blog Project!';
 
+  const [auth, setAuth] = useState(false);
+
+  useEffect(() => {
+    const user = getUser();
+
+    if (user !== null) {
+      setAuth(true);
+    }
+  }, [auth]);
+
   // Add tabs to home page
   // Posts / My Posts / New Post
 
   return (<>
     <Stack gap={3}>
       <Row>
-        <Navigation title={title} />
+        <Navigation title={title} auth={auth} setAuth={setAuth}/>
       </Row>
       <Container>
         <Row className="justify-content-md-center">
@@ -34,7 +46,7 @@ function App() {
                 <Route path="Posts/:id" element={<SinglePost />} />
                 <Route path="Posts/Add" element={<AddPost />} />
                 <Route path="Users/:id" element={<User />} />
-                <Route path="Login" element={<Login />} />
+                <Route path="Login" element={<Login setAuth={setAuth} />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Card>

@@ -1,13 +1,17 @@
 import React from 'react';
-import {Card, Row, Col, Button} from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import {Card, Row, Col} from 'react-bootstrap';
 
 import UserHover from '../User/UserHover';
-import onDeleteComment from './onDeleteComment';
+import CommentDeleteButton from './CommentDeleteButton';
 
 // DONE Implement comment delete
 // TODO Implement comment edit
 
-function CommentCard({comment}) {
+function CommentCard({comment, user}) {
+  const isAuth = user != null &&
+    (user.id === comment.authorId || user.Role === 'Admin');
+
   return (
     <Card>
       <Card.Header>
@@ -28,21 +32,25 @@ function CommentCard({comment}) {
         <Card.Text>
           <Row>
             <Col>{comment.content}</Col>
-            <Col md="auto">
-              <Button
-                variant="primary"
-                onClick={() => onDeleteComment(comment.id)}>
-                Delete
-              </Button>
-            </Col>
-          </Row>
 
+            {isAuth &&
+            <Col md="auto">
+              <CommentDeleteButton id={comment.id}/>
+            </Col>}
+          </Row>
         </Card.Text>
-        {/* <Button variant="primary">Go somewhere</Button> */}
       </Card.Body>
-      <Card.Footer className="text-muted text-center"></Card.Footer>
+      {/* <Card.Footer className="text-muted text-center"></Card.Footer> */}
     </Card>
   );
 }
+
+CommentCard.propType = {
+  comment: PropTypes.object,
+  id: PropTypes.number,
+  authorId: PropTypes.number,
+  content: PropTypes.string,
+
+};
 
 export default CommentCard;

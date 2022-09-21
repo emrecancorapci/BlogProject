@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import {Container, Row, Col, Stack, Spinner} from 'react-bootstrap';
+import {Row, Col, Stack, Spinner} from 'react-bootstrap';
+import {getUser} from '../../Functions/User';
+
 import CommentCard from './CommentCard';
 
 function CommentsSection({postId}) {
   const [isLoading, setIsLoading] = useState(true);
   const [id] = useState(postId);
+  const user = getUser();
 
   const [comments, setComments] = useState([]);
 
@@ -22,15 +25,15 @@ function CommentsSection({postId}) {
       {isLoading &&
         (<Spinner animation="border" role="status" />)}
 
-      {<Container fluid>
-        <Stack gap={3}>{
-          comments.map((comment, index) => (
-            <Row key={index}>
-              <Col lg={8}><CommentCard comment={comment} /></Col>
-              <Col></Col>
-            </Row>))}
-        </Stack>
-      </Container>}
+      {<Stack gap={3}>{
+        comments.map((comment, index) => (
+          <Row key={index}>
+            <Col lg={8}>
+              <CommentCard comment={comment} user={user} />
+            </Col>
+            <Col></Col>
+          </Row>))}
+      </Stack>}
     </>
   );
 }

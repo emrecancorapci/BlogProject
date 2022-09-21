@@ -76,7 +76,7 @@ builder.Services.AddDbContext<BlogProjectDbContext>(
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
         optionsBuilder.UseNpgsql(connectionString);
 
-        optionsBuilder.EnableDetailedErrors(isDevelopment);
+        optionsBuilder.EnableDetailedErrors(false);
         optionsBuilder.EnableSensitiveDataLogging(false);
     });
 

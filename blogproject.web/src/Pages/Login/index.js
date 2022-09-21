@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 
-function Login() {
+function Login({setAuth}) {
   const [form, setForm] = useState([]);
   const [token, setToken] = useState([]);
 
   useEffect(() => {
-    sessionStorage.setItem('login', JSON.stringify(token));
+    sessionStorage.setItem('user', JSON.stringify(token));
     console.log(token);
   }, [token]);
 
@@ -27,6 +27,8 @@ function Login() {
     axios.post(api, form)
         .then((response) => setToken(response.data))
         .catch((event) => console.log(event));
+
+    setAuth(true);
 
     console.log('Submit');
   };
