@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {LinkContainer} from 'react-router-bootstrap';
 import {Container, Nav, Navbar, Button} from 'react-bootstrap';
 
@@ -9,10 +9,6 @@ function Navigation({title, auth, setAuth}) {
     sessionStorage.removeItem('user');
     setAuth(false);
   };
-
-  useEffect(() => {
-    setAuth(auth);
-  }, [auth]);
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg">

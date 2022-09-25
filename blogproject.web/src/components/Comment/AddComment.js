@@ -2,14 +2,13 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import {Alert} from 'react-bootstrap';
-import {getUser} from '../../Functions/User';
+import {getToken} from '../../Functions/User';
 
 function AddComment({postId, parentId}) {
   const [form, setForm] = useState([]);
   const [emptyError, setEmptyError] = useState('');
 
-  const user = getUser();
-
+  const user = getToken();
 
   const onChangeInput = (event) => {
     if (event.target.name === 'content') {

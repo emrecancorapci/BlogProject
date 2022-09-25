@@ -1,14 +1,30 @@
-function getUser() {
-  const data = JSON.parse(sessionStorage.getItem('user'));
+import axios from 'axios';
+// TODO Not woking
+function getUser(id) {
+  console.log(`Getting user(${id}).`);
+  let data = JSON.parse(sessionStorage.getItem('usersdata'));
 
-  console.log('Getting user!');
+  if (data) {
+    console.log(data);
 
-  if (data === null) {
-    console.log('You must login to see this page.');
-    return null;
-  } else {
-    return data;
-  }
-}
+    data.forEach((userdata, index) => {
+      if (userdata.id == id) {
+        console.log(`User founded in storage. (${index})`);
+        return userdata;
+      }
+    });
+  };
+
+  axios(`https://localhost:7169/api/Users/${id}`)
+      .catch((event) => console.log(event))
+      .then((response) => {
+        if (!data) {
+          data = [];
+        }
+        data.push(response.data);
+        sessionStorage.setItem('usersdata', JSON.stringify(data));
+        return userdata;
+      });
+};
 
 export default getUser;

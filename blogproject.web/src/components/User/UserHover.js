@@ -8,6 +8,12 @@ import {Container, Stack} from 'react-bootstrap';
 function UserHover({id}) {
   const [user, setUser] = useState([]);
 
+  useEffect(() => {
+    axios(`https://localhost:7169/api/Users/${id}`)
+        .then((response) => setUser(response.data))
+        .catch((event) => console.log(event));
+  }, [id]);
+
   const popover = (
     <Popover id="popover-basic">
       <Popover.Header>
@@ -48,12 +54,6 @@ function UserHover({id}) {
       </Popover.Body>
     </Popover>
   );
-
-  useEffect(() => {
-    axios(`https://localhost:7169/api/Users/${id}`)
-        .then((response) => setUser(response.data))
-        .catch((event) => console.log(event));
-  }, [id]);
 
   return (
     <OverlayTrigger trigger="click" placement="right" overlay={popover}>

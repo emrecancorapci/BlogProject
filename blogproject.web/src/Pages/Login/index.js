@@ -29,7 +29,6 @@ function Login({setAuth}) {
         .catch((event) => console.log(event));
 
     setAuth(true);
-
     console.log('Submit');
   };
 

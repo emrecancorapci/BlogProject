@@ -1,11 +1,12 @@
-function getAuthHeader() {
-  const data = getUser();
+import getToken from './getToken';
 
-  if (data === null) {
-    return null;
-  } else {
+function getAuthHeader() {
+  const data = getToken();
+
+  if (data) {
     return {headers: {'Authorization': `Bearer ${data.token}`}};
   }
+  return null;
 }
 
 export default getAuthHeader;

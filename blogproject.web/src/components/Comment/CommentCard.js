@@ -3,15 +3,10 @@ import PropTypes from 'prop-types';
 import {Card, Row, Col} from 'react-bootstrap';
 
 import UserHover from '../User/UserHover';
-import CommentDeleteButton from './CommentDeleteButton';
-
 // DONE Implement comment delete
 // TODO Implement comment edit
 
-function CommentCard({comment, user}) {
-  const isAuth = user != null &&
-    (user.id === comment.authorId || user.Role === 'Admin');
-
+function CommentCard({comment}) {
   return (
     <Card>
       <Card.Header>
@@ -32,11 +27,6 @@ function CommentCard({comment, user}) {
         <Card.Text>
           <Row>
             <Col>{comment.content}</Col>
-
-            {isAuth &&
-            <Col md="auto">
-              <CommentDeleteButton id={comment.id}/>
-            </Col>}
           </Row>
         </Card.Text>
       </Card.Body>

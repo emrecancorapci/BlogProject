@@ -17,9 +17,12 @@
         "react"
     ],
     "rules": {
-        "valid-jsdoc": "off",
+        "valid-jsdoc": "warn",
         "require-jsdoc" : "off",
         "react/prop-types" : "off",
-        "linebreak-style" : "off"
+        "linebreak-style" : "off",
+        "no-unused-vars" : "warn",
+        "object-curly-spacing" : "warn",
+        "max-len" : "warn"
     }
 }

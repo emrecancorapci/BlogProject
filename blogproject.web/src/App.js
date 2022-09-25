@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Routes, Route} from 'react-router-dom';
 import {Container, Stack, Row, Col, Card} from 'react-bootstrap';
-import {getUser} from './Functions/User';
+import {getToken} from './Functions/User';
 import './App.css';
 
 import NotFound from './Pages/Common/NotFound';
@@ -22,9 +22,9 @@ function App() {
   const [auth, setAuth] = useState(false);
 
   useEffect(() => {
-    const user = getUser();
+    const user = getToken();
 
-    if (user !== null) {
+    if (user) {
       setAuth(true);
     }
   }, [auth]);
@@ -52,7 +52,7 @@ function App() {
             </Card>
           </Col>
           <Col xl={3}>
-            <Row>
+            <Row style={{padding: '1rem'}}>
               <SidePanel />
             </Row>
           </Col>
