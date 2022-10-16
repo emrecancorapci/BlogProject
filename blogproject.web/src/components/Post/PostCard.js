@@ -1,32 +1,27 @@
-import React from 'react';
 import {LinkContainer} from 'react-router-bootstrap';
-import {Card} from 'react-bootstrap';
-
 import GetUserName from '../User/UserHover';
 
-
 function PostCard({post}) {
-  return (<>
-    <Card>
-      <Card.Body>
+  return (
+    <div className='card'>
+      <div className='card-body'>
         <LinkContainer to={`/Posts/${post.id}`} style={{cursor: 'pointer'}}>
-          <Card.Title>
+          <div className='card-title'>
             <h3><strong>{post.title}</strong></h3>
-          </Card.Title>
+          </div>
         </LinkContainer>
-
-        <Card.Text className='text-muted'>
+        <div className='card-subtitle'>
           <GetUserName id={post.authorId} />
-        </Card.Text>
-
-        <Card.Text>
+        </div>
+        <div className='card-text'>
           {post.postSummary}
-        </Card.Text>
-        {/* <Card.Link href="#">Card Link</Card.Link>
-    <Card.Link href="#">Another Link</Card.Link> */}
-      </Card.Body>
-    </Card>
-  </>);
+        </div>
+        {/*
+        <a href="#" class="card-link">Card link</a>
+        <a href="#" class="card-link">Another link</a>
+        */}
+      </div>
+    </div>);
 }
 
 export default PostCard;

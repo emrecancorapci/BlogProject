@@ -1,20 +1,16 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import {Alert} from 'react-bootstrap';
 import {getToken} from '../../Functions/User';
 
 function AddComment({postId, parentId}) {
   const [form, setForm] = useState([]);
-  const [emptyError, setEmptyError] = useState('');
+  const [emptyFieldError, setEmptyFieldError] = useState('');
 
   const user = getToken();
 
   const onChangeInput = (event) => {
-    if (event.target.name === 'content') {
-      setEmptyError('');
-    }
-
+    event.target.name === 'content' ? setEmptyFieldError(''):1;
     setForm({...form, [event.target.name]: event.target.value});
   };
 
@@ -27,7 +23,7 @@ function AddComment({postId, parentId}) {
 
     if (form.content === '') {
       console.log('Fill the comment field.');
-      setEmptyError(...'Fill the comment field.');
+      setEmptyFieldError(...'Fill the comment field.');
       return false;
     }
 
@@ -73,10 +69,10 @@ function AddComment({postId, parentId}) {
         </div>
       </div>}
 
-      {emptyError != '' &&
-      <Alert variant='danger'>
-        {emptyError}
-      </Alert>}
+      {emptyFieldError != '' &&
+      <div className='alert alert-danger'>
+        {emptyFieldError}
+      </div>}
     </form>
   </>
   );

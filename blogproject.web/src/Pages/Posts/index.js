@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import axios from 'axios';
-import {Spinner, Stack} from 'react-bootstrap';
 
 import PostCard from '../../Components/Post/PostCard';
 
@@ -36,20 +35,12 @@ function Posts() {
         value={filterText}
         onChange={onChangeFilter} />
     </div>
-    <br />
-    <div>
-      {isLoading &&
-        (<Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>)}
-      {<Stack gap={3}>
-        {filteredPosts.map((post, index) =>
-          <div key={index}>
-            <PostCard post={post} />
-          </div>,
-        )}
-      </Stack>}
-    </div>
+    {isLoading && (<div className='spinner-border' role='status'/>)}
+    {<div className='d-grid gap-3 pt-3'>{filteredPosts.map((post, index) =>
+      <div className='row' key={index}>
+        <PostCard post={post} />
+      </div>,
+    )}</div>}
   </>);
 }
 

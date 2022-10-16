@@ -9,6 +9,6 @@ function onDeleteComment(id) {
       .then((request) => console.log(request))
       .catch((event) => console.log(event));
   console.log('Delete comment end!');
-};
+}
 
 export default onDeleteComment;

@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {Routes, Route} from 'react-router-dom';
-import {Container, Stack, Row, Col, Card} from 'react-bootstrap';
 import {getToken} from './Functions/User';
 import './App.css';
 
@@ -23,42 +22,41 @@ function App() {
 
   useEffect(() => {
     const user = getToken();
-
-    if (user) {
-      setAuth(true);
-    }
+    user ? setAuth(true) : 1;
   }, [auth]);
 
   // Add tabs to home page
   // Posts / My Posts / New Post
 
   return (<>
-    <Stack gap={3}>
-      <Row>
+    <header>
+      <div className='row'>
         <Navigation title={title} auth={auth} setAuth={setAuth}/>
-      </Row>
-      <Container>
-        <Row className="justify-content-md-center">
-          <Col xl={7}>
-            <Card body>
-              <Routes>
-                <Route path="/" element={<Posts />} />
-                <Route path="Posts/:id" element={<SinglePost />} />
-                <Route path="Posts/Add" element={<AddPost />} />
-                <Route path="Users/:id" element={<User />} />
-                <Route path="Login" element={<Login setAuth={setAuth} />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Card>
-          </Col>
-          <Col xl={3}>
-            <Row style={{padding: '1rem'}}>
-              <SidePanel />
-            </Row>
-          </Col>
-        </Row>
-      </Container>
-    </Stack>
+      </div>
+    </header>
+
+    <div className='container' style={{padding: '1rem 0rem'}}>
+      <div className='row justify-content-center'>
+        <div className='col-lg-7 col-12'>
+          <main>
+            <Routes>
+              <Route path="/" element={<Posts />} />
+              <Route path="Posts/:id" element={<SinglePost />} />
+              <Route path="Posts/Add" element={<AddPost />} />
+              <Route path="Users/:id" element={<User />} />
+              <Route path="Login" element={<Login setAuth={setAuth} />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
+        </div>
+        <div className='col-lg-3 col-12'>
+          <div className='row' style={{padding: '1rem'}}>
+            <SidePanel/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer></footer>
   </>);
 }
 

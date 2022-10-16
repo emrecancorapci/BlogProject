@@ -74,7 +74,8 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 - npm i create-react-app
 - npm i react-router-dom@6
 - npm i axios
-- npm i formik
+- npm i bootstrap@v5.2.2
+- npm i react-popper @popperjs/core
 - npm i react-bootstrap bootstrap
 - npm i react-router-bootstrap
 - npm i @fortawesome/fontawesome-svg-core

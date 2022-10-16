@@ -1,6 +1,4 @@
-import React from 'react';
 import axios from 'axios';
-import {Button} from 'react-bootstrap';
 import {getAuthHeader} from '../../Functions/User';
 
 function CommentDeleteButton({id}) {
@@ -14,11 +12,11 @@ function CommentDeleteButton({id}) {
   };
 
   return (
-    <Button
-      variant="primary"
+    <button
+      className='btn btn-primary'
       onClick={() => onDeleteComment(id)}>
         Delete
-    </Button>
+    </button>
   );
 }
 

@@ -16,6 +16,10 @@
 # Mono auto generated files
 mono_crash.*
 
+# Docker
+Dockerfile
+.dockerignore
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -459,11 +463,13 @@ $RECYCLE.BIN/
 .idea/
 *.sln.iml
 
-##
-## Visual Studio Code
-##
+# Visual Studio Code
+
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Backup
+.backup/*

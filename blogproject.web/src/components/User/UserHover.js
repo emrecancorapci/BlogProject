@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import axios from 'axios';
 import {LinkContainer} from 'react-router-bootstrap';
-import {Col, Row, Popover, OverlayTrigger, Button} from 'react-bootstrap';
-import {Container, Stack} from 'react-bootstrap';
+import {Popover, OverlayTrigger} from 'react-bootstrap';
 
 
 function UserHover({id}) {
@@ -17,49 +16,42 @@ function UserHover({id}) {
   const popover = (
     <Popover id="popover-basic">
       <Popover.Header>
-        <Row className="align-items-center">
-          <Col lg="auto">
+        <div className="row align-items-center">
+          <div className='col-auto'>
             <img
               style={{
-                height: '32px',
-                width: '32px',
-              }}
+                height: '2rem',
+                width: '2rem'}}
               src={user.profilePictureUrl}
-              className="rounded me-2 popover-img"
-              alt=""
-            />
-            <strong className="me-auto">{user.name} {user.lastName}</strong>
-          </Col>
-        </Row>
+              alt={`${user.name}'s profile picture`}/>
+          </div>
+          <div className='col-auto'>
+            <b>{user.name} {user.lastName}</b>
+          </div>
+        </div>
       </Popover.Header>
       <Popover.Body>
-        <Container>
-          <Stack gap={2}>
-            <Row sm="auto">
-              {user.about}
-            </Row>
-            <Row>
-              <Col></Col>
-              <Col sm="auto">
-                <LinkContainer to={`/Users/${id}`} style={{cursor: 'pointer'}}>
-                  <Button variant="primary" size="sm">
+        <div className='row justify-content-center'>
+          {user.about}
+        </div>
+        <div className='row justify-content-center'>
+          <div className='col-auto pt-2'>
+            <LinkContainer to={`/Users/${id}`} style={{cursor: 'pointer'}}>
+              <button className='btn btn-primary btn-sm'>
                     Show Profile
-                  </Button>
-                </LinkContainer>
-              </Col>
-              <Col></Col>
-            </Row>
-          </Stack>
-        </Container>
+              </button>
+            </LinkContainer>
+          </div>
+        </div>
       </Popover.Body>
     </Popover>
   );
 
   return (
     <OverlayTrigger trigger="click" placement="right" overlay={popover}>
-      <strong>
+      <>
         {user.username}
-      </strong>
+      </>
     </OverlayTrigger>
   );
 }

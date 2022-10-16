@@ -1,5 +1,6 @@
 function getToken() {
-  return JSON.parse(sessionStorage.getItem('user'));
+  const storage = sessionStorage.getItem('user');
+  return storage ? JSON.parse(storage) : null;
 }
 
 export default getToken;

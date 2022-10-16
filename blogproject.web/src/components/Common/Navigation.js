@@ -1,8 +1,4 @@
-import React from 'react';
 import {LinkContainer} from 'react-router-bootstrap';
-import {Container, Nav, Navbar, Button} from 'react-bootstrap';
-
-// import NavDropdown from 'react-bootstrap/NavDropdown';
 
 function Navigation({title, auth, setAuth}) {
   const onClickLogout = () => {
@@ -11,45 +7,40 @@ function Navigation({title, auth, setAuth}) {
   };
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
-      <Container>
+    <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
+      <div className='container-fluid'>
         <LinkContainer to={`/`}>
-          <Navbar.Brand>{title}</Navbar.Brand>
+          <div className='navbar-brand'>{title}</div>
         </LinkContainer>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#headerNavbar"
+          aria-controls="headerNavbar"
+          aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"/>
+        </button>
+
+        <div className='collapse navbar-collapse' id='headerNavbar'>
+          <div className="navbar-nav me-auto">
             <LinkContainer to={`/`}>
-              <Nav.Link>Home</Nav.Link>
+              <div className='nav-link'>Home</div>
             </LinkContainer>
-            {!auth &&
-            <LinkContainer to={`/login`}>
-              <Nav.Link>Login</Nav.Link>
-            </LinkContainer>}
             {auth &&
-            <Navbar.Collapse className="justify-content-end">
-              <Button
-                variant='light'
+              <button className='btn btn-light'
                 onClick={() => onClickLogout()}>
                 Logout
-              </Button>
-            </Navbar.Collapse>
-            }
-            {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown> */}
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+              </button>}
+            {!auth &&
+              <LinkContainer to={`/login`}>
+                <div className='nav-link'>Login</div>
+              </LinkContainer>}
+          </div>
+        </div>
+      </div>
+    </nav>
   );
 }
 

@@ -1,9 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import axios from 'axios';
 import {useParams} from 'react-router-dom';
 import {getToken} from '../../Functions/User';
-import {Row, Col, Spinner, Container,
-  Card, Alert} from 'react-bootstrap';
 
 import CommentsSection from '../../Components/Comment/CommentsSection';
 import UserHover from '../../Components/User/UserHover';
@@ -26,52 +24,57 @@ function SinglePost() {
   }, [id]);
 
   return (<>
-    {isLoading &&
-        (<Spinner animation="border" role="status" />)}
-    {<>
-      <Row>
-        <h1><strong>{post.title}</strong></h1>
-      </Row>
-      <Row>
-        <Col lg="auto">
-          <h5 className="text-muted">
-            <UserHover id={post.authorId} />
-          </h5>
-        </Col>
-        <Col></Col>
-      </Row>
-      <Row style={{padding: '1rem 1rem'}}>
-        <Card>
-          <Card.Body>
-            <Card.Text>{post.content}</Card.Text>
-          </Card.Body>
-        </Card>
-      </Row>
-      <Row>
-        <h2 style={{fontWeight: 'bold'}}>
-          Comments
-        </h2>
-        <Container fluid>
+    {isLoading && <div className='spinner-border' role='status' />}
+    {<div className='container'>
+      <article>
+        {/* Title Section */}
+        <section>
+          <title className='row'>
+            <h1 className='fw-bold'>{post.title}</h1>
+          </title>
+          <author className='row'>
+            <div className='col-auto'>
+              <h5 className="text-muted fw-bold">
+                <UserHover id={post.authorId} />
+              </h5>
+            </div>
+          </author>
+        </section>
+        {/* Content Section */}
+        <section className='row p-2 pb-3'>
+          <div className='card'>
+            <div className='card-body'>
+              <content className='card-text'>
+                {post.content}
+              </content>
+            </div>
+          </div>
+        </section>
+        {/* Comments Section */}
+        <section className='row'>
+          <h2 className='fw-bold'>
+                Comments
+          </h2>
           <CommentsSection id={id} />
-        </Container>
-      </Row>
+        </section>
+      </article>
+      {/* Add Comment Section */}
       {post.commentsEnabled &&
-      <Row style={{padding: '1rem 0rem'}}>
-        {user &&
-        <div>
-          <h3 style={{fontWeight: 'bold'}}>
-            Add Comment
-          </h3>
-          <AddComment postId={id} />
+        <div className='pt-3'>
+          {user &&
+          <div>
+            <h3 className='fw-bold'>
+              Add Comment
+            </h3>
+            <AddComment postId={id}/>
+          </div>}
+
+          {!user &&
+            <div className='alert alert-warning'>
+              You must be logged in to post a comment.
+            </div>}
         </div>}
-        {!user &&
-        <div style={{padding: '1rem'}}>
-          <Alert variant='warning'>
-            You must be logged in to post a comment
-          </Alert>
-        </div>}
-      </Row>}
-    </>}
+    </div>}
   </>);
 }
 

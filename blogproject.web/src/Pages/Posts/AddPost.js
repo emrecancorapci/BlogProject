@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import axios from 'axios';
-import {Alert, Form, Button} from 'react-bootstrap';
+import {Form, Button} from 'react-bootstrap';
 import {getToken} from '../../Functions/User';
 
 // TODO Not working

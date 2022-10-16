@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import axios from 'axios';
-import {Row, Col, Stack, Spinner, Button} from 'react-bootstrap';
 import {getToken} from '../../Functions/User';
 
 import CommentCard from './CommentCard';
@@ -23,16 +22,14 @@ function CommentsSection({id}) {
 
   return (<>
     {isLoading &&
-      (<Spinner animation="border" role="status" />)}
-
-    {<Stack gap={3}>
+      (<div className='spinner-border' role="status" />)}
+    {<div className='d-grid gap-3 pt-2'>
       { comments.map((comment, index) => (
-        <Row key={index}>
-          <Col/>
-          <Col lg={9}>
+        <div className='row' key={index}>
+          <div className='col-lg-11'>
             <CommentCard comment={comment}/>
-          </Col>
-          <Col lg={2}>
+          </div>
+          {/* <Col lg={2}>
             {token &&
             (token.id === comment.authorId || token.Role === 'Admin') &&
             <>
@@ -53,10 +50,9 @@ function CommentsSection({id}) {
                 </Row>
               </Stack>
             </>}
-          </Col>
-          <Col/>
-        </Row>))}
-    </Stack>}
+          </Col> */}
+        </div>))}
+    </div>}
   </>);
 }
 
