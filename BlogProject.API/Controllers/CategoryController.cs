@@ -13,7 +13,7 @@ public class CategoryController : ControllerBase
     public CategoryController(ICategoryService categoryService) => 
         _categoryService = categoryService;
 
-    [HttpGet("")]
+    [HttpGet("{id:int:min(1)}")]
     public async Task<IActionResult> Get(int id)
     {
         if (id == 0) return BadRequest();
@@ -24,7 +24,7 @@ public class CategoryController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPost("")]
+    [HttpPost]
     public async Task<IActionResult> Add(CategoryData request)
     {
         var affectedRows = await _categoryService.AddAsync(request);

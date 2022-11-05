@@ -43,27 +43,14 @@ function AddComment({postId, parentId}) {
     <form onSubmit={onSubmitForm}>
       {user != null &&
       <div>
-        <input
-          type="text"
-          name="content"
-          placeholder='Comment Content'
+        <textarea
+          className='form-control'
+          rows='3'
+          type='text'
+          name='content'
+          placeholder='Leave a comment'
           value={form.content}
           onChange={onChangeInput} />
-        <input
-          type="text"
-          name="postId"
-          value={form.postId}
-          hidden />
-        <input
-          type="text"
-          name="authorId"
-          value={form.authorId}
-          hidden />
-        <input
-          type="text"
-          name="parentId"
-          value={form.parentId}
-          hidden />
         <div className="btn">
           <button>Add</button>
         </div>

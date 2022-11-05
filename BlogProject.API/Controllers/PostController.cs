@@ -93,7 +93,7 @@ public class PostController : ControllerBase
     }
 
     // POST
-    [HttpPost("")]
+    [HttpPost]
     public async Task<IActionResult> Add(AddPostRequest request)
     {
         var affectedRows = await _postService.AddAsync(request);
@@ -102,7 +102,7 @@ public class PostController : ControllerBase
     }
 
     // PATCH
-    [HttpPatch("")]
+    [HttpPatch]
     public async Task<IActionResult> Update(UpdatePostRequest request)
     {
         // TODO : Wants categoryId. Find a way to change only modified variables.

@@ -17,7 +17,7 @@ public class TagController : ControllerBase
         _tagService = tagService;
     }
 
-    [HttpGet("")]
+    [HttpGet("{id:int:min(1)}")]
     public async Task<IActionResult> Get(int id)
     {
         if (id == 0) return BadRequest();
@@ -28,7 +28,7 @@ public class TagController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPost("")]
+    [HttpPost]
     public async Task<IActionResult> Add(TagData request)
     {
         var affectedRows = await _tagService.AddAsync(request);

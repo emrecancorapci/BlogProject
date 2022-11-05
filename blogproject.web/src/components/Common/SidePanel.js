@@ -4,7 +4,7 @@ import {ListGroup} from 'react-bootstrap';
 function SidePanel() {
   return (
     <ListGroup>
-      <LinkContainer to={`/Posts/Add`} activeClassName=''>
+      <LinkContainer to={`/Posts/Add`}>
         <ListGroup.Item>New Post</ListGroup.Item>
       </LinkContainer>
       <ListGroup.Item>Listgroup texts here</ListGroup.Item>

@@ -8,7 +8,7 @@ function Navigation({title, auth, setAuth}) {
 
   return (
     <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
-      <div className='container-fluid'>
+      <div className='container'>
         <LinkContainer to={`/`}>
           <div className='navbar-brand'>{title}</div>
         </LinkContainer>
@@ -28,15 +28,17 @@ function Navigation({title, auth, setAuth}) {
             <LinkContainer to={`/`}>
               <div className='nav-link'>Home</div>
             </LinkContainer>
+          </div>
+          <div className='d-flex offset-6'>
             {auth &&
-              <button className='btn btn-light'
-                onClick={() => onClickLogout()}>
-                Logout
-              </button>}
+            <button className='btn btn-light'
+              onClick={() => onClickLogout()}>
+              Logout
+            </button>}
             {!auth &&
-              <LinkContainer to={`/login`}>
-                <div className='nav-link'>Login</div>
-              </LinkContainer>}
+            <LinkContainer to={`/login`}>
+              <div className='nav-link'>Login</div>
+            </LinkContainer>}
           </div>
         </div>
       </div>

@@ -2,6 +2,8 @@ import {useEffect, useState} from 'react';
 import axios from 'axios';
 import {LinkContainer} from 'react-router-bootstrap';
 import {Popover, OverlayTrigger} from 'react-bootstrap';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faUser} from '@fortawesome/free-solid-svg-icons';
 
 
 function UserHover({id}) {
@@ -17,15 +19,15 @@ function UserHover({id}) {
     <Popover id="popover-basic">
       <Popover.Header>
         <div className="row align-items-center">
-          <div className='col-auto'>
+          <div className='col-2'>
             <img
               style={{
-                height: '2rem',
-                width: '2rem'}}
+                height: '1.7rem',
+                width: '1.7rem'}}
               src={user.profilePictureUrl}
               alt={`${user.name}'s profile picture`}/>
           </div>
-          <div className='col-auto'>
+          <div className='col'>
             <b>{user.name} {user.lastName}</b>
           </div>
         </div>
@@ -34,24 +36,23 @@ function UserHover({id}) {
         <div className='row justify-content-center'>
           {user.about}
         </div>
-        <div className='row justify-content-center'>
-          <div className='col-auto pt-2'>
-            <LinkContainer to={`/Users/${id}`} style={{cursor: 'pointer'}}>
-              <button className='btn btn-primary btn-sm'>
-                    Show Profile
-              </button>
-            </LinkContainer>
-          </div>
-        </div>
       </Popover.Body>
     </Popover>
   );
 
+  const username = (
+    <LinkContainer to={`/Users/${id}`} style={{cursor: 'pointer'}}>
+      <div><FontAwesomeIcon icon={faUser}/> {user.username}</div>
+    </LinkContainer>
+  );
+
   return (
-    <OverlayTrigger trigger="click" placement="right" overlay={popover}>
-      <>
-        {user.username}
-      </>
+    <OverlayTrigger
+      placement="right"
+      overlay={popover}>
+      <div>
+        {username}
+      </div>
     </OverlayTrigger>
   );
 }

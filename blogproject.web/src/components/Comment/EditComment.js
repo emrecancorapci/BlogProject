@@ -47,23 +47,6 @@ function EditComment({postId, parentId}) {
           placeholder='Comment Content'
           value={form.content}
           onChange={onChangeInput} />
-        <input
-          type="text"
-          name="postId"
-          value={form.postId}
-          hidden />
-        <input
-          type="text"
-          name="authorId"
-          value={form.authorId}
-          hidden />
-        {/* {parentId != null && <></>}
-        {<input
-          type="text"
-          name="parentId"
-          value={form.parentId}
-          hidden />
-        } */}
       </div>
       <div className="btn">
         <button>Add</button>

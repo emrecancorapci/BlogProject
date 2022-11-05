@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import UserHover from '../User/UserHover';
+import DateTooltip from '../Common/DateTooltip';
 // DONE Implement comment delete
 // TODO Implement comment edit
 
@@ -12,9 +13,7 @@ function CommentCard({comment}) {
             <UserHover id={comment.authorId} />
           </div>
           <div className='col-auto'>
-            <small className="text-muted">
-              {comment.created.substr(0, 10)} - {comment.created.substr(11, 8)}
-            </small>
+            <DateTooltip date={comment.created}/>
           </div>
         </div>
       </div>

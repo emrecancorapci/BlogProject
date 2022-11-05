@@ -75,10 +75,11 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 - npm i react-router-dom@6
 - npm i axios
 - npm i bootstrap@v5.2.2
-- npm i react-popper @popperjs/core
 - npm i react-bootstrap bootstrap
 - npm i react-router-bootstrap
+- npm i babel-plugin-macros
 - npm i @fortawesome/fontawesome-svg-core
 - npm i @fortawesome/free-solid-svg-icons
 - npm i @fortawesome/free-regular-svg-icons
 - npm i @fortawesome/react-fontawesome@latest
+- npm i @babel/core @babel/preset-env

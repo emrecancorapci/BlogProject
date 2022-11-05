@@ -16,7 +16,7 @@ import SidePanel from './Components/Common/SidePanel';
 
 
 function App() {
-  const title = 'Yet Another Blog Project!';
+  const title = 'Yet Another Blog Project';
 
   const [auth, setAuth] = useState(false);
 
@@ -36,8 +36,8 @@ function App() {
     </header>
 
     <div className='container' style={{padding: '1rem 0rem'}}>
-      <div className='row justify-content-center'>
-        <div className='col-lg-7 col-12'>
+      <div className='row justify-content-evenly'>
+        <div className='col-lg-7 col-sm-12 order-lg-1 order-sm-3 px-3'>
           <main>
             <Routes>
               <Route path="/" element={<Posts />} />
@@ -49,10 +49,8 @@ function App() {
             </Routes>
           </main>
         </div>
-        <div className='col-lg-3 col-12'>
-          <div className='row' style={{padding: '1rem'}}>
-            <SidePanel/>
-          </div>
+        <div className='col-lg-3 col-sm-12 order-2 p-3'>
+          <SidePanel/>
         </div>
       </div>
     </div>

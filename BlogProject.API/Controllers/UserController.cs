@@ -83,7 +83,7 @@ public class UserController : ControllerBase
     //}
 
     // POST
-    [HttpPost("")]
+    [HttpPost]
     public async Task<IActionResult> Add(AddUserRequest request)
     {
         var affectedRows = await _userService.AddAsync(request);
@@ -93,7 +93,7 @@ public class UserController : ControllerBase
 
     // PATCH
     [Authorize]
-    [HttpPatch("")]
+    [HttpPatch]
     public async Task<IActionResult> Update(UpdateUserRequest request)
     {
         var affectedRows = await _userService.UpdateAsync(request);

@@ -10,8 +10,10 @@ function PostCard({post}) {
             <h3><strong>{post.title}</strong></h3>
           </div>
         </LinkContainer>
-        <div className='card-subtitle'>
-          <GetUserName id={post.authorId} />
+        <div className='card-subtitle row'>
+          <div className='col-auto text-muted fw-bold'>
+            <GetUserName id={post.authorId} />
+          </div>
         </div>
         <div className='card-text'>
           {post.postSummary}

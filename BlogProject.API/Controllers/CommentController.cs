@@ -60,7 +60,7 @@ public class CommentController : ControllerBase
     }
 
     // POST
-    [HttpPost("")]
+    [HttpPost]
     public async Task<IActionResult> Add(AddCommentRequest request)
     {
         var affectedRows = await _commentService.AddAsync(request);
@@ -71,7 +71,7 @@ public class CommentController : ControllerBase
     // TODO : Update method must implemented
 
     // PATCH
-    [HttpPatch("")]
+    [HttpPatch]
     public async Task<IActionResult> UpdateContent(UpdateCommentContentRequest request)
     {
         var affectedRows = await _commentService.UpdateContentAsync(request);
