@@ -1,10 +1,10 @@
 # Yet Another Blog Project
 Simple blog project
 
-## Frameworks, libraries and other technologies
-- .NET 6.0
+## Technology Stack
+- dotNET 6.0
 - Entity Framework Core
-- PostGreSQL
+- PostgreSQL
 - Swagger
 - AutoMapper
 - BCrypt
