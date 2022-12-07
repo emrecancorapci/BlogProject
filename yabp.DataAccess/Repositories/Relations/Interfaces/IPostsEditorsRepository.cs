@@ -1,4 +1,5 @@
 ﻿using yabp.Entities.Base;
+using yabp.Entities.UniqueRelations;
 
 namespace yabp.DataAccess.Repositories.Relations.Interfaces;
 

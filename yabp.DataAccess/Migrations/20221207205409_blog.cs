@@ -7,17 +7,17 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace yabp.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class blog : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "Blog");
+                name: "blog");
 
             migrationBuilder.CreateTable(
                 name: "Categories",
-                schema: "Blog",
+                schema: "blog",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -34,7 +34,7 @@ namespace yabp.DataAccess.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Tags",
-                schema: "Blog",
+                schema: "blog",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -51,7 +51,7 @@ namespace yabp.DataAccess.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Users",
-                schema: "Blog",
+                schema: "blog",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -64,6 +64,8 @@ namespace yabp.DataAccess.Migrations
                     LastName = table.Column<string>(type: "text", nullable: true),
                     About = table.Column<string>(type: "text", nullable: true),
                     ProfilePictureUrl = table.Column<string>(type: "text", nullable: true),
+                    ProfileColorHex = table.Column<string>(type: "text", nullable: true),
+                    DarkMode = table.Column<bool>(type: "boolean", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: true),
                     IsFrozen = table.Column<bool>(type: "boolean", nullable: true),
@@ -76,8 +78,35 @@ namespace yabp.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Notifications",
+                schema: "blog",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    Icon = table.Column<string>(type: "text", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: true),
+                    IsRead = table.Column<bool>(type: "boolean", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Read = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notifications_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "blog",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Posts",
-                schema: "Blog",
+                schema: "blog",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -86,7 +115,6 @@ namespace yabp.DataAccess.Migrations
                     Content = table.Column<string>(type: "text", nullable: false),
                     PostSummary = table.Column<string>(type: "text", nullable: true),
                     ThumbnailUrl = table.Column<string>(type: "text", nullable: true),
-                    ViewCount = table.Column<int>(type: "integer", nullable: true),
                     CategoryId = table.Column<int>(type: "integer", nullable: false),
                     AuthorId = table.Column<int>(type: "integer", nullable: false),
                     DeletedById = table.Column<int>(type: "integer", nullable: true),
@@ -105,28 +133,28 @@ namespace yabp.DataAccess.Migrations
                     table.ForeignKey(
                         name: "FK_Posts_Categories_CategoryId",
                         column: x => x.CategoryId,
-                        principalSchema: "Blog",
+                        principalSchema: "blog",
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Posts_Users_AuthorId",
                         column: x => x.AuthorId,
-                        principalSchema: "Blog",
+                        principalSchema: "blog",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Posts_Users_DeletedById",
                         column: x => x.DeletedById,
-                        principalSchema: "Blog",
+                        principalSchema: "blog",
                         principalTable: "Users",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Comments",
-                schema: "Blog",
+                schema: "blog",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -147,57 +175,57 @@ namespace yabp.DataAccess.Migrations
                     table.ForeignKey(
                         name: "FK_Comments_Comments_ParentId",
                         column: x => x.ParentId,
-                        principalSchema: "Blog",
+                        principalSchema: "blog",
                         principalTable: "Comments",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Comments_Posts_PostId",
                         column: x => x.PostId,
-                        principalSchema: "Blog",
+                        principalSchema: "blog",
                         principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Comments_Users_AuthorId",
                         column: x => x.AuthorId,
-                        principalSchema: "Blog",
+                        principalSchema: "blog",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Comments_Users_DeletedById",
                         column: x => x.DeletedById,
-                        principalSchema: "Blog",
+                        principalSchema: "blog",
                         principalTable: "Users",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "PostsEditors",
-                schema: "Blog",
+                name: "PostEdits",
+                schema: "blog",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Summary = table.Column<string>(type: "text", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     PostId = table.Column<int>(type: "integer", nullable: false),
                     EditorId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PostsEditors", x => x.Id);
+                    table.PrimaryKey("PK_PostEdits", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PostsEditors_Posts_PostId",
+                        name: "FK_PostEdits_Posts_PostId",
                         column: x => x.PostId,
-                        principalSchema: "Blog",
+                        principalSchema: "blog",
                         principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PostsEditors_Users_EditorId",
+                        name: "FK_PostEdits_Users_EditorId",
                         column: x => x.EditorId,
-                        principalSchema: "Blog",
+                        principalSchema: "blog",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -205,7 +233,7 @@ namespace yabp.DataAccess.Migrations
 
             migrationBuilder.CreateTable(
                 name: "PostsTags",
-                schema: "Blog",
+                schema: "blog",
                 columns: table => new
                 {
                     PostId = table.Column<int>(type: "integer", nullable: false),
@@ -217,22 +245,53 @@ namespace yabp.DataAccess.Migrations
                     table.ForeignKey(
                         name: "FK_PostsTags_Posts_PostId",
                         column: x => x.PostId,
-                        principalSchema: "Blog",
+                        principalSchema: "blog",
                         principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PostsTags_Tags_TagId",
                         column: x => x.TagId,
-                        principalSchema: "Blog",
+                        principalSchema: "blog",
                         principalTable: "Tags",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
+                name: "PostViews",
+                schema: "blog",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PostId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    Viewed = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ViewSeconds = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostViews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PostViews_Posts_PostId",
+                        column: x => x.PostId,
+                        principalSchema: "blog",
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PostViews_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "blog",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UsersPostReactions",
-                schema: "Blog",
+                schema: "blog",
                 columns: table => new
                 {
                     PostId = table.Column<int>(type: "integer", nullable: false),
@@ -245,14 +304,42 @@ namespace yabp.DataAccess.Migrations
                     table.ForeignKey(
                         name: "FK_UsersPostReactions_Posts_PostId",
                         column: x => x.PostId,
-                        principalSchema: "Blog",
+                        principalSchema: "blog",
                         principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UsersPostReactions_Users_UserId",
                         column: x => x.UserId,
-                        principalSchema: "Blog",
+                        principalSchema: "blog",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UsersSavedPosts",
+                schema: "blog",
+                columns: table => new
+                {
+                    PostId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    SavedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsersSavedPosts", x => new { x.UserId, x.PostId });
+                    table.ForeignKey(
+                        name: "FK_UsersSavedPosts_Posts_PostId",
+                        column: x => x.PostId,
+                        principalSchema: "blog",
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UsersSavedPosts_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "blog",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -260,13 +347,13 @@ namespace yabp.DataAccess.Migrations
 
             migrationBuilder.CreateTable(
                 name: "CommentEdits",
-                schema: "Blog",
+                schema: "blog",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Summary = table.Column<string>(type: "text", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CommentId = table.Column<int>(type: "integer", nullable: false),
                     EditorId = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -276,14 +363,14 @@ namespace yabp.DataAccess.Migrations
                     table.ForeignKey(
                         name: "FK_CommentEdits_Comments_CommentId",
                         column: x => x.CommentId,
-                        principalSchema: "Blog",
+                        principalSchema: "blog",
                         principalTable: "Comments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CommentEdits_Users_EditorId",
                         column: x => x.EditorId,
-                        principalSchema: "Blog",
+                        principalSchema: "blog",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -291,7 +378,7 @@ namespace yabp.DataAccess.Migrations
 
             migrationBuilder.CreateTable(
                 name: "UsersCommentReactions",
-                schema: "Blog",
+                schema: "blog",
                 columns: table => new
                 {
                     CommentId = table.Column<int>(type: "integer", nullable: false),
@@ -305,14 +392,14 @@ namespace yabp.DataAccess.Migrations
                     table.ForeignKey(
                         name: "FK_UsersCommentReactions_Comments_CommentId",
                         column: x => x.CommentId,
-                        principalSchema: "Blog",
+                        principalSchema: "blog",
                         principalTable: "Comments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UsersCommentReactions_Users_UserId",
                         column: x => x.UserId,
-                        principalSchema: "Blog",
+                        principalSchema: "blog",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -320,86 +407,110 @@ namespace yabp.DataAccess.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_CommentEdits_CommentId",
-                schema: "Blog",
+                schema: "blog",
                 table: "CommentEdits",
                 column: "CommentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CommentEdits_EditorId",
-                schema: "Blog",
+                schema: "blog",
                 table: "CommentEdits",
                 column: "EditorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_AuthorId",
-                schema: "Blog",
+                schema: "blog",
                 table: "Comments",
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_DeletedById",
-                schema: "Blog",
+                schema: "blog",
                 table: "Comments",
                 column: "DeletedById");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_ParentId",
-                schema: "Blog",
+                schema: "blog",
                 table: "Comments",
                 column: "ParentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_PostId",
-                schema: "Blog",
+                schema: "blog",
                 table: "Comments",
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Notifications_UserId",
+                schema: "blog",
+                table: "Notifications",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PostEdits_EditorId",
+                schema: "blog",
+                table: "PostEdits",
+                column: "EditorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PostEdits_PostId",
+                schema: "blog",
+                table: "PostEdits",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Posts_AuthorId",
-                schema: "Blog",
+                schema: "blog",
                 table: "Posts",
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_CategoryId",
-                schema: "Blog",
+                schema: "blog",
                 table: "Posts",
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_DeletedById",
-                schema: "Blog",
+                schema: "blog",
                 table: "Posts",
                 column: "DeletedById");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostsEditors_EditorId",
-                schema: "Blog",
-                table: "PostsEditors",
-                column: "EditorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PostsEditors_PostId",
-                schema: "Blog",
-                table: "PostsEditors",
-                column: "PostId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_PostsTags_TagId",
-                schema: "Blog",
+                schema: "blog",
                 table: "PostsTags",
                 column: "TagId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PostViews_PostId",
+                schema: "blog",
+                table: "PostViews",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PostViews_UserId",
+                schema: "blog",
+                table: "PostViews",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UsersCommentReactions_CommentId",
-                schema: "Blog",
+                schema: "blog",
                 table: "UsersCommentReactions",
                 column: "CommentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UsersPostReactions_PostId",
-                schema: "Blog",
+                schema: "blog",
                 table: "UsersPostReactions",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsersSavedPosts_PostId",
+                schema: "blog",
+                table: "UsersSavedPosts",
                 column: "PostId");
         }
 
@@ -408,43 +519,55 @@ namespace yabp.DataAccess.Migrations
         {
             migrationBuilder.DropTable(
                 name: "CommentEdits",
-                schema: "Blog");
+                schema: "blog");
 
             migrationBuilder.DropTable(
-                name: "PostsEditors",
-                schema: "Blog");
+                name: "Notifications",
+                schema: "blog");
+
+            migrationBuilder.DropTable(
+                name: "PostEdits",
+                schema: "blog");
 
             migrationBuilder.DropTable(
                 name: "PostsTags",
-                schema: "Blog");
+                schema: "blog");
+
+            migrationBuilder.DropTable(
+                name: "PostViews",
+                schema: "blog");
 
             migrationBuilder.DropTable(
                 name: "UsersCommentReactions",
-                schema: "Blog");
+                schema: "blog");
 
             migrationBuilder.DropTable(
                 name: "UsersPostReactions",
-                schema: "Blog");
+                schema: "blog");
+
+            migrationBuilder.DropTable(
+                name: "UsersSavedPosts",
+                schema: "blog");
 
             migrationBuilder.DropTable(
                 name: "Tags",
-                schema: "Blog");
+                schema: "blog");
 
             migrationBuilder.DropTable(
                 name: "Comments",
-                schema: "Blog");
+                schema: "blog");
 
             migrationBuilder.DropTable(
                 name: "Posts",
-                schema: "Blog");
+                schema: "blog");
 
             migrationBuilder.DropTable(
                 name: "Categories",
-                schema: "Blog");
+                schema: "blog");
 
             migrationBuilder.DropTable(
                 name: "Users",
-                schema: "Blog");
+                schema: "blog");
         }
     }
 }

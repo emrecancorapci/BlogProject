@@ -17,7 +17,7 @@ namespace yabp.DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("Blog")
+                .HasDefaultSchema("blog")
                 .HasAnnotation("ProductVersion", "7.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
@@ -46,7 +46,7 @@ namespace yabp.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", "Blog");
+                    b.ToTable("Categories", "blog");
                 });
 
             modelBuilder.Entity("yabp.Entities.Base.Comment", b =>
@@ -95,10 +95,10 @@ namespace yabp.DataAccess.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("Comments", "Blog");
+                    b.ToTable("Comments", "blog");
                 });
 
-            modelBuilder.Entity("yabp.Entities.Base.CommentEdits", b =>
+            modelBuilder.Entity("yabp.Entities.Base.Notification", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -106,25 +106,33 @@ namespace yabp.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CommentId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("EditorId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("ModifiedDate")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Summary")
+                    b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("text");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("IsRead")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("Read")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommentId");
+                    b.HasIndex("UserId");
 
-                    b.HasIndex("EditorId");
-
-                    b.ToTable("CommentEdits", "Blog");
+                    b.ToTable("Notifications", "blog");
                 });
 
             modelBuilder.Entity("yabp.Entities.Base.Post", b =>
@@ -182,9 +190,6 @@ namespace yabp.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("ViewCount")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
@@ -193,36 +198,7 @@ namespace yabp.DataAccess.Migrations
 
                     b.HasIndex("DeletedById");
 
-                    b.ToTable("Posts", "Blog");
-                });
-
-            modelBuilder.Entity("yabp.Entities.Base.PostEdits", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("EditorId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Summary")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EditorId");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("PostsEditors", "Blog");
+                    b.ToTable("Posts", "blog");
                 });
 
             modelBuilder.Entity("yabp.Entities.Base.Tag", b =>
@@ -248,7 +224,7 @@ namespace yabp.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tags", "Blog");
+                    b.ToTable("Tags", "blog");
                 });
 
             modelBuilder.Entity("yabp.Entities.Base.User", b =>
@@ -267,6 +243,9 @@ namespace yabp.DataAccess.Migrations
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool?>("DarkMode")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -291,6 +270,9 @@ namespace yabp.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("ProfileColorHex")
+                        .HasColumnType("text");
+
                     b.Property<string>("ProfilePictureUrl")
                         .HasColumnType("text");
 
@@ -304,7 +286,7 @@ namespace yabp.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", "Blog");
+                    b.ToTable("Users", "blog");
                 });
 
             modelBuilder.Entity("yabp.Entities.Relations.PostsTags", b =>
@@ -319,7 +301,7 @@ namespace yabp.DataAccess.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("PostsTags", "Blog");
+                    b.ToTable("PostsTags", "blog");
                 });
 
             modelBuilder.Entity("yabp.Entities.Relations.UsersCommentReactions", b =>
@@ -340,7 +322,7 @@ namespace yabp.DataAccess.Migrations
 
                     b.HasIndex("CommentId");
 
-                    b.ToTable("UsersCommentReactions", "Blog");
+                    b.ToTable("UsersCommentReactions", "blog");
                 });
 
             modelBuilder.Entity("yabp.Entities.Relations.UsersPostReactions", b =>
@@ -358,7 +340,112 @@ namespace yabp.DataAccess.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("UsersPostReactions", "Blog");
+                    b.ToTable("UsersPostReactions", "blog");
+                });
+
+            modelBuilder.Entity("yabp.Entities.Relations.UsersSavedPosts", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("SavedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("UserId", "PostId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("UsersSavedPosts", "blog");
+                });
+
+            modelBuilder.Entity("yabp.Entities.UniqueRelations.CommentEdits", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("EditorId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Summary")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("EditorId");
+
+                    b.ToTable("CommentEdits", "blog");
+                });
+
+            modelBuilder.Entity("yabp.Entities.UniqueRelations.PostEdits", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EditorId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Summary")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EditorId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("PostEdits", "blog");
+                });
+
+            modelBuilder.Entity("yabp.Entities.UniqueRelations.PostViews", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("ViewSeconds")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Viewed")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PostViews", "blog");
                 });
 
             modelBuilder.Entity("yabp.Entities.Base.Comment", b =>
@@ -392,23 +479,15 @@ namespace yabp.DataAccess.Migrations
                     b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("yabp.Entities.Base.CommentEdits", b =>
+            modelBuilder.Entity("yabp.Entities.Base.Notification", b =>
                 {
-                    b.HasOne("yabp.Entities.Base.Comment", "Comment")
-                        .WithMany("Editors")
-                        .HasForeignKey("CommentId")
+                    b.HasOne("yabp.Entities.Base.User", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("yabp.Entities.Base.User", "Editor")
-                        .WithMany("EditedComments")
-                        .HasForeignKey("EditorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Comment");
-
-                    b.Navigation("Editor");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("yabp.Entities.Base.Post", b =>
@@ -434,25 +513,6 @@ namespace yabp.DataAccess.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("DeletedBy");
-                });
-
-            modelBuilder.Entity("yabp.Entities.Base.PostEdits", b =>
-                {
-                    b.HasOne("yabp.Entities.Base.User", "Editor")
-                        .WithMany("EditedPosts")
-                        .HasForeignKey("EditorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("yabp.Entities.Base.Post", "Post")
-                        .WithMany("Editors")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Editor");
-
-                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("yabp.Entities.Relations.PostsTags", b =>
@@ -512,6 +572,82 @@ namespace yabp.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("yabp.Entities.Relations.UsersSavedPosts", b =>
+                {
+                    b.HasOne("yabp.Entities.Base.Post", "Post")
+                        .WithMany("UsersSaved")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("yabp.Entities.Base.User", "User")
+                        .WithMany("SavedPosts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("yabp.Entities.UniqueRelations.CommentEdits", b =>
+                {
+                    b.HasOne("yabp.Entities.Base.Comment", "Comment")
+                        .WithMany("Editors")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("yabp.Entities.Base.User", "Editor")
+                        .WithMany("EditedComments")
+                        .HasForeignKey("EditorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("Editor");
+                });
+
+            modelBuilder.Entity("yabp.Entities.UniqueRelations.PostEdits", b =>
+                {
+                    b.HasOne("yabp.Entities.Base.User", "Editor")
+                        .WithMany("EditedPosts")
+                        .HasForeignKey("EditorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("yabp.Entities.Base.Post", "Post")
+                        .WithMany("Editors")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Editor");
+
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("yabp.Entities.UniqueRelations.PostViews", b =>
+                {
+                    b.HasOne("yabp.Entities.Base.Post", "Post")
+                        .WithMany("ViewedUsers")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("yabp.Entities.Base.User", "User")
+                        .WithMany("ViewedPosts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("yabp.Entities.Base.Category", b =>
                 {
                     b.Navigation("Posts");
@@ -535,6 +671,10 @@ namespace yabp.DataAccess.Migrations
                     b.Navigation("Reactions");
 
                     b.Navigation("Tags");
+
+                    b.Navigation("UsersSaved");
+
+                    b.Navigation("ViewedUsers");
                 });
 
             modelBuilder.Entity("yabp.Entities.Base.Tag", b =>
@@ -558,7 +698,13 @@ namespace yabp.DataAccess.Migrations
 
                     b.Navigation("LikedPosts");
 
+                    b.Navigation("Notifications");
+
                     b.Navigation("Posts");
+
+                    b.Navigation("SavedPosts");
+
+                    b.Navigation("ViewedPosts");
                 });
 #pragma warning restore 612, 618
         }

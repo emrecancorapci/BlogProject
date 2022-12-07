@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using yabp.Entities.Relations;
+using yabp.Entities.UniqueRelations;
 
 namespace yabp.Entities.Base;
 
@@ -15,12 +16,15 @@ public class User : IEntity
     public string Email { get; set; }
     public string Role { get; set; }
 
+    // Profile
     public string? Name { get; set; }
     public string? LastName { get; set; }
     public string? About { get; set; }
     public string? ProfilePictureUrl { get; set; }
+    public string? ProfileColorHex { get; set; }
+    public bool? DarkMode { get; set; }
     public DateTime? BirthDate { get; set; }
-    
+
     public bool? IsDeleted { get; set; }
     public bool? IsFrozen { get; set; }
 
@@ -31,8 +35,13 @@ public class User : IEntity
     public ICollection<Post> DeletedPosts { get; set; }
     public ICollection<Comment> Comments { get; set; }
     public ICollection<Comment> DeletedComments { get; set; }
+    public ICollection<Notification> Notifications { get; set; }
+
+    public ICollection<PostViews> ViewedPosts { get; set; }
     public ICollection<PostEdits> EditedPosts { get; set; }
     public ICollection<CommentEdits> EditedComments { get; set; }
+
+    public ICollection<UsersSavedPosts> SavedPosts { get; set; }
     public ICollection<UsersPostReactions> LikedPosts { get; set; }
     public ICollection<UsersCommentReactions> LikedComments { get; set; }
 

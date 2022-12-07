@@ -5,6 +5,7 @@ using yabp.DataAccess.Repositories.Base.Interfaces;
 using yabp.DataAccess.Repositories.Relations.Interfaces;
 using yabp.Entities.Base;
 using yabp.Entities.Relations;
+using yabp.Entities.UniqueRelations;
 
 namespace yabp.Business.Services.PostService;
 
@@ -62,7 +63,7 @@ public class PostService : IPostService
             {
                 EditorId = request.EditorId,
                 PostId = request.PostId,
-                ModifiedDate = DateTime.Now.SetKindUtc(),
+                Modified = DateTime.Now.SetKindUtc(),
                 Summary = request.EditionSummary
             });
         

@@ -1,6 +1,7 @@
 ﻿using yabp.Entities.Base;
 using yabp.Entities.Relations;
 using Microsoft.EntityFrameworkCore;
+using yabp.Entities.UniqueRelations;
 
 namespace yabp.DataAccess.Data;
 
@@ -13,15 +14,23 @@ public class yabpDbContext : DbContext
     public DbSet<Tag> Tags { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Comment> Comments { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
+
     public DbSet<PostsTags> PostsTags { get; set; }
-    public DbSet<PostEdits> PostsEditors { get; set; }
     public DbSet<UsersPostReactions> UsersPostReactions { get; set; }
     public DbSet<UsersCommentReactions> UsersCommentReactions { get; set; }
+    public DbSet<UsersSavedPosts> UsersSavedPosts { get; set; }
+
+    public DbSet<PostViews> PostViews { get; set; }
+    public DbSet<PostEdits> PostEdits { get; set; }
+    public DbSet<CommentEdits> CommentEdits { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.HasDefaultSchema("Blog");
+        builder.HasDefaultSchema("blog");
         
+        // UNIQUE TABLES //
+
         // User
         builder.Entity<User>().HasKey(u => u.Id);
         
@@ -52,8 +61,8 @@ public class yabpDbContext : DbContext
 
         // Comment 
         builder.Entity<Comment>().HasKey(c => c.Id);
-        builder.Entity<Comment>().Property(u => u.Id).IsRequired();
-        builder.Entity<Comment>().Property(u => u.Content).IsRequired();
+        builder.Entity<Comment>().Property(c => c.Id).IsRequired();
+        builder.Entity<Comment>().Property(c => c.Content).IsRequired();
 
         builder.Entity<Comment>()
             .HasOne(c => c.Author)
@@ -72,29 +81,16 @@ public class yabpDbContext : DbContext
             .WithMany(c => c.Children)
             .HasForeignKey(c => c.ParentId);
 
-        // PostEdits
-        builder.Entity<PostEdits>().HasKey(pe => pe.Id);
-        builder.Entity<PostEdits>().Property(pe => pe.ModifiedDate).IsRequired();
-        builder.Entity<PostEdits>()
-            .HasOne(pe => pe.Post)
-            .WithMany(p => p.Editors)
-            .HasForeignKey(pe => pe.PostId);
-        builder.Entity<PostEdits>()
-            .HasOne(pe => pe.Editor)
-            .WithMany(u => u.EditedPosts)
-            .HasForeignKey(pe => pe.EditorId);
+        // Notification
+        builder.Entity<Notification>().HasKey(n => n.Id);
+        builder.Entity<Notification>().Property(n => n.UserId).IsRequired();
+        builder.Entity<Notification>().Property(n => n.Description).IsRequired();
 
-        // PostEdits
-        builder.Entity<CommentEdits>().HasKey(ce => ce.Id);
-        builder.Entity<CommentEdits>().Property(ce => ce.ModifiedDate).IsRequired();
-        builder.Entity<CommentEdits>()
-            .HasOne(ce => ce.Comment)
-            .WithMany(p => p.Editors)
-            .HasForeignKey(ce => ce.CommentId);
-        builder.Entity<CommentEdits>()
-            .HasOne(ce => ce.Editor)
-            .WithMany(u => u.EditedComments)
-            .HasForeignKey(ce => ce.EditorId);
+        builder.Entity<Notification>()
+            .HasOne(n => n.User)
+            .WithMany(u => u.Notifications)
+            .HasForeignKey(n => n.UserId);
+
 
         // Tag
         builder.Entity<Tag>().HasKey(t => t.Id);
@@ -106,7 +102,10 @@ public class yabpDbContext : DbContext
         builder.Entity<Category>().Property(u => u.Id).IsRequired();
         builder.Entity<Category>().Property(u => u.Name).IsRequired();
 
-        // Relations
+
+        // RELATIONAL TABLES //
+
+        // PostsTags
         builder.Entity<PostsTags>().HasKey(pt => new { pt.PostId, pt.TagId });
         builder.Entity<PostsTags>()
             .HasOne(pt => pt.Post)
@@ -118,6 +117,7 @@ public class yabpDbContext : DbContext
             .HasForeignKey(pt => pt.TagId);
 
 
+        // UsersPostReactions
         builder.Entity<UsersPostReactions>().HasKey(ul => new { ul.UserId, ul.PostId });
         builder.Entity<UsersPostReactions>()
             .HasOne(ul => ul.User)
@@ -128,6 +128,7 @@ public class yabpDbContext : DbContext
             .WithMany(p => p.Reactions)
             .HasForeignKey(ul => ul.PostId);
 
+        // UsersCommentReactions
         builder.Entity<UsersCommentReactions>().HasKey(ul => new { ul.UserId, ul.CommentId });
         builder.Entity<UsersCommentReactions>()
             .HasOne(ul => ul.User)
@@ -137,5 +138,54 @@ public class yabpDbContext : DbContext
             .HasOne(ul => ul.Comment)
             .WithMany(p => p.Reactions)
             .HasForeignKey(ul => ul.CommentId);
+
+        // UsersSavedPosts
+        builder.Entity<UsersSavedPosts>().HasKey(ul => new { ul.UserId, ul.PostId });
+        builder.Entity<UsersSavedPosts>()
+            .HasOne(ul => ul.User)
+            .WithMany(u => u.SavedPosts)
+            .HasForeignKey(ul => ul.UserId);
+        builder.Entity<UsersSavedPosts>()
+            .HasOne(up => up.Post)
+            .WithMany(p => p.UsersSaved)
+            .HasForeignKey(ul => ul.PostId);
+        
+        // UNIQUE RELATIONS //
+
+        // PostEdits
+        builder.Entity<PostEdits>().HasKey(pe => pe.Id);
+        builder.Entity<PostEdits>().Property(pe => pe.Modified).IsRequired();
+        builder.Entity<PostEdits>()
+            .HasOne(pe => pe.Post)
+            .WithMany(p => p.Editors)
+            .HasForeignKey(pe => pe.PostId);
+        builder.Entity<PostEdits>()
+            .HasOne(pe => pe.Editor)
+            .WithMany(u => u.EditedPosts)
+            .HasForeignKey(pe => pe.EditorId);
+
+        // PostViews
+        builder.Entity<PostViews>().HasKey(pe => pe.Id);
+        builder.Entity<PostViews>().Property(pe => pe.Viewed).IsRequired();
+        builder.Entity<PostViews>()
+            .HasOne(pe => pe.Post)
+            .WithMany(p => p.ViewedUsers)
+            .HasForeignKey(pe => pe.PostId);
+        builder.Entity<PostViews>()
+            .HasOne(pe => pe.User)
+            .WithMany(u => u.ViewedPosts)
+            .HasForeignKey(pe => pe.UserId);
+
+        // CommentEdits
+        builder.Entity<CommentEdits>().HasKey(ce => ce.Id);
+        builder.Entity<CommentEdits>().Property(ce => ce.Modified).IsRequired();
+        builder.Entity<CommentEdits>()
+            .HasOne(ce => ce.Comment)
+            .WithMany(p => p.Editors)
+            .HasForeignKey(ce => ce.CommentId);
+        builder.Entity<CommentEdits>()
+            .HasOne(ce => ce.Editor)
+            .WithMany(u => u.EditedComments)
+            .HasForeignKey(ce => ce.EditorId);
     }
 }

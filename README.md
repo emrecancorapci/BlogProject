@@ -1,8 +1,14 @@
 # Yet Another Blog Project
-Simple blog project
+Five layered (API, Business, Data Access, Entities, Web)
+web application developed using .NET 6.0 and React.js.
+
+The database was designed using EF Core on PostgreSQL
+using the "code first" approach.
+
+Authorization and authentication done by using jwt tokens.
 
 ## Technology Stack
-- dotNET 6.0
+- .NET 7.0 (Updated from 6)
 - Entity Framework Core
 - PostgreSQL
 - Swagger
@@ -11,9 +17,4 @@ Simple blog project
 - React.js
 - Bootstrap
 
-## Features
-- 5 Layered architecture ( API, Business, Data Access, Entities, Web )
-- Authorization using jwt tokens
-- Password hashing using BCrypt
-- RESTful API Service
-- "Code First" approach 
+## [Roadmap](https://emrecancorapci.notion.site/2ab68479982943d98b7881493277552b?v=7098d35882d94ae4aef5215d901aa53d)

@@ -1,14 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using yabp.Entities.Base;
 
-namespace yabp.Entities.Base;
+namespace yabp.Entities.UniqueRelations;
 
-public class CommentEdits : IRelationEntity<Post, User>
+public class CommentEdits : IEntity
 {
     [Key]
     public int Id { get; set; }
     public string? Summary { get; set; }
-    public DateTime ModifiedDate { get; set; }
+    public DateTime Modified { get; set; }
 
     public int CommentId { get; set; }
     public int EditorId { get; set; }

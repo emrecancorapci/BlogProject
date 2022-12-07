@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using yabp.Entities.Relations;
+using yabp.Entities.UniqueRelations;
 
 namespace yabp.Entities.Base;
 
