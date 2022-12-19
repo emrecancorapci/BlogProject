@@ -2,6 +2,7 @@ import {useState} from 'react';
 import axios from 'axios';
 import {Form, Button} from 'react-bootstrap';
 import {getToken} from '../../Functions/User';
+import getApi from '../../Functions/Common/getApi';
 
 // TODO Not working
 function AddPost() {
@@ -27,7 +28,7 @@ function AddPost() {
   const onSubmitForm = (event) => {
     event.preventDefault();
 
-    const api='https://localhost:7169/api/Posts';
+    const api = getApi('Posts');
 
     if (form.title === '' || form.content === '') {
       // setError(true);

@@ -7,10 +7,10 @@ function SidePanel() {
       <LinkContainer to={`/Posts/Add`}>
         <ListGroup.Item>New Post</ListGroup.Item>
       </LinkContainer>
-      <ListGroup.Item>Listgroup texts here</ListGroup.Item>
-      <ListGroup.Item>Listgroup texts here</ListGroup.Item>
-      <ListGroup.Item>Listgroup texts here</ListGroup.Item>
-      <ListGroup.Item>Listgroup texts here</ListGroup.Item>
+      <ListGroup.Item>Button 2</ListGroup.Item>
+      <ListGroup.Item>Button 3</ListGroup.Item>
+      <ListGroup.Item>Button 4</ListGroup.Item>
+      <ListGroup.Item>Button 5</ListGroup.Item>
     </ListGroup>
   );
 }

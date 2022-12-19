@@ -13,7 +13,7 @@ public class EFTagRepository : ITagRepository
         _context = context;
 
     public async Task<IList<Tag>> GetAllAsync() =>
-        await _context.Tags.ToListAsync();
+        await _context.Tags.AsNoTracking().ToListAsync();
 
     public async Task<Tag?> GetAsync(int id) => 
         await _context.Tags.FindAsync(id);

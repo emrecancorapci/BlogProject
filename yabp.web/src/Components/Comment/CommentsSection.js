@@ -3,18 +3,21 @@ import axios from 'axios';
 import {getToken} from '../../Functions/User';
 
 import CommentCard from './CommentCard';
-import onDeleteComment from '../../Functions/Comment/onDeleteComment';
+// import onDeleteComment from '../../Functions/Comment/onDeleteComment';
+import getApi from '../../Functions/Common/getApi';
 
 function CommentsSection({id}) {
   const [isLoading, setIsLoading] = useState(true);
   const [comments, setComments] = useState([]);
-  const [token, setToken] = useState([]);
+  const [, setToken] = useState([]);
 
   useEffect(() => {
     setToken(getToken());
     console.log(`ComSec ID: ${id}`);
 
-    axios(`https://localhost:7169/api/Posts/${id}/Comments`)
+    const api = getApi(`Posts/${id}/Comments`);
+
+    axios(api)
         .then((response) => setComments(response.data))
         .catch((event) => console.log(event)) // Error logging
         .finally(() => setIsLoading(false)); // Set loading false

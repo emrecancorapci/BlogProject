@@ -27,7 +27,7 @@ public class UserController : ControllerBase
     {
         var response = await _userService.GetAsync(id);
 
-        if (response == null) return NotFound();
+        if (response is null) return NotFound();
 
         return Ok(response);
     }
@@ -37,18 +37,18 @@ public class UserController : ControllerBase
     {
         var response = await _userService.ValidateUserAsync(request);
 
-        if (response == null) return NotFound();
+        if (response is null) return NotFound();
 
         var tokenResponse = await _jwtAuthenticationManager.GetJwtTokenAsync(response.UserName);
 
-        if (tokenResponse == null) throw new Exception("Token is null");
+        if (tokenResponse is null) throw new Exception("Token is null");
 
         response.Token = tokenResponse;
 
         return Ok(response);
     }
-    [Authorize]
-    [HttpGet("")]
+    [Authorize(Roles = "Admin")]
+    [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         var responseList = await _userService.GetAllAsync();
@@ -57,20 +57,15 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("IsExist")]
-    public async Task<IActionResult> IsExist(int? id, string? email)
+    public async Task<IActionResult> IsExist([FromQuery]int? id, [FromQuery]string? email)
     {
-        var response = false;
-        
-        if (id != null)
-        {
-            response = await _userService.IsExistAsync((int)id);
-        }
-        if (!email.IsNullOrEmpty())
-        {
-            response = await _userService.IsEmailExistAsync(email);
-        }
+        if (id is not null)
+            return Ok(await _userService.IsExistAsync((int)id));
 
-        return Ok(response);
+        if (!email.IsNullOrEmpty())
+            return Ok(await _userService.IsEmailExistAsync(email));
+
+        return NotFound();
     }
 
     // NO NEED

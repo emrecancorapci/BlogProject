@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import UserHover from '../User/UserHover';
 import DateTooltip from '../Common/DateTooltip';
 // DONE Implement comment delete
@@ -25,13 +24,5 @@ function CommentCard({comment}) {
     </div>
   );
 }
-
-CommentCard.propType = {
-  comment: PropTypes.object,
-  id: PropTypes.number,
-  authorId: PropTypes.number,
-  content: PropTypes.string,
-
-};
 
 export default CommentCard;

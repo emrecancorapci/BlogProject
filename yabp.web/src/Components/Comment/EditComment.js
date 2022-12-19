@@ -1,6 +1,8 @@
 import {useState} from 'react';
 import axios from 'axios';
+
 import {getUser} from '../../Functions/User';
+import getApi from '../../Functions/Common/getApi';
 
 function EditComment({postId, parentId}) {
   // const emptyComment = {
@@ -27,7 +29,7 @@ function EditComment({postId, parentId}) {
     const user = getUser();
     form.authorId = user.id;
 
-    const api = 'https://localhost:7169/api/Comments';
+    const api = getApi('Comments');
 
     axios.post(api, form)
         .then(function(response) {

@@ -1,59 +1,52 @@
-import {useEffect, useState} from 'react';
+import {useFormik} from 'formik';
 import axios from 'axios';
 
+import getApi from '../../Functions/Common/getApi';
+
 function Login({setAuth}) {
-  const [form, setForm] = useState([]);
-  const [token, setToken] = useState([]);
+  const api = getApi('Users/Login');
+  const fetchData = async (values) => await axios.post(api, values);
 
-  useEffect(() => {
-    sessionStorage.setItem('user', JSON.stringify(token));
-    console.log(token);
-  }, [token]);
-
-  const onChangeInput = (event) => {
-    setForm({...form, [event.target.name]: event.target.value});
-  };
-
-  const onSubmitForm = (event) => {
-    event.preventDefault();
-
-    const api = 'https://localhost:7169/api/Users/Login';
-
-    if (form.username === '' || form.password === '') {
-      console.log('Fill all the fields.');
-      return false;
-    }
-
-    axios.post(api, form)
-        .then((response) => setToken(response.data))
-        .catch((event) => console.log(event));
-
-    setAuth(true);
-    console.log('Submit');
-  };
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+    },
+    onSubmit: (values) => {
+      fetchData(values)
+          .then((response) => {
+            if (response.data) {
+              sessionStorage.setItem('user', JSON.stringify(response.data));
+              setAuth(true);
+            }
+          })
+          .catch((event) => (
+            console.log(event),
+            console.log('Submitted.')));
+    },
+  });
 
   return (
     <>
-      <form onSubmit={onSubmitForm}>
+      <form onSubmit={formik.handleSubmit}>
         <div>
           <input
-            type="text"
+            id='username'
             name="username"
+            type="text"
             placeholder="Username"
-            value={form.username}
-            onChange={onChangeInput}
+            value={formik.values.username}
+            onChange={formik.handleChange}
           />
           <input
-            type="password"
+            id='password'
             name="password"
+            type="password"
             placeholder="Password"
-            value={form.password}
-            onChange={onChangeInput}
+            value={formik.values.password}
+            onChange={formik.handleChange}
           />
-        </div>
-
-        <div className="btn">
-          <button>Login</button>
+          <button type="submit">Login</button>
         </div>
       </form>
     </>

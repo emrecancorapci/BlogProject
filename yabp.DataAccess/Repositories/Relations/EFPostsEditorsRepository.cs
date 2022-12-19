@@ -17,13 +17,17 @@ public class EFPostsEditorsRepository : IPostsEditorsRepository
         => await context.PostEdits.ToListAsync();
 
     public async Task<IList<Post>> GetPostsByEditorIdAsync(int userId)
-    {
-        var posts = new List<Post>();
-        var postIds = context.PostEdits
-            .Where(pe => pe.EditorId == userId).Select(p => p.PostId);
+    { 
+        var posts = await context.Posts
+            .Where(post => post.Editors
+                .Any(postEdits => postEdits.EditorId == userId))
+            .ToListAsync();
 
-        foreach (var id in postIds)
-            posts.Add(await context.Posts.FindAsync(id));
+        //var postsTwo = context.Posts
+        //    .Include(post => post.Editors
+        //            .Where(postEdits => postEdits.EditorId == userId))
+        //    .SelectMany()
+        //    .ToListAsync();
 
         return posts;
     }

@@ -1,5 +1,5 @@
 import {LinkContainer} from 'react-router-bootstrap';
-import GetUserName from '../User/UserHover';
+import UserHover from '../User/UserHover';
 
 function PostCard({post}) {
   return (
@@ -12,7 +12,7 @@ function PostCard({post}) {
         </LinkContainer>
         <div className='card-subtitle row'>
           <div className='col-auto text-muted fw-bold'>
-            <GetUserName id={post.authorId} />
+            <UserHover id={post.authorId} />
           </div>
         </div>
         <div className='card-text'>

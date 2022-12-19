@@ -13,7 +13,7 @@ public class EFUserRepository : IUserRepository
         _context = context;
 
     public async Task<IList<User>> GetAllAsync() =>
-        await _context.Users.ToListAsync();
+        await _context.Users.AsNoTracking().ToListAsync();
 
     public async Task<User?> GetAsync(int id) =>
         await _context.Users.FindAsync(id);

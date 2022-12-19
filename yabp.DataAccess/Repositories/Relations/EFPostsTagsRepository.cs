@@ -10,17 +10,18 @@ public class EFPostsTagsRepository : IPostsTagsRepository
 {
     private readonly yabpDbContext context;
 
-    public EFPostsTagsRepository(yabpDbContext context)
-        => this.context = context;
+    public EFPostsTagsRepository(yabpDbContext context) =>
+        this.context = context;
 
-    public async Task<IList<PostsTags>> GetAllAsync()
-     => await context.PostsTags.ToListAsync();
+    public async Task<IList<PostsTags>> GetAllAsync() =>
+        await context.PostsTags.ToListAsync();
 
     public async Task<IList<Post>> GetPostsByTagIdAsync(int tagId)
     {
         var posts = new List<Post>();
         var postIds = context.PostsTags
-            .Where(pt => pt.TagId == tagId).Select(p => p.PostId);
+            .Where(pt => pt.TagId == tagId)
+            .Select(p => p.PostId);
 
         foreach (var id in postIds)
             posts.Add(await context.Posts.FindAsync(id));

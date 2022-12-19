@@ -14,10 +14,11 @@ public class AddPostRequest
     public string? ThumbnailUrl { get; set; }
     public string? PostSummary { get; set; }
 
-    [Required]
-    public bool CommentsEnabled { get; set; }
-    [Required]
-    public bool ReactionsEnabled { get; set; }
+    public bool IsCommentsVisible { get; set; }
+    public bool AddCommentsEnabled { get; set; }
+
+    public bool IsReactionsVisible { get; set; }
+    public bool AddReactionsEnabled { get; set; }
 
     public int? CategoryId { get; set; }
     [Required]

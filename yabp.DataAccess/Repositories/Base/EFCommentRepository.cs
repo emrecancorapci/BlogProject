@@ -14,7 +14,7 @@ public class EFCommentRepository : ICommentRepository
         _context = context;
 
     public async Task<IList<Comment>> GetAllAsync() => 
-        await _context.Comments.ToListAsync();
+        await _context.Comments.AsNoTracking().ToListAsync();
 
     public async Task<Comment?> GetAsync(int id) => 
         await _context.Comments.FindAsync(id);
@@ -49,5 +49,5 @@ public class EFCommentRepository : ICommentRepository
     }
 
     public async Task<bool> IsExist(int id) 
-        => await _context.Comments.AnyAsync(entity => entity.Id == id);
+        => await _context.Comments.AnyAsync(c => c.Id == id);
 }

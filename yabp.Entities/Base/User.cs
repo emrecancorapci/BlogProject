@@ -44,5 +44,4 @@ public class User : IEntity
     public ICollection<UsersSavedPosts> SavedPosts { get; set; }
     public ICollection<UsersPostReactions> LikedPosts { get; set; }
     public ICollection<UsersCommentReactions> LikedComments { get; set; }
-
 }

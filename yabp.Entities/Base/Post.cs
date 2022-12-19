@@ -48,5 +48,4 @@ public class Post : IEntity
     public ICollection<PostViews>? ViewedUsers { get; set; }
     public ICollection<UsersSavedPosts>? UsersSaved { get; set; }
     public ICollection<UsersPostReactions>? Reactions { get; set; }
-
 }

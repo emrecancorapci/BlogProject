@@ -2,6 +2,7 @@ import {useState} from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import {getToken} from '../../Functions/User';
+import getApi from '../../Functions/Common/getApi';
 
 function AddComment({postId, parentId}) {
   const [form, setForm] = useState([]);
@@ -27,7 +28,7 @@ function AddComment({postId, parentId}) {
       return false;
     }
 
-    const api = 'https://localhost:7169/api/Comments';
+    const api = getApi('Comments');
 
     axios.post(api, form)
         .then(function(response) {

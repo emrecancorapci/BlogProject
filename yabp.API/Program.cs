@@ -6,6 +6,7 @@ using Swashbuckle.AspNetCore.Filters;
 using yabp.Business.Services.AuthenticationService;
 using yabp.Business.MapperProfile;
 using Microsoft.EntityFrameworkCore;
+using yabp.Business.Services.CategoryService;
 using yabp.DataAccess.Data;
 using yabp.Business.Services.CommentService;
 using yabp.Business.Services.PostService;
@@ -93,6 +94,7 @@ builder.Services.AddScoped<IUsersPostReactionsRepository, EFUsersPostReactionsRe
 
 // Services
 builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<ITagService, TagService>();

@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:regular,regularitalic,semibold,semibolditalic,bold,bolditalic');
+
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
 .popover-img{
   height: 200px;
   width: 200px;

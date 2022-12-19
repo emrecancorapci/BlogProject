@@ -13,7 +13,7 @@ public class EFCategoryRepository : ICategoryRepository
         _context = context;
 
     public async Task<IList<Category>> GetAllAsync() =>
-        await _context.Categories.ToListAsync();
+        await _context.Categories.AsNoTracking().ToListAsync();
 
     public async Task<Category?> GetAsync(int id) => 
         await _context.Categories.FindAsync(id);
@@ -37,7 +37,7 @@ public class EFCategoryRepository : ICategoryRepository
     public async Task<int> DeleteAsync(int id)
     {
         var entity = await _context.Categories
-            .FirstOrDefaultAsync(x => x.Id == id);
+            .FirstOrDefaultAsync(c => c.Id == id);
 
         if(entity == null) return 0;
 
@@ -48,5 +48,5 @@ public class EFCategoryRepository : ICategoryRepository
     }
 
     public async Task<bool> IsExist(int id) => 
-        await _context.Categories.AnyAsync(Category => Category.Id == id);
+        await _context.Categories.AnyAsync(c => c.Id == id);
 }

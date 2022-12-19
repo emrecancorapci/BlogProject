@@ -3,7 +3,7 @@ import {getAuthHeader} from '../../Functions/User';
 
 function CommentDeleteButton({id}) {
   const onDeleteComment = (id) => {
-    const api = `https://localhost:7169/api/Comments/${id}`;
+    const api = `${process.env.REACT_APP_API_URL}/Comments/${id}`;
     const headers = getAuthHeader();
 
     axios.delete(api, headers)

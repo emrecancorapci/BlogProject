@@ -23,7 +23,7 @@ public class EFUsersCommentReactionsRepository : IUsersCommentReactionsRepositor
             .Select(p => p.CommentId);
 
         foreach (var id in commentIds)
-            comments.Add(await context.Comments.FindAsync(id));
+            comments.Add(await context.Comments.FindAsync(id) ?? throw new InvalidOperationException());
 
         return comments;
     }

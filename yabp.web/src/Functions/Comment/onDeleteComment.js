@@ -1,8 +1,10 @@
 import axios from 'axios';
+
 import {getAuthHeader} from '../../Functions/User';
+import getApi from '../../Functions/Common/getApi';
 
 function onDeleteComment(id) {
-  const api = `https://localhost:7169/api/Comments/${id}`;
+  const api = getApi(`Comments/${id}`);
   const headers = getAuthHeader();
 
   axios.delete(api, headers)

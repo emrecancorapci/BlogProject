@@ -13,7 +13,7 @@ public class EFPostRepository : IPostRepository
         this.context = context;
 
     public async Task<IList<Post>> GetAllAsync() =>
-        await context.Posts.ToListAsync();
+        await context.Posts.AsNoTracking().ToListAsync();
 
     public async Task<Post?> GetAsync(int id) =>
         await context.Posts.FindAsync(id);

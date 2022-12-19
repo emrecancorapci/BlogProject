@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 import axios from 'axios';
 
 import PostCard from '../../Components/Post/PostCard';
+import getApi from '../../Functions/Common/getApi';
 
 function Posts() {
   // TODO Add pagination
@@ -10,7 +11,11 @@ function Posts() {
   const [filterText, setFilterText] = useState('');
 
   useEffect(() => {
-    axios('https://localhost:7169/api/Posts')
+    const api = getApi('Posts');
+
+    const fetchPosts = async () => await axios(api);
+
+    fetchPosts(api)
         .then((response) => setPosts(response.data))
         .catch((event) => console.log(event))
         .finally(() => setIsLoading(false));
