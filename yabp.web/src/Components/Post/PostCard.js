@@ -3,15 +3,15 @@ import UserHover from '../User/UserHover';
 
 function PostCard({post}) {
   return (
-    <div className='card'>
+    <div className='card row mt-3 mx-1 p-1 shadow-sm c-bg-lighter'>
       <div className='card-body'>
         <LinkContainer to={`/Posts/${post.id}`} style={{cursor: 'pointer'}}>
           <div className='card-title'>
-            <h3><strong>{post.title}</strong></h3>
+            <h3 className='fw-bold'>{post.title}</h3>
           </div>
         </LinkContainer>
-        <div className='card-subtitle row'>
-          <div className='col-auto text-muted fw-bold'>
+        <div className='row pb-1'>
+          <div className='col-auto fw-bold c-tx-dark'>
             <UserHover id={post.authorId} />
           </div>
         </div>

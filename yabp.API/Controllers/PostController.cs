@@ -35,21 +35,21 @@ public class PostController : ControllerBase
         if (!search.IsNullOrEmpty())
         {
             // TODO Doesn't work (yet)
-            responseList.SearchPosts(search);
+            responseList = responseList.SearchPosts(search);
         }
         if (!dateStart.IsNullOrEmpty() || !dateEnd.IsNullOrEmpty())
         {
-            responseList.DateBetween(dateStart, dateEnd);
+            responseList = responseList.DateBetween(dateStart, dateEnd);
         }
         if(!orderBy.IsNullOrEmpty())
         {
             responseList = responseList.OrderPostBy(orderBy);
         }
-        if (skip != null)
+        if (skip is not null)
         {
             responseList = responseList.Skip((int)skip).ToList();
         }
-        if (take != null)
+        if (take is not null)
         {
             responseList = responseList.Take((int)take).ToList();
         }

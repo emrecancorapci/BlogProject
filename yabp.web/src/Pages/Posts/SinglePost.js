@@ -43,26 +43,24 @@ function SinglePost() {
           </div>
         </div>
         {/* Content Section */}
-        <div className='row p-2 pb-3'>
-          <div className='card'>
-            <div className='card-body'>
-              <p className='card-text'>
-                {post.content}
-              </p>
-            </div>
-          </div>
+        <div className='row p-2 pb-1 mt-2 mb-3 rounded
+          border border-opacity-75'>
+          <p>
+            {post.content}
+          </p>
         </div>
       </article>
       {/* Add Comment Section */}
       {post.addCommentsEnabled &&
-        <div className='pt-3'>
-          {user &&
-          <div>
-            <h3 className='fw-bold'>
+        <div className='row px-3 pt-3 pb-2 shadow-sm rounded
+          border c-bg-lighter'>
+          <h3 className='fw-bold c-tx-dark'>
               Add Comment
-            </h3>
-            <AddComment postId={id}/>
-          </div>}
+          </h3>
+          {user &&
+            <div className='pt-2'>
+              <AddComment postId={id}/>
+            </div>}
           {!user &&
             <div className='alert alert-warning'>
               You must be logged in to post a comment.
@@ -70,12 +68,12 @@ function SinglePost() {
         </div>}
       {/* Comments Section */}
       {post.isCommentsVisible &&
-      <section className='row'>
-        <h2 className='fw-bold'>
-              Comments
-        </h2>
-        <CommentsSection id={id} />
-      </section>}
+        <div className='row p-2'>
+          <h2 className='fw-bold c-tx-dark'>
+                Comments
+          </h2>
+          <CommentsSection id={id} />
+        </div>}
     </div>}
   </>);
 }

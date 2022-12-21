@@ -7,10 +7,10 @@ function Navigation({title, auth, setAuth}) {
   };
 
   return (
-    <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
+    <nav className='navbar navbar-expand-lg navbar-dark c-bg-dark'>
       <div className='container'>
         <LinkContainer to={`/`}>
-          <div className='navbar-brand'>{title}</div>
+          <div className='navbar-brand fw-bolder'>{title}</div>
         </LinkContainer>
         <button
           className="navbar-toggler"
@@ -23,22 +23,26 @@ function Navigation({title, auth, setAuth}) {
           <span className="navbar-toggler-icon"/>
         </button>
 
-        <div className='collapse navbar-collapse' id='headerNavbar'>
+        <div className='collapse navbar-collapse'id='headerNavbar'>
           <div className="navbar-nav me-auto">
-            <LinkContainer to={`/`}>
-              <div className='nav-link'>Home</div>
-            </LinkContainer>
+            <div className='col'>
+              <LinkContainer to={`/`}>
+                <div className='nav-link fw-bolder'>Home</div>
+              </LinkContainer>
+            </div>
           </div>
-          <div className='d-flex offset-6'>
+          <div className='me-5'>
             {auth &&
-            <button className='btn btn-light'
-              onClick={() => onClickLogout()}>
-              Logout
-            </button>}
+              <button className='btn c-bg-lighter border-0 fw-bold'
+                onClick={() => onClickLogout()}>
+                Logout
+              </button>}
             {!auth &&
-            <LinkContainer to={`/login`}>
-              <div className='nav-link'>Login</div>
-            </LinkContainer>}
+              <LinkContainer to={`/login`}>
+                <button className='btn c-bg-lighter border-0 fw-bold'>
+                  Login
+                </button>
+              </LinkContainer>}
           </div>
         </div>
       </div>

@@ -14,6 +14,10 @@ function UserHover({id}) {
   const [img, setImg] = useState('');
   const [user, setUser] = useState([]);
 
+  const iconStyle = {
+    // eslint-disable-next-line max-len
+    color: 'rgba(34,0,59,1)',
+  };
   useEffect(() => {
     if (!id) return;
 
@@ -45,24 +49,24 @@ function UserHover({id}) {
       {!isLoading &&
       <><Popover.Header>
         <div className="row align-items-center">
-          <div className='col-2'>
+          <div className='col-auto gx-2'>
             <img
+              className='rounded-circle'
               style={{
-                height: '1.7rem',
-                width: '1.7rem',
+                height: '2rem',
+                width: '2rem',
               }}
               src={img}
               alt={`${title}'s profile picture`} />
           </div>
-          <div className='col'>
-            <b>{title}</b>
+          <div className='col gx-2 fs-4'>
+            {title}
           </div>
         </div>
       </Popover.Header><Popover.Body>
         <div className='row justify-content-center'>
           <p
-            className='justify-content-center'
-            style={{textAlign: 'center'}}>
+            className='justify-content-center text-center'>
             {user.about}
           </p>
         </div>
@@ -72,7 +76,10 @@ function UserHover({id}) {
 
   const username = (
     <LinkContainer to={`/Users/${user.id}`} style={{cursor: 'pointer'}}>
-      <div><FontAwesomeIcon icon={faUser}/> {user.username}</div>
+      <div className='c-tx-dark'>
+        <FontAwesomeIcon icon={faUser} style={iconStyle}/>
+        <spam className='px-2'>{user.username}</spam>
+      </div>
     </LinkContainer>
   );
 
@@ -80,7 +87,7 @@ function UserHover({id}) {
     <OverlayTrigger
       placement="right"
       overlay={popover}>
-      <div>
+      <div className='row'>
         {username}
       </div>
     </OverlayTrigger>

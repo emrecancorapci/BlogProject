@@ -1,18 +1,10 @@
 import {useState, useEffect} from 'react';
-import {Routes, Route} from 'react-router-dom';
 import {getToken} from './Functions/User';
 import './App.css';
 
-import NotFound from './Pages/Common/NotFound';
-
-import Posts from './Pages/Posts';
-import SinglePost from './Pages/Posts/SinglePost';
-import AddPost from './Pages/Posts/AddPost';
-import User from './Pages/Users/User';
-import Login from './Pages/Login';
-
 import Navigation from './Components/Common/Navigation';
 import SidePanel from './Components/Common/SidePanel';
+import Router from './Router';
 
 
 function App() {
@@ -35,26 +27,28 @@ function App() {
       </div>
     </header>
 
-    <div className='container' style={{padding: '1rem 0rem'}}>
+    <main className='container'>
       <div className='row justify-content-evenly'>
-        <div className='col-lg-7 col-sm-12 order-lg-1 order-sm-3 px-3'>
-          <main>
-            <Routes>
-              <Route path="/" element={<Posts />} />
-              <Route path="Posts/:id" element={<SinglePost />} />
-              <Route path="Posts/Add" element={<AddPost />} />
-              <Route path="Users/:id" element={<User />} />
-              <Route path="Login" element={<Login setAuth={setAuth} />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
+        <div className='col-lg-8 col-sm-12
+          order-lg-1 order-sm-3 shadow bg-white rounded-2 border'>
+          <div className='p-2 pt-3 m-3'>
+            <Router setAuth={setAuth}/>
+          </div>
         </div>
         <div className='col-lg-3 col-sm-12 order-2 p-3'>
           <SidePanel/>
         </div>
       </div>
-    </div>
-    <footer></footer>
+    </main>
+    <footer className='row bg-white border-top border-1 mt-5 pb-5'>
+      <div className='container'>
+        <div className='row justify-content-center'>
+          <div className='col-auto'>
+            Footer lol
+          </div>
+        </div>
+      </div>
+    </footer>
   </>);
 }
 

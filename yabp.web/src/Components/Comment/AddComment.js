@@ -40,29 +40,29 @@ function AddComment({postId, parentId}) {
     console.log('Submit');
   };
 
-  return (<>
+  return (
     <form onSubmit={onSubmitForm}>
       {user != null &&
-      <div>
+      <>
         <textarea
-          className='form-control'
+          className='form-control shadow-sm'
           rows='3'
           type='text'
           name='content'
           placeholder='Leave a comment'
           value={form.content}
           onChange={onChangeInput} />
-        <div className="btn">
-          <button>Add</button>
+        <div className='row justify-content-end'>
+          <button className='col-auto btn text-white
+          c-bg-dark border-0 fw-bold my-2 mx-3'>Submit</button>
         </div>
-      </div>}
+      </>}
 
       {emptyFieldError != '' &&
       <div className='alert alert-danger'>
         {emptyFieldError}
       </div>}
     </form>
-  </>
   );
 }
 

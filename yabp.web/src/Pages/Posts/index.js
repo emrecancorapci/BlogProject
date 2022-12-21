@@ -41,11 +41,9 @@ function Posts() {
         onChange={onChangeFilter} />
     </div>
     {isLoading && (<div className='spinner-border' role='status'/>)}
-    {<div className='d-grid gap-3 pt-3'>{filteredPosts.map((post, index) =>
-      <div className='row' key={index}>
-        <PostCard post={post} />
-      </div>,
-    )}</div>}
+    {filteredPosts.map((post, index) =>
+      <PostCard post={post} key={index}/>,
+    )}
   </>);
 }
 

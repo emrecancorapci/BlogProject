@@ -6,7 +6,7 @@ import DateTooltip from '../Common/DateTooltip';
 function CommentCard({comment}) {
   return (
     <div className='card'>
-      <div className='card-header'>
+      <div className='card-header c-bg-light'>
         <div className='row justify-content-between'>
           <div className='col-auto fw-bold'>
             <UserHover id={comment.authorId} />

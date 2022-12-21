@@ -1,10 +1,44 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:regular,regularitalic,semibold,semibolditalic,bold,bolditalic');
 
-body {
+main{
+  min-height: 100%;
+}
+
+body{
+  overflow-x: hidden;
   font-family: 'Source Sans Pro', sans-serif;
+  height: 100vh;
+  background: rgb(255,238,238);
+  background: linear-gradient(90deg, rgba(255,238,238,1) 0%, rgba(248,238,255,1) 35%, rgba(240,242,255,1) 100%); 
 }
 
 .popover-img{
   height: 200px;
   width: 200px;
+}
+
+.c-bg-light{
+  background: rgb(255,171,171);
+  background: linear-gradient(90deg, rgba(255,171,171,1) 0%, rgba(226,185,255,1) 35%, rgba(164,176,255,1) 100%);
+}
+
+.c-bg-lighter{
+  background: rgb(255,238,238);
+  background: linear-gradient(90deg, rgba(255,220,220,1) 0%, rgba(255,220,255,1) 35%, rgba(230,230,255,1) 100%); 
+}
+
+.c-bg-dark{
+  background: rgb(55,0,0);
+  background: linear-gradient(90deg, rgba(55,0,0,1) 0%, rgba(34,0,59,1) 35%, rgba(0,5,36,1) 100%); 
+}
+
+.c-tx-dark{
+  background: rgb(55,0,0);
+  background: linear-gradient(90deg, rgba(55,0,0,1) 0%, rgba(34,0,59,1) 35%, rgba(0,5,36,1) 100%); 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.icon-color{
+  color: linear-gradient(90deg, rgba(55,0,0,1) 0%, rgba(34,0,59,1) 35%, rgba(0,5,36,1) 100%); 
 }

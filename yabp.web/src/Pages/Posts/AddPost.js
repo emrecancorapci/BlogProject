@@ -1,122 +1,108 @@
-import {useState} from 'react';
+import {useFormik} from 'formik';
 import axios from 'axios';
-import {Form, Button} from 'react-bootstrap';
 import {getToken} from '../../Functions/User';
 import getApi from '../../Functions/Common/getApi';
 
 // TODO Not working
 function AddPost() {
-  const emptyForm = {
-    title: '',
-    content: '',
-    postSummary: '',
-    thumbnailUrl: '',
-    commentsEnabled: null,
-    reactionsEnabled: null,
-    categoryId: null,
-    authorId: null,
-  };
+  const userId = getToken() ? getToken().id : 1;
+  const api = getApi('Posts');
+  const fetchData = async (values) => await axios.post(api, values);
 
-  const [form, setForm] = useState(emptyForm);
-  // const [errorText, setErrorText] = useState('');
-  // const [error, setError] = useState(false);
+  const formik = useFormik({
+    initialValues: {
+      title: '',
+      content: '',
+      thumbnailUrl: '',
+      addCommentsEnabled: true,
+      addReactionsEnabled: true,
+      categoryId: 1,
+      authorId: userId,
+    },
+    onSubmit: (values) => {
+      fetchData(values)
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((event) => (
+            console.log(event),
+            console.log('Submitted.')));
+    },
+  });
 
-  const onChangeInput = (event) => {
-    setForm({...form, [event.target.name]: event.target.value});
-  };
-
-  const onSubmitForm = (event) => {
-    event.preventDefault();
-
-    const api = getApi('Posts');
-
-    if (form.title === '' || form.content === '') {
-      // setError(true);
-      // setErrorText('Fill all the fields.');
-      return false;
-    }
-
-    const user = getToken();
-
-    form.authorId = user.id;
-    form.categoryId = 1;
-
-    axios.post(api, form)
-        .then((response) => {
-          return response;
-        })
-        .catch((error) => {
-          return error;
-        });
-
-    console.log('Submit');
-  };
-
-  return (
-    <Form onSubmit={() => onSubmitForm()}>
-      <Form.Group className="mb-3">
-        <Form.Label>Title</Form.Label>
-        <Form.Control
-          type="text"
+  return (<div style={{padding: '.5rem'}}>
+    <h1>Add Post</h1>
+    <form onSubmit={formik.handleSubmit} style={{padding: '1rem'}}>
+      <div className="mb-3">
+        <label htmlFor="title" className='form-label'>Post Title</label>
+        <input
+          className="form-control"
+          id='title'
           name="title"
+          type="text"
           placeholder="Title"
-          value={form.title}
-          onChange={onChangeInput} />
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label>Post</Form.Label>
-        <Form.Control
-          as="textarea"
-          rows={3}
-          name="content"
-          value={form.content}
-          onChange={onChangeInput}/>
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label>Title</Form.Label>
-        <Form.Control
-          type="text"
+          value={formik.values.title}
+          onChange={formik.handleChange} />
+      </div>
+      <div className="mb-3">
+        <label htmlFor="title" className='form-label'>Thumbnail URL</label>
+        <input
+          className='form-control'
+          id='thumbnailUrl'
           name="thumbnailUrl"
-          placeholder="ThumbnailUrl"
-          value={form.thumbnailUrl}
-          onChange={onChangeInput} />
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label>Title</Form.Label>
-        <Form.Control
           type="text"
-          name="postSummary"
-          placeholder="Post Summary"
-          value={form.postSummary}
-          onChange={onChangeInput} />
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Check
-          type="checkbox"
-          name="commentsEnabled"
-          label="Comments enabled:"
-          value={form.commentsEnabled}
-          onChange={onChangeInput}
-        />
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Check
-          type="checkbox"
-          name="reactionsEnabled"
-          label="Reactions enabled:"
-          value={form.reactionsEnabled}
-          onChange={onChangeInput}
-        />
-      </Form.Group>
+          placeholder="Thumbnail"
+          value={formik.values.thumbnailUrl}
+          onChange={formik.handleChange} />
+      </div>
+      <div className='row m-3'>
+        {/* checks doesn't work */}
+        <div className="form-check form-switch col-6">
+          <input
+            className="form-check-input"
+            id='addCommentEnabled'
+            name='addCommentEnabled'
+            type="checkbox"
+            value={formik.values.addCommentsEnabled}
+            onChange={formik.handleChange}/>
+          <label className="form-check-label"
+            htmlFor="addCommentEnabled">
+              Comments Enabled
+          </label>
+        </div>
+        <div className="form-check form-switch col-6">
+          <input
+            className="form-check-input"
+            id='addReactionsEnabled'
+            name='addReactionsEnabled'
+            type="checkbox"
+            value={formik.values.addReactionsEnabled}
+            onChange={formik.handleChange}/>
+          <label className="form-check-label"
+            htmlFor="addReactionsEnabled">
+              Reactions Enabled
+          </label>
+        </div>
+      </div>
+      <div className="input-group mb-3">
+        <span htmlFor='content' className='input-group-text'>Content</span>
+        <textarea
+          className='form-control'
+          id='content'
+          name='content'
+          aria-label='Post'
+          value={formik.values.content}
+          onChange={formik.handleChange}/>
+      </div>
       {/* {!error && <></>}
         {<Alert key={variant} variant={variant}>
           {errorText}
         </Alert>} */}
-      <Button variant="primary" type="submit">
+      <button className='btn btn-primary' type="submit">
           Submit
-      </Button>
-    </Form>
-  );
+      </button>
+    </form>
+  </div>);
 }
 
 export default AddPost;

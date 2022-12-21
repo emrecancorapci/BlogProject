@@ -26,35 +26,12 @@ function CommentsSection({id}) {
   return (<>
     {isLoading &&
       (<div className='spinner-border' role="status" />)}
-    {<div className='d-grid gap-3 pt-2'>
+    {<div className='pt-2'>
       { comments.map((comment, index) => (
-        <div className='row' key={index}>
-          <div className='col-lg-11'>
-            <CommentCard comment={comment}/>
-          </div>
-          {/* <Col lg={2}>
-            {token &&
-            (token.id === comment.authorId || token.Role === 'Admin') &&
-            <>
-              <Stack gap={2}>
-                <Row>
-                  <Button
-                    variant="primary"
-                    disabled>
-                      Edit
-                  </Button>
-                </Row>
-                <Row>
-                  <Button
-                    variant="danger"
-                    onClick={() => onDeleteComment(comment.id)}>
-                      Delete
-                  </Button>
-                </Row>
-              </Stack>
-            </>}
-          </Col> */}
-        </div>))}
+        <div className='col-lg-11 mb-3' key={index}>
+          <CommentCard comment={comment}/>
+        </div>
+      ))}
     </div>}
   </>);
 }

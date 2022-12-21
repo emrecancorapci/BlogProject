@@ -17,8 +17,8 @@ public class UpdatePostRequest
     public string? ThumbnailUrl { get; set; }
     public string? PostSummary { get; set; }
 
-    public int AuthorId { get; set; }
-    public int CategoryId { get; set; }
+    public int? AuthorId { get; set; }
+    public int? CategoryId { get; set; }
 
     public bool IsCommentsVisible { get; set; }
     public bool AddCommentsEnabled { get; set; }
