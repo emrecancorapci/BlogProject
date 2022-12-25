@@ -7,6 +7,12 @@ import {faUser} from '@fortawesome/free-solid-svg-icons';
 
 import getApi from '../../Functions/Common/getApi';
 
+/**
+ * @description A link to user's profile page in a popover
+ *
+ * @param {Number} id - Id of the user
+ * @return {JSX.Element} Username with popover
+ */
 
 function UserHover({id}) {
   const [isLoading, setIsLoading] = useState(true);
@@ -15,7 +21,6 @@ function UserHover({id}) {
   const [user, setUser] = useState([]);
 
   const iconStyle = {
-    // eslint-disable-next-line max-len
     color: 'rgba(34,0,59,1)',
   };
   useEffect(() => {
@@ -46,31 +51,30 @@ function UserHover({id}) {
   const popover = (
     <Popover id="popover-basic">
       {isLoading && <div className='spinner-border' role='status' />}
-      {!isLoading &&
-      <><Popover.Header>
-        <div className="row align-items-center">
-          <div className='col-auto gx-2'>
-            <img
-              className='rounded-circle'
-              style={{
-                height: '2rem',
-                width: '2rem',
-              }}
-              src={img}
-              alt={`${title}'s profile picture`} />
-          </div>
-          <div className='col gx-2 fs-4'>
-            {title}
+      {!isLoading && <div className='card'>
+        <div className='card-header c-bg-lighter'>
+          <div className="row align-items-center">
+            <div className='col-auto'>
+              <img
+                className='rounded-circle'
+                style={{
+                  height: '1.7rem',
+                  width: '1.7rem',
+                }}
+                src={img}
+                alt={`${title}'s profile picture`} />
+            </div>
+            <div className='col gx-2 fs-5 fw-bold c-tx-dark'>
+              {title}
+            </div>
           </div>
         </div>
-      </Popover.Header><Popover.Body>
-        <div className='row justify-content-center'>
-          <p
-            className='justify-content-center text-center'>
+        <div className='card-body'>
+          <p className='justify-content-center text-center'>
             {user.about}
           </p>
         </div>
-      </Popover.Body></>}
+      </div>}
     </Popover>
   );
 
@@ -78,7 +82,7 @@ function UserHover({id}) {
     <LinkContainer to={`/Users/${user.id}`} style={{cursor: 'pointer'}}>
       <div className='c-tx-dark'>
         <FontAwesomeIcon icon={faUser} style={iconStyle}/>
-        <spam className='px-2'>{user.username}</spam>
+        <span className='px-2'>{user.username}</span>
       </div>
     </LinkContainer>
   );

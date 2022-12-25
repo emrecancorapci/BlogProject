@@ -4,6 +4,13 @@ import axios from 'axios';
 import PostCard from '../../Components/Post/PostCard';
 import getApi from '../../Functions/Common/getApi';
 
+
+/**
+ * @description Displays all posts in the database
+ *
+ * @returns {JSX.Element} All posts in the database
+ */
+
 function Posts() {
   // TODO Add pagination
   const [posts, setPosts] = useState([]);
@@ -15,7 +22,7 @@ function Posts() {
 
     const fetchPosts = async () => await axios(api);
 
-    fetchPosts(api)
+    fetchPosts()
         .then((response) => setPosts(response.data))
         .catch((event) => console.log(event))
         .finally(() => setIsLoading(false));

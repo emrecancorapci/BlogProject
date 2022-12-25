@@ -8,6 +8,13 @@ import AddComment from '../../Components/Comment/AddComment';
 import getApi from '../../Functions/Common/getApi';
 import {getToken} from '../../Functions/User';
 
+
+/**
+ * @description - Displays a single post and its comments
+ *
+ * @return {JSX.Element} - Single post and its comments
+ */
+
 function SinglePost() {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState([]);

@@ -1,5 +1,13 @@
 import {LinkContainer} from 'react-router-bootstrap';
 
+/**
+ * @description `Navigation` bar for the top of the page.
+ * @param {string} title - The title of the page
+ * @param {boolean} auth - Whether the user is authenticated
+ * @param {function} setAuth - Function to set the authentication state
+ * @return {JSX.Element} The navigation bar
+ */
+
 function Navigation({title, auth, setAuth}) {
   const onClickLogout = () => {
     sessionStorage.removeItem('user');

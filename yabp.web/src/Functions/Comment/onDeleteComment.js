@@ -3,6 +3,13 @@ import axios from 'axios';
 import {getAuthHeader} from '../../Functions/User';
 import getApi from '../../Functions/Common/getApi';
 
+
+/**
+ * @description Deletes comment with specified id
+ *
+ * @param {Number} id - Comment id
+ */
+
 function onDeleteComment(id) {
   const api = getApi(`Comments/${id}`);
   const headers = getAuthHeader();
@@ -10,7 +17,6 @@ function onDeleteComment(id) {
   axios.delete(api, headers)
       .then((request) => console.log(request))
       .catch((event) => console.log(event));
-  console.log('Delete comment end!');
 }
 
 export default onDeleteComment;

@@ -4,7 +4,13 @@ import axios from 'axios';
 
 import getApi from '../../Functions/Common/getApi';
 
-function User() {
+/**
+ * @description Displays user's profile page
+ *
+ * @returns {JSX.Element} User's profile page
+ */
+
+function UserPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [user, setUser] = useState([]);
@@ -18,7 +24,7 @@ function User() {
     fetchData()
         .then((response) => setUser(response.data))
         .catch((event) => console.log(event))
-        .finally(() => setIsLoading(false)); // Set loading false
+        .finally(() => setIsLoading(false));
   }, [id]);
 
   return (<>
@@ -32,4 +38,4 @@ function User() {
   </>);
 }
 
-export default User;
+export default UserPage;

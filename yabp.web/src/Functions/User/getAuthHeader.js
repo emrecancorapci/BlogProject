@@ -1,5 +1,12 @@
 import getToken from './getToken';
 
+
+/**
+ * @description Get auth header for axios requests
+ *
+ * @return {string} header
+ */
+
 function getAuthHeader() {
   const data = getToken();
 

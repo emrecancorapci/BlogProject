@@ -2,6 +2,13 @@ import {Tooltip, OverlayTrigger} from 'react-bootstrap';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faCalendar} from '@fortawesome/free-solid-svg-icons';
 
+
+/**
+ * Data tooltip with icon
+ *
+ * @param {string} date - Date
+ * @return {JSX.Element} - Element
+ */
 function DateTooltip({date}) {
   const dateText = `${date.substr(0, 10)} - 
   ${date.substr(11, 8)}`;

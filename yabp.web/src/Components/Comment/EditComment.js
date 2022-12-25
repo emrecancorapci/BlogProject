@@ -4,14 +4,14 @@ import axios from 'axios';
 import {getUser} from '../../Functions/User';
 import getApi from '../../Functions/Common/getApi';
 
-function EditComment({postId, parentId}) {
-  // const emptyComment = {
-  //   content: '',
-  //   postId: postId,
-  //   authorId: 2,
-  //   parentId: null,
-  // };
+/**
+ * A react component which has a form to edit comment
+ * @param {Number} postId - Post id
+ * @returns {JSX.Element} A comment edit form
+ */
 
+
+function EditComment({postId, parentId}) {
   const [form, setForm] = useState([]);
 
   const onChangeInput = (event) => {

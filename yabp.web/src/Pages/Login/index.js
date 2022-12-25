@@ -3,6 +3,14 @@ import axios from 'axios';
 
 import getApi from '../../Functions/Common/getApi';
 
+
+/**
+ * @description Form to login
+ *
+ * @param {function} setAuth - Sets the authentication state
+ * @return {JSX.Element} - Form element
+ */
+
 function Login({setAuth}) {
   const api = getApi('Users/Login');
   const fetchData = async (values) => await axios.post(api, values);

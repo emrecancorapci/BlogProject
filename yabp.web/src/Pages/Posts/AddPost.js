@@ -3,7 +3,12 @@ import axios from 'axios';
 import {getToken} from '../../Functions/User';
 import getApi from '../../Functions/Common/getApi';
 
-// TODO Not working
+/**
+ * @description Form to add a post
+ *
+ * @return {JSX.Element} Form element
+ */
+
 function AddPost() {
   const userId = getToken() ? getToken().id : 1;
   const api = getApi('Posts');
@@ -94,10 +99,6 @@ function AddPost() {
           value={formik.values.content}
           onChange={formik.handleChange}/>
       </div>
-      {/* {!error && <></>}
-        {<Alert key={variant} variant={variant}>
-          {errorText}
-        </Alert>} */}
       <button className='btn btn-primary' type="submit">
           Submit
       </button>
