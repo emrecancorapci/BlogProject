@@ -1,5 +1,5 @@
-import {Dispatch, SetStateAction} from 'react';
-import {Routes, Route, useLocation} from 'react-router-dom';
+import { Dispatch, SetStateAction } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 
 import NotFound from './Pages/Common/NotFound';
 import Posts from './Pages/Posts';
@@ -8,7 +8,6 @@ import AddPost from './Pages/Posts/AddPost';
 import UserPage from './Pages/Users/UserPage';
 import Login from './Pages/Login';
 
-
 /**
  * @description Router component
  *
@@ -16,7 +15,7 @@ import Login from './Pages/Login';
  * @return {JSX.Element} Router component
  */
 
-function Router({setAuth} : {setAuth: Dispatch<SetStateAction<boolean>>}): JSX.Element {
+function Router ({ setAuth }: { setAuth: Dispatch<SetStateAction<boolean>> }): JSX.Element {
   const location = useLocation();
   return (
     <Routes location={location} key={location.pathname}>

@@ -1,46 +1,44 @@
-import {useEffect, useState} from 'react';
-import axios from 'axios';
-import {useParams} from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axios, { AxiosResponse } from 'axios';
+import { useParams } from 'react-router-dom';
 
 import CommentsSection from '../../Components/Comment/CommentsSection';
 import UserHover from '../../Components/User/UserHover';
 import AddComment from '../../Components/Comment/AddComment';
 import getApi from '../../Functions/Common/getApi';
-import {getToken} from '../../Functions/User';
-
-
+import { getToken } from '../../Functions/User';
+import { PostResponse } from '../../Interfaces/PostResponse';
 /**
  * @description - Displays a single post and its comments
  *
  * @return {JSX.Element} - Single post and its comments
  */
 
-type Post = {
-  id: number;
-  title: string;
-  content: string;
-  authorId: number;
-  isCommentsVisible: boolean;
-  addCommentsEnabled: boolean;
-}
-
-function SinglePost() {
+function SinglePost (): JSX.Element {
+  const postInitial: PostResponse = {
+    title: '',
+    content: '',
+    authorId: 0,
+    isCommentsVisible: false,
+    addCommentsEnabled: false
+  };
   const [isLoading, setIsLoading] = useState(true);
-  const [post, setPost] = useState<Post>({} as Post);
-  const {id} = useParams();
+  const [post, setPost] = useState<PostResponse>(postInitial);
+  const { postId } = useParams();
   const user = getToken();
 
   useEffect(() => {
-    console.log(`Post ID: ${id}`);
+    const id = Number(postId);
 
     const api = getApi(`Posts/${id}`);
-    const fetchPost = async () => await axios(api);
+    const fetchPost: () => Promise<AxiosResponse> =
+      async () => await axios(api);
 
     fetchPost()
-        .then((response) => setPost(response.data))
-        .catch((event) => console.log(event))
-        .finally(() => setIsLoading(false));
-  }, [id]);
+      .then((response) => setPost(response.data))
+      .catch((event) => console.log(event))
+      .finally(() => setIsLoading(false));
+  }, [postId]);
 
   return (<>
     {isLoading && <div className='spinner-border' role='status' />}
@@ -72,14 +70,13 @@ function SinglePost() {
           <h3 className='fw-bold c-tx-dark'>
               Add Comment
           </h3>
-          {user &&
-            <div className='pt-2'>
-              <AddComment postId={Number(id)}/>
-            </div>}
-          {!user &&
-            <div className='alert alert-warning'>
-              You must be logged in to post a comment.
-            </div>}
+          {user !== null
+            ? (<div className='pt-2'>
+                <AddComment postId={Number(postId)}/>
+              </div>)
+            : (<div className='alert alert-warning'>
+                You must be logged in to post a comment.
+              </div>)}
         </div>}
       {/* Comments Section */}
       {post.isCommentsVisible &&
@@ -87,7 +84,7 @@ function SinglePost() {
           <h2 className='fw-bold c-tx-dark'>
                 Comments
           </h2>
-          <CommentsSection id={Number(id)} />
+          <CommentsSection id={Number(postId)} />
         </div>}
     </div>}
   </>);

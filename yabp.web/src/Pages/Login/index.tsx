@@ -1,9 +1,8 @@
-import {Dispatch, SetStateAction} from 'react';
-import {useFormik} from 'formik';
-import axios from 'axios';
+import { Dispatch, SetStateAction } from 'react';
+import { useFormik } from 'formik';
+import axios, { AxiosResponse } from 'axios';
 
 import getApi from '../../Functions/Common/getApi';
-
 
 /**
  * @description Form to login
@@ -12,30 +11,31 @@ import getApi from '../../Functions/Common/getApi';
  * @return {JSX.Element} - Form element
  */
 
-type Fields = {
-  username: string,
-  password: string,
+interface Fields {
+  username: string
+  password: string
 }
 
-function Login({setAuth}: {setAuth: Dispatch<SetStateAction<boolean>>}): JSX.Element {
+function Login ({ setAuth }: { setAuth: Dispatch<SetStateAction<boolean>> }): JSX.Element {
   const api = getApi('Users/Login');
-  const fetchData = async (values : Fields) => await axios.post(api, values);
+  const fetchData: (value: Fields) => Promise<AxiosResponse> =
+    async (values: Fields) => await axios.post(api, values);
 
   const formik = useFormik({
     initialValues: {
       username: '',
-      password: '',
+      password: ''
     },
-    onSubmit: (values : Fields) => {
+    onSubmit: (values: Fields) => {
       fetchData(values)
-          .then((response) => {
-            if (response.data) {
-              sessionStorage.setItem('user', JSON.stringify(response.data));
-              setAuth(true);
-            }
-          })
-          .catch((event) => console.log(event));
-    },
+        .then((response) => {
+          if (response.data !== null) {
+            sessionStorage.setItem('user', JSON.stringify(response.data));
+            setAuth(true);
+          }
+        })
+        .catch((event) => console.log(event));
+    }
   });
 
   return (

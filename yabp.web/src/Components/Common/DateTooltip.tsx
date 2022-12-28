@@ -1,7 +1,6 @@
-import {Tooltip, OverlayTrigger} from 'react-bootstrap';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faCalendar} from '@fortawesome/free-solid-svg-icons';
-
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Data tooltip with icon
@@ -10,7 +9,7 @@ import {faCalendar} from '@fortawesome/free-solid-svg-icons';
  * @return {JSX.Element} - Element
  */
 
-function DateTooltip({date} : {date: string}) {
+function DateTooltip ({ date }: { date: string }): JSX.Element {
   const dateText = `${date.substring(0, 10)} - 
   ${date.substring(11, 8)}`;
 

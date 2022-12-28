@@ -1,7 +1,8 @@
+/* eslint-disable */
 import * as webVitals from 'web-vitals';
 
 const reportWebVitals = (onPerfEntry?: webVitals.ReportHandler) => {
-  if (onPerfEntry && onPerfEntry instanceof Function) {
+  if ((onPerfEntry != null) && onPerfEntry instanceof Function) {
     import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
       getCLS(onPerfEntry);
       getFID(onPerfEntry);

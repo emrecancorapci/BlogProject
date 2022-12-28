@@ -1,4 +1,4 @@
-function Users() {
+function Users () {
   return (
     <div>Users</div>
   );

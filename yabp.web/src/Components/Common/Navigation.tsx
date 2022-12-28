@@ -1,5 +1,5 @@
-import {Dispatch, SetStateAction} from 'react';
-import {Link} from 'react-router-dom';
+import { Dispatch, SetStateAction } from 'react'
+import { Link } from 'react-router-dom'
 
 /**
  * @description `Navigation` bar for the top of the page.
@@ -9,20 +9,25 @@ import {Link} from 'react-router-dom';
  * @return {JSX.Element} The navigation bar
  */
 
-function Navigation({title, auth, setAuth}: {
-  title: string,
-  auth: boolean,
-  setAuth: Dispatch<SetStateAction<boolean>>}): JSX.Element {
-  const onClickLogout = () => {
-    sessionStorage.removeItem('user');
-    setAuth(false);
-  };
+function Navigation ({
+  title,
+  auth,
+  setAuth
+}: {
+  title: string
+  auth: boolean
+  setAuth: Dispatch<SetStateAction<boolean>>
+}): JSX.Element {
+  const onClickLogout = (): void => {
+    sessionStorage.removeItem('user')
+    setAuth(false)
+  }
 
   return (
-    <nav className='navbar navbar-expand-lg navbar-dark c-bg-dark'>
-      <div className='container'>
-        <Link to={`/`}>
-          <div className='navbar-brand fw-bolder'>{title}</div>
+    <nav className="navbar navbar-expand-lg navbar-dark c-bg-dark">
+      <div className="container">
+        <Link to={'/'}>
+          <div className="navbar-brand fw-bolder">{title}</div>
         </Link>
         <button
           className="navbar-toggler"
@@ -31,35 +36,40 @@ function Navigation({title, auth, setAuth}: {
           data-bs-target="#headerNavbar"
           aria-controls="headerNavbar"
           aria-expanded="false"
-          aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"/>
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon" />
         </button>
 
-        <div className='collapse navbar-collapse'id='headerNavbar'>
+        <div className="collapse navbar-collapse" id="headerNavbar">
           <div className="navbar-nav me-auto">
-            <div className='col'>
-              <Link to={`/`}>
-                <div className='nav-link fw-bolder'>Home</div>
+            <div className="col">
+              <Link to={'/'}>
+                <div className="nav-link fw-bolder">Home</div>
               </Link>
             </div>
           </div>
-          <div className='me-5'>
-            {auth &&
-              <button className='btn c-bg-lighter border-0 fw-bold'
-                onClick={() => onClickLogout()}>
+          <div className="me-5">
+            {auth && (
+              <button
+                className="btn c-bg-lighter border-0 fw-bold"
+                onClick={() => onClickLogout()}
+              >
                 Logout
-              </button>}
-            {!auth &&
-              <Link to={`/login`}>
-                <button className='btn c-bg-lighter border-0 fw-bold'>
+              </button>
+            )}
+            {!auth && (
+              <Link to={'/login'}>
+                <button className="btn c-bg-lighter border-0 fw-bold">
                   Login
                 </button>
-              </Link>}
+              </Link>
+            )}
           </div>
         </div>
       </div>
     </nav>
-  );
+  )
 }
 
-export default Navigation;
+export default Navigation

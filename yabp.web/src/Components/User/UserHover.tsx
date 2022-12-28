@@ -1,12 +1,13 @@
-import {useEffect, useState} from 'react';
-import axios from 'axios';
-import {Popover, OverlayTrigger} from 'react-bootstrap';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faUser} from '@fortawesome/free-solid-svg-icons';
-import {Link} from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axios, { AxiosResponse } from 'axios';
+import { Popover, OverlayTrigger } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 import getApi from '../../Functions/Common/getApi';
 
+import { UserResponse } from '../../Interfaces/UserResponse';
 /**
  * @description A link to user's profile page in a popover
  *
@@ -14,47 +15,53 @@ import getApi from '../../Functions/Common/getApi';
  * @return {JSX.Element} Username with popover
  */
 
-type User = {
-  id: number;
-  username: string;
-  name: string;
-  lastName: string;
-  about: string;
-  profilePictureUrl: string;
-};
+function UserHover ({ id }: { id: number }): JSX.Element {
+  const userResponseInitial: UserResponse = {
+    id: 0,
+    username: '',
+    name: '',
+    lastName: '',
+    about: '',
+    profilePictureUrl: ''
+  };
 
-function UserHover({id} : {id:number}): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
   const [title, setTitle] = useState('');
   const [img, setImg] = useState('');
-  const [user, setUser] = useState<User>({} as User);
+  const [user, setUser] = useState<UserResponse>(userResponseInitial);
 
   const iconStyle = {
-    color: 'rgba(34,0,59,1)',
+    color: 'rgba(34,0,59,1)'
   };
+
   useEffect(() => {
-    if (!id) return;
+    if (id === null) return;
 
     const api = getApi(`Users/${id}`);
-    const fetchUser = async () => await axios(api);
+    const fetchUser: () => Promise<AxiosResponse> = async () => await axios(api);
 
     fetchUser()
-        .then((response) => {
-          if (response.data) {
-            setUserData(response.data);
-          }
-        })
-        .catch((event) => console.log(event));
+      .then((response) => {
+        if (response.data !== null) {
+          setUserData(response.data);
+        }
+      })
+      .catch((event) => console.log(event));
   }, [id]);
 
-  const setUserData = (data: User) => {
-    setTitle(data.name ? data.name + ' ' + data.lastName :
-    data.username);
-    setImg(data.profilePictureUrl ? data.profilePictureUrl :
-      '/img/common/blank_profile.png');
-
+  const setUserData: Function = (data: UserResponse) => {
+    checkUserData(data);
     setUser(data);
     setIsLoading(false);
+  };
+
+  const checkUserData: Function = (data: UserResponse) => {
+    setTitle(data.name !== null
+      ? data.name + ' ' + data.lastName
+      : data.username);
+    setImg(data.profilePictureUrl !== null
+      ? data.profilePictureUrl
+      : '/img/common/blank_profile.png');
   };
 
   const popover = (
@@ -68,7 +75,7 @@ function UserHover({id} : {id:number}): JSX.Element {
                 className='rounded-circle'
                 style={{
                   height: '1.7rem',
-                  width: '1.7rem',
+                  width: '1.7rem'
                 }}
                 src={img}
                 alt={`${title}'s profile`} />
@@ -88,7 +95,7 @@ function UserHover({id} : {id:number}): JSX.Element {
   );
 
   const username = (
-    <Link to={`/Users/${user.id}`} style={{cursor: 'pointer'}}>
+    <Link to={`/Users/${user.id}`} style={{ cursor: 'pointer' }}>
       <div className='c-tx-dark'>
         <FontAwesomeIcon icon={faUser} style={iconStyle}/>
         <span className='px-2'>{user.username}</span>

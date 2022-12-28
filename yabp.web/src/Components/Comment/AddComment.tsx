@@ -1,9 +1,10 @@
-import {useFormik} from 'formik';
-import axios, {AxiosRequestConfig} from 'axios';
+import { useFormik } from 'formik';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import {getToken} from '../../Functions/User';
+import { getToken, getAuthConfig } from '../../Functions/User';
 import getApi from '../../Functions/Common/getApi';
-import {getAuthConfig} from '../../Functions/User';
+
+import { CommentRequest } from '../../Interfaces/CommentRequest';
 
 /**
  * @description Add comment component
@@ -13,35 +14,30 @@ import {getAuthConfig} from '../../Functions/User';
  * @return {JSX.Element} Add comment component
  */
 
-type Comment = {
-  content: string;
-  authorId: number;
-  postId: number;
-  parentId?: number;
-}
-
-function AddComment({postId, parentId} : { postId: number; parentId?: number;
+function AddComment ({ postId, parentId }: {
+  postId: number
+  parentId?: number
 }): JSX.Element {
   const user = getToken();
   const api = getApi('Comments');
 
   const config: AxiosRequestConfig = getAuthConfig();
 
-  const fetchData = async (values: Comment) =>
-    await axios.post(api, values, config);
+  const fetchData: (values: CommentRequest) => Promise<AxiosResponse> =
+  async (values: CommentRequest) => await axios.post(api, values, config);
 
   const formik = useFormik({
     initialValues: {
       content: '',
       authorId: user.id,
-      postId: postId,
-      parentId: parentId,
+      postId,
+      parentId
     },
     onSubmit: (values) => {
       fetchData(values)
-          .then((response) => console.log(response))
-          .catch((event) => console.log(event));
-    },
+        .then((response) => console.log(response))
+        .catch((event) => console.log(event));
+    }
   });
 
   return (

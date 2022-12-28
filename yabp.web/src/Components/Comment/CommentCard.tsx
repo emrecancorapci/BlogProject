@@ -1,5 +1,6 @@
 import UserHover from '../User/UserHover';
 import DateTooltip from '../Common/DateTooltip';
+import { CommentResponse } from '../../Interfaces/CommentResponse';
 
 // TODO Add control menu
 // TODO Implement comment like
@@ -18,14 +19,7 @@ import DateTooltip from '../Common/DateTooltip';
  * @return {JSX.Element} Comment card
  */
 
-type Comment = {
-  id: number;
-  content: string;
-  authorId: number;
-  created: string;
-}
-
-function CommentCard({comment} : {comment: Comment}) {
+function CommentCard ({ comment }: { comment: CommentResponse }): JSX.Element {
   return (
     <div className='card'>
       <div className='card-header c-bg-light'>

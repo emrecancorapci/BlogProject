@@ -6,7 +6,7 @@
  * @return {String} The API path
  */
 
-function getApi(request : string) : string {
+function getApi (request: string): string {
   const api = `https://localhost:7082/api/${request}`;
   return api;
 }
