@@ -1,4 +1,5 @@
-import {LinkContainer} from 'react-router-bootstrap';
+import {Dispatch, SetStateAction} from 'react';
+import {Link} from 'react-router-dom';
 
 /**
  * @description `Navigation` bar for the top of the page.
@@ -8,7 +9,10 @@ import {LinkContainer} from 'react-router-bootstrap';
  * @return {JSX.Element} The navigation bar
  */
 
-function Navigation({title, auth, setAuth}) {
+function Navigation({title, auth, setAuth}: {
+  title: string,
+  auth: boolean,
+  setAuth: Dispatch<SetStateAction<boolean>>}): JSX.Element {
   const onClickLogout = () => {
     sessionStorage.removeItem('user');
     setAuth(false);
@@ -17,9 +21,9 @@ function Navigation({title, auth, setAuth}) {
   return (
     <nav className='navbar navbar-expand-lg navbar-dark c-bg-dark'>
       <div className='container'>
-        <LinkContainer to={`/`}>
+        <Link to={`/`}>
           <div className='navbar-brand fw-bolder'>{title}</div>
-        </LinkContainer>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -34,9 +38,9 @@ function Navigation({title, auth, setAuth}) {
         <div className='collapse navbar-collapse'id='headerNavbar'>
           <div className="navbar-nav me-auto">
             <div className='col'>
-              <LinkContainer to={`/`}>
+              <Link to={`/`}>
                 <div className='nav-link fw-bolder'>Home</div>
-              </LinkContainer>
+              </Link>
             </div>
           </div>
           <div className='me-5'>
@@ -46,11 +50,11 @@ function Navigation({title, auth, setAuth}) {
                 Logout
               </button>}
             {!auth &&
-              <LinkContainer to={`/login`}>
+              <Link to={`/login`}>
                 <button className='btn c-bg-lighter border-0 fw-bold'>
                   Login
                 </button>
-              </LinkContainer>}
+              </Link>}
           </div>
         </div>
       </div>

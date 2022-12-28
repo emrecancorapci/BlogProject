@@ -1,7 +1,8 @@
 import {useFormik} from 'formik';
-import axios from 'axios';
+import axios, {AxiosRequestConfig} from 'axios';
 import {getToken} from '../../Functions/User';
 import getApi from '../../Functions/Common/getApi';
+import {getAuthConfig} from '../../Functions/User';
 
 /**
  * @description Form to add a post
@@ -9,10 +10,24 @@ import getApi from '../../Functions/Common/getApi';
  * @return {JSX.Element} Form element
  */
 
+type AddPostResponse = {
+  title: string;
+  content: string;
+  authorId: number;
+  thumbnailUrl: string;
+  addCommentsEnabled: boolean;
+  addReactionsEnabled: boolean;
+  categoryId : number;
+}
+
 function AddPost() {
   const userId = getToken() ? getToken().id : 1;
   const api = getApi('Posts');
-  const fetchData = async (values) => await axios.post(api, values);
+
+  const config: AxiosRequestConfig = getAuthConfig();
+
+  const fetchData = async (values : AddPostResponse) =>
+    await axios.post(api, values, config);
 
   const formik = useFormik({
     initialValues: {
@@ -24,14 +39,12 @@ function AddPost() {
       categoryId: 1,
       authorId: userId,
     },
-    onSubmit: (values) => {
+    onSubmit: (values : AddPostResponse) => {
       fetchData(values)
           .then((response) => {
             console.log(response);
           })
-          .catch((event) => (
-            console.log(event),
-            console.log('Submitted.')));
+          .catch((event) => console.log(event));
     },
   });
 
@@ -68,7 +81,6 @@ function AddPost() {
             id='addCommentEnabled'
             name='addCommentEnabled'
             type="checkbox"
-            value={formik.values.addCommentsEnabled}
             onChange={formik.handleChange}/>
           <label className="form-check-label"
             htmlFor="addCommentEnabled">
@@ -81,7 +93,6 @@ function AddPost() {
             id='addReactionsEnabled'
             name='addReactionsEnabled'
             type="checkbox"
-            value={formik.values.addReactionsEnabled}
             onChange={formik.handleChange}/>
           <label className="form-check-label"
             htmlFor="addReactionsEnabled">
@@ -90,7 +101,7 @@ function AddPost() {
         </div>
       </div>
       <div className="input-group mb-3">
-        <span htmlFor='content' className='input-group-text'>Content</span>
+        <span className='input-group-text'>Content</span>
         <textarea
           className='form-control'
           id='content'

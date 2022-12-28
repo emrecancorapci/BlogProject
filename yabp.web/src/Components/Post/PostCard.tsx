@@ -1,5 +1,5 @@
-import {LinkContainer} from 'react-router-bootstrap';
 import UserHover from '../User/UserHover';
+import {Link} from 'react-router-dom';
 
 
 /**
@@ -9,15 +9,25 @@ import UserHover from '../User/UserHover';
  * @return {JSX.Element} Post card
  */
 
-function PostCard({post}) {
+type Post = {
+  id: number;
+  title: string;
+  content: string;
+  authorId: number;
+  postSummary: string;
+  isCommentsVisible: boolean;
+  addCommentsEnabled: boolean;
+}
+
+function PostCard({post} : {post: Post}) {
   return (
     <div className='card row mt-3 mx-1 p-1 shadow-sm c-bg-lighter border-0'>
       <div className='card-body'>
-        <LinkContainer to={`/Posts/${post.id}`} style={{cursor: 'pointer'}}>
+        <Link to={`/Posts/${post.id}`}>
           <div className='card-title'>
             <h3 className='fw-bold'>{post.title}</h3>
           </div>
-        </LinkContainer>
+        </Link>
         <div className='row pb-1'>
           <div className='col-auto fw-bold c-tx-dark'>
             <UserHover id={post.authorId} />

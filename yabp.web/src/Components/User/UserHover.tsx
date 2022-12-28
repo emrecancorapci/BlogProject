@@ -1,9 +1,9 @@
 import {useEffect, useState} from 'react';
 import axios from 'axios';
-import {LinkContainer} from 'react-router-bootstrap';
 import {Popover, OverlayTrigger} from 'react-bootstrap';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
+import {Link} from 'react-router-dom';
 
 import getApi from '../../Functions/Common/getApi';
 
@@ -14,11 +14,20 @@ import getApi from '../../Functions/Common/getApi';
  * @return {JSX.Element} Username with popover
  */
 
-function UserHover({id}) {
+type User = {
+  id: number;
+  username: string;
+  name: string;
+  lastName: string;
+  about: string;
+  profilePictureUrl: string;
+};
+
+function UserHover({id} : {id:number}): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
   const [title, setTitle] = useState('');
   const [img, setImg] = useState('');
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState<User>({} as User);
 
   const iconStyle = {
     color: 'rgba(34,0,59,1)',
@@ -38,7 +47,7 @@ function UserHover({id}) {
         .catch((event) => console.log(event));
   }, [id]);
 
-  const setUserData = (data) => {
+  const setUserData = (data: User) => {
     setTitle(data.name ? data.name + ' ' + data.lastName :
     data.username);
     setImg(data.profilePictureUrl ? data.profilePictureUrl :
@@ -62,7 +71,7 @@ function UserHover({id}) {
                   width: '1.7rem',
                 }}
                 src={img}
-                alt={`${title}'s profile picture`} />
+                alt={`${title}'s profile`} />
             </div>
             <div className='col gx-2 fs-5 fw-bold c-tx-dark'>
               {title}
@@ -79,12 +88,12 @@ function UserHover({id}) {
   );
 
   const username = (
-    <LinkContainer to={`/Users/${user.id}`} style={{cursor: 'pointer'}}>
+    <Link to={`/Users/${user.id}`} style={{cursor: 'pointer'}}>
       <div className='c-tx-dark'>
         <FontAwesomeIcon icon={faUser} style={iconStyle}/>
         <span className='px-2'>{user.username}</span>
       </div>
-    </LinkContainer>
+    </Link>
   );
 
   return (

@@ -1,9 +1,9 @@
 import {useFormik} from 'formik';
-import axios from 'axios';
+import axios, {AxiosRequestConfig} from 'axios';
 
 import {getToken} from '../../Functions/User';
 import getApi from '../../Functions/Common/getApi';
-import {getAuthHeader} from '../../Functions/User';
+import {getAuthConfig} from '../../Functions/User';
 
 /**
  * @description Add comment component
@@ -13,12 +13,22 @@ import {getAuthHeader} from '../../Functions/User';
  * @return {JSX.Element} Add comment component
  */
 
-function AddComment({postId, parentId}) {
+type Comment = {
+  content: string;
+  authorId: number;
+  postId: number;
+  parentId?: number;
+}
+
+function AddComment({postId, parentId} : { postId: number; parentId?: number;
+}): JSX.Element {
   const user = getToken();
   const api = getApi('Comments');
-  const headers = getAuthHeader();
 
-  const fetchData = async (values) => await axios.post(api, values, headers);
+  const config: AxiosRequestConfig = getAuthConfig();
+
+  const fetchData = async (values: Comment) =>
+    await axios.post(api, values, config);
 
   const formik = useFormik({
     initialValues: {
@@ -42,8 +52,7 @@ function AddComment({postId, parentId}) {
           className='form-control shadow-sm'
           id='content'
           name='content'
-          type='text'
-          rows='3'
+          rows={3}
           placeholder='Leave a comment'
           value={formik.values.content}
           onChange={formik.handleChange} />

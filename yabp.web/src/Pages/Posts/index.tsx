@@ -11,11 +11,20 @@ import getApi from '../../Functions/Common/getApi';
  * @returns {JSX.Element} All posts in the database
  */
 
+type Post = {
+  id: number;
+  title: string;
+  content: string;
+  authorId: number;
+  postSummary: string;
+  isCommentsVisible: boolean;
+  addCommentsEnabled: boolean;
+}
+
 function Posts() {
   // TODO Add pagination
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([] as Post[]);
   const [isLoading, setIsLoading] = useState(true);
-  const [filterText, setFilterText] = useState('');
 
   useEffect(() => {
     const api = getApi('Posts');
@@ -28,27 +37,9 @@ function Posts() {
         .finally(() => setIsLoading(false));
   }, []);
 
-  const onChangeFilter = ((event) =>
-    setFilterText(event.target.value));
-
-  const filteredPosts = posts.filter((item) => {
-    return Object.keys(item).some((key) =>
-      item[key]
-          .toString()
-          .toLowerCase()
-          .includes(filterText.toLowerCase()),
-    );
-  });
-
   return (<>
-    <div>
-      <input
-        placeholder='Search'
-        value={filterText}
-        onChange={onChangeFilter} />
-    </div>
     {isLoading && (<div className='spinner-border' role='status'/>)}
-    {filteredPosts.map((post, index) =>
+    {posts.map((post, index) =>
       <PostCard post={post} key={index}/>,
     )}
   </>);

@@ -1,3 +1,4 @@
+import {Dispatch, SetStateAction} from 'react';
 import {Routes, Route, useLocation} from 'react-router-dom';
 
 import NotFound from './Pages/Common/NotFound';
@@ -14,7 +15,8 @@ import Login from './Pages/Login';
  * @param {Function} setAuth - Function to set auth state
  * @return {JSX.Element} Router component
  */
-function Router({setAuth}) {
+
+function Router({setAuth} : {setAuth: Dispatch<SetStateAction<boolean>>}): JSX.Element {
   const location = useLocation();
   return (
     <Routes location={location} key={location.pathname}>

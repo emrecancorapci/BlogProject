@@ -9,9 +9,10 @@ import {faCalendar} from '@fortawesome/free-solid-svg-icons';
  * @param {string} date - Date
  * @return {JSX.Element} - Element
  */
-function DateTooltip({date}) {
-  const dateText = `${date.substr(0, 10)} - 
-  ${date.substr(11, 8)}`;
+
+function DateTooltip({date} : {date: string}) {
+  const dateText = `${date.substring(0, 10)} - 
+  ${date.substring(11, 8)}`;
 
   return (
     <OverlayTrigger

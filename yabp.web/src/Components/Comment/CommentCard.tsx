@@ -18,7 +18,14 @@ import DateTooltip from '../Common/DateTooltip';
  * @return {JSX.Element} Comment card
  */
 
-function CommentCard({comment}) {
+type Comment = {
+  id: number;
+  content: string;
+  authorId: number;
+  created: string;
+}
+
+function CommentCard({comment} : {comment: Comment}) {
   return (
     <div className='card'>
       <div className='card-header c-bg-light'>

@@ -9,10 +9,11 @@ import getApi from '../../Functions/Common/getApi';
 /**
  * @description Displays all comments for a post
  *
- * @param {Number} id - Post id
+ * @param {string} id - Post id
  * @return {JSX.Element} All comments for a post
  */
-function CommentsSection({id}) {
+
+function CommentsSection({id} : {id: number}): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
   const [comments, setComments] = useState([]);
 
@@ -25,7 +26,7 @@ function CommentsSection({id}) {
         .then((response) => setComments(response.data))
         .catch((event) => console.log(event)) // Error logging
         .finally(() => setIsLoading(false)); // Set loading false
-  }, []);
+  }, [api]);
 
   return (<>
     {isLoading &&

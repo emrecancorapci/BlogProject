@@ -1,3 +1,4 @@
+import {Dispatch, SetStateAction} from 'react';
 import {useFormik} from 'formik';
 import axios from 'axios';
 
@@ -11,16 +12,21 @@ import getApi from '../../Functions/Common/getApi';
  * @return {JSX.Element} - Form element
  */
 
-function Login({setAuth}) {
+type Fields = {
+  username: string,
+  password: string,
+}
+
+function Login({setAuth}: {setAuth: Dispatch<SetStateAction<boolean>>}): JSX.Element {
   const api = getApi('Users/Login');
-  const fetchData = async (values) => await axios.post(api, values);
+  const fetchData = async (values : Fields) => await axios.post(api, values);
 
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
-    onSubmit: (values) => {
+    onSubmit: (values : Fields) => {
       fetchData(values)
           .then((response) => {
             if (response.data) {
@@ -28,9 +34,7 @@ function Login({setAuth}) {
               setAuth(true);
             }
           })
-          .catch((event) => (
-            console.log(event),
-            console.log('Submitted.')));
+          .catch((event) => console.log(event));
     },
   });
 

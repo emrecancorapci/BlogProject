@@ -15,14 +15,22 @@ import {getToken} from '../../Functions/User';
  * @return {JSX.Element} - Single post and its comments
  */
 
+type Post = {
+  id: number;
+  title: string;
+  content: string;
+  authorId: number;
+  isCommentsVisible: boolean;
+  addCommentsEnabled: boolean;
+}
+
 function SinglePost() {
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState([]);
-  const [post, setPost] = useState([]);
+  const [post, setPost] = useState<Post>({} as Post);
   const {id} = useParams();
+  const user = getToken();
 
   useEffect(() => {
-    setUser(getToken());
     console.log(`Post ID: ${id}`);
 
     const api = getApi(`Posts/${id}`);
@@ -66,7 +74,7 @@ function SinglePost() {
           </h3>
           {user &&
             <div className='pt-2'>
-              <AddComment postId={id}/>
+              <AddComment postId={Number(id)}/>
             </div>}
           {!user &&
             <div className='alert alert-warning'>
@@ -79,7 +87,7 @@ function SinglePost() {
           <h2 className='fw-bold c-tx-dark'>
                 Comments
           </h2>
-          <CommentsSection id={id} />
+          <CommentsSection id={Number(id)} />
         </div>}
     </div>}
   </>);

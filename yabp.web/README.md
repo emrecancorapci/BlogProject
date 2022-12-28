@@ -1,12 +1,10 @@
-# Used Packages
+A simple React blog app powered by Typescript with CRUD operations.
 
-react-router-dom
-axios
-bootstrap
-formik
-react-bootstrap bootstrap
-react-router-bootstrap
-@fortawesome/fontawesome-svg-core
-@fortawesome/free-solid-svg-icons
-@fortawesome/free-regular-svg-icons
-@fortawesome/react-fontawesome@latest
+# Used Packages
+A list of all the packages used in this project.
+
+Axios
+Bootstrap
+Formik
+React Bootstrap (for popovers)
+React Router Dom

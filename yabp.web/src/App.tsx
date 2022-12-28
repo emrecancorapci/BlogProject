@@ -1,6 +1,5 @@
 import {useState, useEffect} from 'react';
 import {getToken} from './Functions/User';
-import './App.css';
 
 import Navigation from './Components/Common/Navigation';
 import SidePanel from './Components/Common/SidePanel';
@@ -10,11 +9,11 @@ import Router from './Router';
 function App() {
   const title = 'Yet Another Blog Project';
 
-  const [auth, setAuth] = useState(false);
+  const [auth, setAuth] = useState<boolean>(false);
 
   useEffect(() => {
     const user = getToken();
-    user ? setAuth(true) : 1;
+    setAuth(user ? true : false);
   }, [auth]);
 
   // Add tabs to home page
