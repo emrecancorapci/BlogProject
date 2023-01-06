@@ -1,5 +1,6 @@
-import { Dispatch, SetStateAction } from 'react'
-import { Link } from 'react-router-dom'
+import { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import AuthContext from '../../Context/AuthContext';
 
 /**
  * @description `Navigation` bar for the top of the page.
@@ -10,14 +11,11 @@ import { Link } from 'react-router-dom'
  */
 
 function Navigation ({
-  title,
-  auth,
-  setAuth
+  title
 }: {
   title: string
-  auth: boolean
-  setAuth: Dispatch<SetStateAction<boolean>>
 }): JSX.Element {
+  const { auth, setAuth } = useContext(AuthContext);
   const onClickLogout = (): void => {
     sessionStorage.removeItem('user')
     setAuth(false)
@@ -36,8 +34,7 @@ function Navigation ({
           data-bs-target="#headerNavbar"
           aria-controls="headerNavbar"
           aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+          aria-label="Toggle navigation">
           <span className="navbar-toggler-icon" />
         </button>
 
@@ -50,21 +47,17 @@ function Navigation ({
             </div>
           </div>
           <div className="me-5">
-            {auth && (
-              <button
+            {auth
+              ? (<button
                 className="btn c-bg-lighter border-0 fw-bold"
-                onClick={() => onClickLogout()}
-              >
+                onClick={() => onClickLogout()}>
                 Logout
-              </button>
-            )}
-            {!auth && (
-              <Link to={'/login'}>
+              </button>)
+              : (<Link to={'/login'}>
                 <button className="btn c-bg-lighter border-0 fw-bold">
                   Login
                 </button>
-              </Link>
-            )}
+              </Link>)}
           </div>
         </div>
       </div>

@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { getToken } from './Functions/User';
 
 import Navigation from './Components/Common/Navigation';
 import SidePanel from './Components/Common/SidePanel';
 import Router from './Router';
+import AuthContext from './Context/AuthContext';
 
 function App (): JSX.Element {
   const title = 'Yet Another Blog Project';
 
-  const [auth, setAuth] = useState<boolean>(false);
+  const { auth, setAuth } = useContext(AuthContext);
 
   useEffect(() => {
     const user = getToken();
@@ -21,7 +22,7 @@ function App (): JSX.Element {
   return (<>
     <header>
       <div className='row'>
-        <Navigation title={title} auth={auth} setAuth={setAuth}/>
+        <Navigation title={title}/>
       </div>
     </header>
 
@@ -30,7 +31,7 @@ function App (): JSX.Element {
         <div className='col-lg-8 col-sm-12
           order-lg-1 order-sm-3 shadow bg-white rounded-2 border'>
           <div className='p-2 pt-3 m-3'>
-            <Router setAuth={setAuth}/>
+            <Router/>
           </div>
         </div>
         <div className='col-lg-3 col-sm-12 order-2 p-3'>

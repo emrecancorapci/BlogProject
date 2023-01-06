@@ -8,28 +8,30 @@ import AddComment from '../../Components/Comment/AddComment';
 import getApi from '../../Functions/Common/getApi';
 import { getToken } from '../../Functions/User';
 import { PostResponse } from '../../Interfaces/PostResponse';
+
 /**
  * @description - Displays a single post and its comments
  *
  * @return {JSX.Element} - Single post and its comments
  */
 
+const postInitial: PostResponse = {
+  title: '',
+  content: '',
+  authorId: 0,
+  isCommentsVisible: false,
+  addCommentsEnabled: false
+};
+
 function SinglePost (): JSX.Element {
-  const postInitial: PostResponse = {
-    title: '',
-    content: '',
-    authorId: 0,
-    isCommentsVisible: false,
-    addCommentsEnabled: false
-  };
+  const { id } = useParams<{ id: string }>();
+  const user = getToken();
   const [isLoading, setIsLoading] = useState(true);
   const [post, setPost] = useState<PostResponse>(postInitial);
-  const { postId } = useParams();
-  const user = getToken();
+
+  if (id === undefined) return (<h1>No ID</h1>)
 
   useEffect(() => {
-    const id = Number(postId);
-
     const api = getApi(`Posts/${id}`);
     const fetchPost: () => Promise<AxiosResponse> =
       async () => await axios(api);
@@ -38,7 +40,7 @@ function SinglePost (): JSX.Element {
       .then((response) => setPost(response.data))
       .catch((event) => console.log(event))
       .finally(() => setIsLoading(false));
-  }, [postId]);
+  }, [id]);
 
   return (<>
     {isLoading && <div className='spinner-border' role='status' />}
@@ -72,7 +74,7 @@ function SinglePost (): JSX.Element {
           </h3>
           {user !== null
             ? (<div className='pt-2'>
-                <AddComment postId={Number(postId)}/>
+                <AddComment postId={Number(id)}/>
               </div>)
             : (<div className='alert alert-warning'>
                 You must be logged in to post a comment.
@@ -84,7 +86,7 @@ function SinglePost (): JSX.Element {
           <h2 className='fw-bold c-tx-dark'>
                 Comments
           </h2>
-          <CommentsSection id={Number(postId)} />
+          <CommentsSection id={Number(id)} />
         </div>}
     </div>}
   </>);

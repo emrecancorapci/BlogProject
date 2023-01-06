@@ -1,8 +1,9 @@
-import { Dispatch, SetStateAction } from 'react';
+import { useContext } from 'react';
 import { useFormik } from 'formik';
 import axios, { AxiosResponse } from 'axios';
 
 import getApi from '../../Functions/Common/getApi';
+import AuthContext from '../../Context/AuthContext';
 
 /**
  * @description Form to login
@@ -16,7 +17,8 @@ interface Fields {
   password: string
 }
 
-function Login ({ setAuth }: { setAuth: Dispatch<SetStateAction<boolean>> }): JSX.Element {
+function Login (): JSX.Element {
+  const { setAuth } = useContext(AuthContext);
   const api = getApi('Users/Login');
   const fetchData: (value: Fields) => Promise<AxiosResponse> =
     async (values: Fields) => await axios.post(api, values);
