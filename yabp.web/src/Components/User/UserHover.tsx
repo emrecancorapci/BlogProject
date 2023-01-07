@@ -35,7 +35,7 @@ function UserHover ({ id }: { id: number }): JSX.Element {
   };
 
   useEffect(() => {
-    if (id === null) return;
+    if (id === null || id === 0) return;
 
     const api = getApi(`Users/${id}`);
     const fetchUser: () => Promise<AxiosResponse> = async () => await axios(api);

@@ -9,22 +9,24 @@ import getApi from '../../Functions/Common/getApi';
 import { getToken } from '../../Functions/User';
 import { PostResponse } from '../../Interfaces/PostResponse';
 
+const postInitial: PostResponse = {
+  id: 0,
+  title: '',
+  content: '',
+  postSummary: '',
+  authorId: 0,
+  isCommentsVisible: false,
+  addCommentsEnabled: false
+};
+
 /**
  * @description - Displays a single post and its comments
  *
  * @return {JSX.Element} - Single post and its comments
  */
 
-const postInitial: PostResponse = {
-  title: '',
-  content: '',
-  authorId: 0,
-  isCommentsVisible: false,
-  addCommentsEnabled: false
-};
-
 function SinglePost (): JSX.Element {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams();
   const user = getToken();
   const [isLoading, setIsLoading] = useState(true);
   const [post, setPost] = useState<PostResponse>(postInitial);
@@ -60,9 +62,9 @@ function SinglePost (): JSX.Element {
         {/* Content Section */}
         <div className='row p-2 pb-1 mt-2 mb-3 rounded
           border border-opacity-75'>
-          <p>
+          <pre className='content-pre'>
             {post.content}
-          </p>
+          </pre>
         </div>
       </article>
       {/* Add Comment Section */}

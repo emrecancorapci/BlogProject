@@ -5,17 +5,17 @@ import axios, { AxiosResponse } from 'axios';
 import getApi from '../../Functions/Common/getApi';
 import AuthContext from '../../Context/AuthContext';
 
+interface Fields {
+  username: string
+  password: string
+}
+
 /**
  * @description Form to login
  *
  * @param {function} setAuth - Sets the authentication state
  * @return {JSX.Element} - Form element
  */
-
-interface Fields {
-  username: string
-  password: string
-}
 
 function Login (): JSX.Element {
   const { setAuth } = useContext(AuthContext);
@@ -41,7 +41,6 @@ function Login (): JSX.Element {
   });
 
   return (
-    <>
       <form onSubmit={formik.handleSubmit}>
         <div>
           <input
@@ -63,7 +62,6 @@ function Login (): JSX.Element {
           <button type="submit">Login</button>
         </div>
       </form>
-    </>
   );
 }
 

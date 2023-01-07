@@ -33,9 +33,9 @@ function CommentCard ({ comment }: { comment: CommentResponse }): JSX.Element {
         </div>
       </div>
       <div className='card-body'>
-        <div className='card-text'>
+        <pre className='content-pre'>
           {comment.content}
-        </div>
+        </pre>
       </div>
     </div>
   );

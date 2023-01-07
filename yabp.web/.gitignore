@@ -18,9 +18,15 @@
 .env.test.local
 .env.production.local
 
+# debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Editor directories and files
 /.idea
 /.vscode
+
+
+# TypeScript
+react-app-env.d.ts

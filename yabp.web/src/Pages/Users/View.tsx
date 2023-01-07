@@ -3,8 +3,17 @@ import { useParams } from 'react-router-dom';
 import axios, { AxiosResponse } from 'axios';
 
 import getApi from '../../Functions/Common/getApi';
-import PostCard from '../../Components/Post/PostCard';
 import { UserResponse } from '../../Interfaces/UserResponse';
+import Posts from '../Posts/All';
+
+const userInitial: UserResponse = {
+  id: 0,
+  username: '',
+  name: '',
+  lastName: '',
+  about: '',
+  profilePictureUrl: ''
+};
 
 /**
  * @description Displays user's profile page
@@ -12,41 +21,24 @@ import { UserResponse } from '../../Interfaces/UserResponse';
  * @returns {JSX.Element} User's profile page
  */
 
-function UserPage (): JSX.Element {
-  const userInitial: UserResponse = {
-    id: 0,
-    username: '',
-    name: '',
-    lastName: '',
-    about: '',
-    profilePictureUrl: ''
-  };
-
+function ViewUser (): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<UserResponse>(userInitial);
-  const [posts, setPosts] = useState([]);
-  const { userId } = useParams();
+  const { id } = useParams();
+
+  if (id === undefined) return (<h1>No ID</h1>);
 
   useEffect(() => {
-    const id = Number(userId);
-
     const userApi = getApi(`Users/${id}`);
-    const userPostsApi = getApi(`Users/${id}/Posts`);
 
     const fetchUser: () => Promise<AxiosResponse> =
       async () => await axios(userApi);
-    const fetchPosts: () => Promise<AxiosResponse> =
-      async () => await axios(userPostsApi);
 
     fetchUser()
       .then((response) => setUser(response.data))
       .catch((event) => console.log(event))
       .finally(() => setIsLoading(false));
-
-    fetchPosts()
-      .then((response) => setPosts(response.data))
-      .catch((event) => console.log(event));
-  }, [userId]);
+  }, [id]);
 
   return (<>
     {isLoading && <div>Loading...</div>}
@@ -65,13 +57,11 @@ function UserPage (): JSX.Element {
         </div>
       </div>
       <div>
-        <h1 className='fw-bold'>Posts</h1>
-        {posts.map((post, index) =>
-          <PostCard post={post} key={index} />
-        )}
+        <h1 className='fw-bold'>{`${user.username}'s Posts`}</h1>
+        <Posts userId={Number(id)}/>
       </div>
     </div>}
   </>);
 }
 
-export default UserPage;
+export default ViewUser;

@@ -1,10 +1,10 @@
 import { useFormik } from 'formik';
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 import { getToken, getAuthConfig } from '../../Functions/User';
 import getApi from '../../Functions/Common/getApi';
 
-import { CommentRequest } from '../../Interfaces/CommentRequest';
+import { AddCommentRequest } from '../../Interfaces/AddCommentRequest';
 
 /**
  * @description Add comment component
@@ -21,10 +21,10 @@ function AddComment ({ postId, parentId }: {
   const user = getToken();
   const api = getApi('Comments');
 
-  const config: AxiosRequestConfig = getAuthConfig();
+  const config = getAuthConfig();
 
-  const fetchData: (values: CommentRequest) => Promise<AxiosResponse> =
-  async (values: CommentRequest) => await axios.post(api, values, config);
+  const fetchData: (values: AddCommentRequest) => Promise<AxiosResponse> =
+  async (values: AddCommentRequest) => await axios.post(api, values, config);
 
   const formik = useFormik({
     initialValues: {

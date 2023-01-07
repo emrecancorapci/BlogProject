@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { getToken, getAuthConfig } from '../../Functions/User';
 import getApi from '../../Functions/Common/getApi';
 
@@ -15,7 +15,7 @@ function AddPost (): JSX.Element {
   const userId = getToken() !== null ? getToken().id : 1;
   const api = getApi('Posts');
 
-  const config: AxiosRequestConfig = getAuthConfig();
+  const config = getAuthConfig();
 
   const fetchData: (values: PostRequest) => Promise<AxiosResponse> =
     async (values: PostRequest) => await axios.post(api, values, config);
@@ -39,8 +39,8 @@ function AddPost (): JSX.Element {
     }
   });
 
-  return (<div style={{ padding: '.5rem' }}>
-    <h1>Add Post</h1>
+  return (<div className='p-2'>
+    <h1 className='fw-bold'>Add Post</h1>
     <form onSubmit={formik.handleSubmit} style={{ padding: '1rem' }}>
       <div className="mb-3">
         <label htmlFor="title" className='form-label'>Post Title</label>
@@ -59,7 +59,7 @@ function AddPost (): JSX.Element {
           className='form-control'
           id='thumbnailUrl'
           name="thumbnailUrl"
-          type="text"
+          type="url"
           placeholder="Thumbnail"
           value={formik.values.thumbnailUrl}
           onChange={formik.handleChange} />
@@ -72,10 +72,10 @@ function AddPost (): JSX.Element {
             id='addCommentEnabled'
             name='addCommentEnabled'
             type="checkbox"
-            onChange={formik.handleChange}/>
+            onChange={formik.handleChange} />
           <label className="form-check-label"
             htmlFor="addCommentEnabled">
-              Comments Enabled
+            Comments Enabled
           </label>
         </div>
         <div className="form-check form-switch col-6">
@@ -84,10 +84,10 @@ function AddPost (): JSX.Element {
             id='addReactionsEnabled'
             name='addReactionsEnabled'
             type="checkbox"
-            onChange={formik.handleChange}/>
+            onChange={formik.handleChange} />
           <label className="form-check-label"
             htmlFor="addReactionsEnabled">
-              Reactions Enabled
+            Reactions Enabled
           </label>
         </div>
       </div>
@@ -99,11 +99,15 @@ function AddPost (): JSX.Element {
           name='content'
           aria-label='Post'
           value={formik.values.content}
-          onChange={formik.handleChange}/>
+          onChange={formik.handleChange} />
       </div>
-      <button className='btn btn-primary' type="submit">
-          Submit
-      </button>
+      <div className="row justify-content-end">
+        <div className="col-auto">
+          <button className='btn btn-primary' type="submit">
+            Submit
+          </button>
+        </div>
+      </div>
     </form>
   </div>);
 }

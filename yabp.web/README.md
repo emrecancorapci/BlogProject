@@ -11,3 +11,4 @@ Bootstrap
 Formik
 React Bootstrap (for popovers)
 React Router Dom
+TypeScript
