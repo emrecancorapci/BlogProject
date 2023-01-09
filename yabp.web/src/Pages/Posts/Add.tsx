@@ -33,6 +33,10 @@ function AddPost (): JSX.Element {
     onSubmit: (values: PostRequest) => {
       fetchData(values)
         .then((response) => {
+          if (response.status !== 201) {
+            throw new Error('Error' +
+            ` ${response.status}: ${response.statusText}`);
+          }
           console.log(response);
         })
         .catch((event) => console.log(event));

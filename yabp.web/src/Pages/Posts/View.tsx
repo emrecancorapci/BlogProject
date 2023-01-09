@@ -4,9 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import CommentsSection from '../../Components/Comment/CommentsSection';
 import UserHover from '../../Components/User/UserHover';
-import AddComment from '../../Components/Comment/AddComment';
 import getApi from '../../Functions/Common/getApi';
-import { getToken } from '../../Functions/User';
 import { PostResponse } from '../../Interfaces/PostResponse';
 
 const postInitial: PostResponse = {
@@ -21,13 +19,11 @@ const postInitial: PostResponse = {
 
 /**
  * @description - Displays a single post and its comments
- *
  * @return {JSX.Element} - Single post and its comments
  */
 
 function SinglePost (): JSX.Element {
   const { id } = useParams();
-  const user = getToken();
   const [isLoading, setIsLoading] = useState(true);
   const [post, setPost] = useState<PostResponse>(postInitial);
 
@@ -39,7 +35,13 @@ function SinglePost (): JSX.Element {
       async () => await axios(api);
 
     fetchPost()
-      .then((response) => setPost(response.data))
+      .then((response) => {
+        if (response.status !== 200) {
+          throw new Error('Error' +
+          ` ${response.status}: ${response.statusText}`);
+        }
+        setPost(response.data)
+      })
       .catch((event) => console.log(event))
       .finally(() => setIsLoading(false));
   }, [id]);
@@ -67,29 +69,9 @@ function SinglePost (): JSX.Element {
           </pre>
         </div>
       </article>
-      {/* Add Comment Section */}
-      {post.addCommentsEnabled &&
-        <div className='row px-3 pt-3 pb-2 shadow-sm rounded
-          border c-bg-lighter'>
-          <h3 className='fw-bold c-tx-dark'>
-              Add Comment
-          </h3>
-          {user !== null
-            ? (<div className='pt-2'>
-                <AddComment postId={Number(id)}/>
-              </div>)
-            : (<div className='alert alert-warning'>
-                You must be logged in to post a comment.
-              </div>)}
-        </div>}
-      {/* Comments Section */}
-      {post.isCommentsVisible &&
-        <div className='row p-2'>
-          <h2 className='fw-bold c-tx-dark'>
-                Comments
-          </h2>
-          <CommentsSection id={Number(id)} />
-        </div>}
+      <CommentsSection
+        postId={Number(id)}
+        addPermission={post.addCommentsEnabled}/>
     </div>}
   </>);
 }

@@ -18,13 +18,21 @@ function ViewPosts ({ userId }: { userId?: number }): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const api = userId !== undefined ? getApi(`Posts?authorId=${userId}`) : getApi('Posts');
+    const api = userId !== undefined
+      ? getApi(`Posts?authorId=${userId}`)
+      : getApi('Posts');
 
     const fetchPosts: () => Promise<AxiosResponse> =
       async () => await axios(api);
 
     fetchPosts()
-      .then((response) => setPosts(response.data))
+      .then((response) => {
+        if (response.status !== 200) {
+          throw new Error('Error' +
+          ` ${response.status}: ${response.statusText}`);
+        }
+        setPosts(response.data)
+      })
       .catch((event) => console.log(event))
       .finally(() => setIsLoading(false));
   }, []);

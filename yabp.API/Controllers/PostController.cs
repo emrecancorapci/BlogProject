@@ -22,9 +22,7 @@ public class PostController : ControllerBase
     {
         var response = await _postService.GetAsync(id);
 
-        if (response == null) return NotFound();
-
-        return Ok(response);
+        return response == null ? NotFound() : Ok(response);
     }
 
     [HttpGet("")]
@@ -41,7 +39,7 @@ public class PostController : ControllerBase
         {
             responseList = responseList.DateBetween(dateStart, dateEnd);
         }
-        if(!orderBy.IsNullOrEmpty())
+        if (!orderBy.IsNullOrEmpty())
         {
             responseList = responseList.OrderPostBy(orderBy);
         }
@@ -71,14 +69,14 @@ public class PostController : ControllerBase
         return Ok(responseList);
     }
     [HttpGet("~/api/Users/{id:int:min(1)}/Posts")]
-    public async Task<IActionResult> GetPosts([FromRoute]int id)
+    public async Task<IActionResult> GetPosts([FromRoute] int id)
     {
         var responseList = await _postService.GetAllByUserIdAsync(id);
 
         return Ok(responseList);
     }
     [HttpGet("~/api/Users/{id:int:min(1)}/EditedPosts")]
-    public async Task<IActionResult> GetEditedPosts([FromRoute]int id)
+    public async Task<IActionResult> GetEditedPosts([FromRoute] int id)
     {
         var responseList = await _postService.GetAllByEditorIdAsync(id);
 
@@ -94,11 +92,15 @@ public class PostController : ControllerBase
 
     // POST
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add(AddPostRequest request)
     {
         var affectedRows = await _postService.AddAsync(request);
 
-        return Ok(affectedRows);
+        return affectedRows == 0 ?
+            CreatedAtAction(nameof(Get), new { id = affectedRows }, affectedRows)
+            : BadRequest();
     }
 
     // PATCH
@@ -108,7 +110,9 @@ public class PostController : ControllerBase
         // TODO : Wants categoryId. Find a way to change only modified variables.
 
         var affectedRows = await _postService.UpdateAsync(request);
-        return Ok(affectedRows);
+        return affectedRows == 0 ?
+            Ok(affectedRows)
+            : BadRequest();
     }
     [HttpPatch("React")]
     public async Task<IActionResult> React(ReactionPostRequest request)

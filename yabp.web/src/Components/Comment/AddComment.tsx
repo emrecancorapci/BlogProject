@@ -5,6 +5,8 @@ import { getToken, getAuthConfig } from '../../Functions/User';
 import getApi from '../../Functions/Common/getApi';
 
 import { AddCommentRequest } from '../../Interfaces/AddCommentRequest';
+import { Dispatch, SetStateAction } from 'react';
+import { CommentResponse } from '../../Interfaces/CommentResponse';
 
 /**
  * @description Add comment component
@@ -14,9 +16,11 @@ import { AddCommentRequest } from '../../Interfaces/AddCommentRequest';
  * @return {JSX.Element} Add comment component
  */
 
-function AddComment ({ postId, parentId }: {
+function AddComment ({ postId, parentId, comments, setComments }: {
   postId: number
   parentId?: number
+  comments: CommentResponse[]
+  setComments: Dispatch<SetStateAction<CommentResponse[]>>
 }): JSX.Element {
   const user = getToken();
   const api = getApi('Comments');
@@ -35,7 +39,23 @@ function AddComment ({ postId, parentId }: {
     },
     onSubmit: (values) => {
       fetchData(values)
-        .then((response) => console.log(response))
+        .then((response) => {
+          if (response.status !== 201) {
+            throw new Error('Error' +
+            ` ${response.status}: ${response.statusText}`);
+          }
+
+          // Not tested
+          const newComment: CommentResponse = {
+            content: values.content,
+            authorId: user.id,
+            postId,
+            created: Date.now().toFixed()
+          };
+
+          setComments([...comments, newComment])
+          console.log(response);
+        })
         .catch((event) => console.log(event));
     }
   });
