@@ -35,32 +35,35 @@ function ViewUser (): JSX.Element {
       async () => await axios(userApi);
 
     fetchUser()
-      .then((response) => setUser(response.data))
-      .catch((event) => console.log(event))
-      .finally(() => setIsLoading(false));
+      .then((response) => { setUser(response.data); })
+      .catch((event) => { console.log(event); })
+      .finally(() => { setIsLoading(false); });
   }, [id]);
 
   return (<>
-    {isLoading && <div>Loading...</div>}
-    {<div>
-      <div
-        className='row rounded rounded-3 border p-3
-      align-items-center justify-content-evenly'
-        style={{ minHeight: '200px' }}>
-        <div className='col-auto'>
-          <img alt={user.username} src={user.profilePictureUrl} />
+    {isLoading
+      ? (<div>Loading...</div>)
+      : (
+        <div>
+          <div
+            className='row rounded rounded-3 border p-3
+              align-items-center justify-content-evenly'
+            style={{ minHeight: '200px' }}>
+            <div className='col-auto'>
+              <img alt={user.username} src={user.profilePictureUrl} />
+            </div>
+            <div className='col-8'>
+              <div className='h1 fw-bold'>{user.username}</div>
+              <h2>{user.name} {user.lastName}</h2>
+              <p>{user.about}</p>
+            </div>
+          </div>
+          <div>
+            <h1 className='fw-bold'>{`${user.username}'s Posts`}</h1>
+            <Posts userId={Number(id)} />
+          </div>
         </div>
-        <div className='col-8'>
-          <div className='h1 fw-bold'>{user.username}</div>
-          <h2>{user.name} {user.lastName}</h2>
-          <p>{user.about}</p>
-        </div>
-      </div>
-      <div>
-        <h1 className='fw-bold'>{`${user.username}'s Posts`}</h1>
-        <Posts userId={Number(id)}/>
-      </div>
-    </div>}
+        )}
   </>);
 }
 

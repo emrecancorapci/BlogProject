@@ -39,7 +39,7 @@ function AddPost (): JSX.Element {
           }
           console.log(response);
         })
-        .catch((event) => console.log(event));
+        .catch((event) => { console.log(event); });
     }
   });
 

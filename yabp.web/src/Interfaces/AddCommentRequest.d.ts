@@ -3,4 +3,4 @@ export interface AddCommentRequest {
   authorId: number
   postId: number
   parentId?: number
-};
+}

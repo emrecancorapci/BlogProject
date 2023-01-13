@@ -45,8 +45,8 @@ function CommentsSection ({ postId, addPermission }: {
         }
         setComments(response.data)
       })
-      .catch((event) => console.log(event)) // Error logging
-      .finally(() => setIsLoading(false)); // Set loading false
+      .catch((event) => { console.log(event); }) // Error logging
+      .finally(() => { setIsLoading(false); }); // Set loading false
   }, [api]);
 
   return (<>
@@ -82,6 +82,6 @@ function CommentsSection ({ postId, addPermission }: {
       </>)
     }
   </>);
-};
+}
 
 export default CommentsSection;

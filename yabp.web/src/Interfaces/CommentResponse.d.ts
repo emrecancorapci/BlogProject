@@ -4,4 +4,4 @@ export interface CommentResponse {
   postId: number
   parentId?: number
   created: string
-};
+}

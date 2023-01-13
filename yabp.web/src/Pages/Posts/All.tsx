@@ -32,9 +32,10 @@ function ViewPosts ({ userId }: { userId?: number }): JSX.Element {
           ` ${response.status}: ${response.statusText}`);
         }
         setPosts(response.data)
+        console.log(response.data)
       })
-      .catch((event) => console.log(event))
-      .finally(() => setIsLoading(false));
+      .catch((event) => { console.log(event); })
+      .finally(() => { setIsLoading(false); });
   }, []);
 
   return (<>

@@ -31,12 +31,12 @@ function Login (): JSX.Element {
     onSubmit: (values: Fields) => {
       fetchData(values)
         .then((response) => {
-          if (response.data !== null) {
+          if (response.status === 200 || response.status === 201) {
             sessionStorage.setItem('user', JSON.stringify(response.data));
             setAuth(true);
           }
         })
-        .catch((event) => console.log(event));
+        .catch((event) => { console.log(event); });
     }
   });
 

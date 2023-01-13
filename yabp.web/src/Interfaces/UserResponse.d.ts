@@ -5,4 +5,4 @@ export interface UserResponse {
   lastName: string
   about: string
   profilePictureUrl: string
-};
+}

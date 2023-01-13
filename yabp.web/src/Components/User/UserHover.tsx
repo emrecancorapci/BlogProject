@@ -46,16 +46,18 @@ function UserHover ({ id }: { id: number }): JSX.Element {
           setUserData(response.data);
         }
       })
-      .catch((event) => console.log(event));
+      .catch((event) => { console.log(event); });
   }, [id]);
 
-  const setUserData: Function = (data: UserResponse) => {
+  const setUserData: (data: UserResponse) => void =
+  (data: UserResponse) => {
     checkUserData(data);
     setUser(data);
     setIsLoading(false);
   };
 
-  const checkUserData: Function = (data: UserResponse) => {
+  const checkUserData: (data: UserResponse) => void =
+  (data: UserResponse) => {
     setTitle(data.name !== null
       ? data.name + ' ' + data.lastName
       : data.username);

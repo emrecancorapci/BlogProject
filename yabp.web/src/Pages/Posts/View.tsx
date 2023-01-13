@@ -42,8 +42,8 @@ function SinglePost (): JSX.Element {
         }
         setPost(response.data)
       })
-      .catch((event) => console.log(event))
-      .finally(() => setIsLoading(false));
+      .catch((event) => { console.log(event); })
+      .finally(() => { setIsLoading(false); });
   }, [id]);
 
   return (<>

@@ -48,7 +48,7 @@ function Navigation ({
             {auth
               ? (<button
                 className="btn c-bg-lighter border-0 fw-bold"
-                onClick={() => onClickLogout()}>
+                onClick={() => { onClickLogout(); }}>
                 Logout
               </button>)
               : (<Link to={'/login'}>

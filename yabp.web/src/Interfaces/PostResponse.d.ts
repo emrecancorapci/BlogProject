@@ -6,4 +6,4 @@ export interface PostResponse {
   authorId: number
   isCommentsVisible: boolean
   addCommentsEnabled: boolean
-};
+}

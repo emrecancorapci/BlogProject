@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import { createContext, useState } from 'react';
 
 interface AuthContextInterface {
   auth: boolean
@@ -7,7 +7,8 @@ interface AuthContextInterface {
 
 const authCtxDefaultValue = {
   auth: false,
-  setAuth: () => { }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  setAuth: () => {}
 }
 
 const AuthContext = createContext<AuthContextInterface>(authCtxDefaultValue);

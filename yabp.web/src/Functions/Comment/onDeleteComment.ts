@@ -15,8 +15,8 @@ function onDeleteComment (id: number): void {
   const config = getAuthConfig();
 
   axios.delete(api, config)
-    .then((request) => console.log(request))
-    .catch((event) => console.log(event));
+    .then((request) => { console.log(request); })
+    .catch((event) => { console.log(event); });
 }
 
 export default onDeleteComment;
