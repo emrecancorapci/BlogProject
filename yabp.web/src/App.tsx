@@ -7,8 +7,6 @@ import Router from './Router';
 import AuthContext from './Context/AuthContext';
 
 function App (): JSX.Element {
-  const title = 'Yet Another Blog Project';
-
   const { auth, setAuth } = useContext(AuthContext);
 
   useEffect(() => {
@@ -22,7 +20,7 @@ function App (): JSX.Element {
   return (<>
     <header>
       <div className='row'>
-        <Navigation title={title}/>
+        <Navigation />
       </div>
     </header>
 
@@ -39,6 +37,7 @@ function App (): JSX.Element {
         </div>
       </div>
     </main>
+
     <footer className='row bg-white border-top border-1 mt-5 pb-5'>
       <div className='container'>
         <div className='row justify-content-center'>

@@ -4,20 +4,36 @@ import AuthContext from '../../Context/AuthContext';
 
 /**
  * @description `Navigation` bar for the top of the page.
- * @param {string} title - The title of the page
  * @return {JSX.Element} The navigation bar
  */
 
-function Navigation ({
-  title
-}: {
-  title: string
-}): JSX.Element {
+function Navigation (): JSX.Element {
   const { auth, setAuth } = useContext(AuthContext);
+
   const onClickLogout = (): void => {
     sessionStorage.removeItem('user')
     setAuth(false)
   }
+
+  const userButton = (): JSX.Element => {
+    if (auth) {
+      return (
+        (<button
+          className="btn c-bg-lighter border-0 fw-bold"
+          onClick={() => { onClickLogout(); }}>
+          Logout
+        </button>)
+      )
+    } else {
+      return (
+        (<Link to={'/login'}>
+          <button className="btn c-bg-lighter border-0 fw-bold">
+            Login
+          </button>
+        </Link>)
+      )
+    }
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark c-bg-dark">
@@ -45,17 +61,7 @@ function Navigation ({
             </div>
           </div>
           <div className="me-5">
-            {auth
-              ? (<button
-                className="btn c-bg-lighter border-0 fw-bold"
-                onClick={() => { onClickLogout(); }}>
-                Logout
-              </button>)
-              : (<Link to={'/login'}>
-                <button className="btn c-bg-lighter border-0 fw-bold">
-                  Login
-                </button>
-              </Link>)}
+            {userButton()}
           </div>
         </div>
       </div>
