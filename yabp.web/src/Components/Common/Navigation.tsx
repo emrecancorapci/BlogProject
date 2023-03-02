@@ -23,7 +23,7 @@ function Navigation ({
     <nav className="navbar navbar-expand-lg navbar-dark c-bg-dark">
       <div className="container">
         <Link to={'/'}>
-          <div className="navbar-brand fw-bolder">{title}</div>
+          <div className="navbar-brand fw-bolder">{import.meta.env.VITE_API_TITLE}</div>
         </Link>
         <button
           className="navbar-toggler"

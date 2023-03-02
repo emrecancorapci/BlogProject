@@ -6,8 +6,6 @@
  */
 
 export default function getApi (request: string): string {
-  console.log(process.env.REACT_APP_API_URL);
-  console.log(process.env);
-  const url = process.env.REACT_APP_API_URL;
-  return url !== undefined ? url + request : '';
+  const uri: string = import.meta.env.VITE_APP_API_URI
+  return uri !== undefined ? uri + request : '';
 }
